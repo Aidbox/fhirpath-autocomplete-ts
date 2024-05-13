@@ -1,0 +1,133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[` 2`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[` 3`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[` 4`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[` 5`] = `"{"schemaPath":["a","b"],"token":"c"}"`;
+
+exports[` 6`] = `"{"schemaPath":["a","b"],"token":"c"}"`;
+
+exports[`sum module identifier "|a": {"schemaPath":[],"token":"a"} 1`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module identifier "a|": {"schemaPath":[],"token":"a"} 1`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module identifier: {"schemaPath":[],"token":"a"} 1`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module identifier: {"schemaPath":[],"token":"a"} 2`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module invocation function invocation "|a.where(b)": {"schemaPath":[],"token":"a"} 1`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module invocation function invocation "a.|where(b)": {"schemaPath":["a"],"token":"where"} 1`] = `"{"schemaPath":["a"],"token":"where"}"`;
+
+exports[`sum module invocation function invocation "a.where(|b)": {"schemaPath":["a"],"token":"b"} 1`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[`sum module invocation function invocation "a.where(b)|": {"schemaPath":["a"],"token":""} 1`] = `"{"schemaPath":["a"],"token":""}"`;
+
+exports[`sum module invocation function invocation "a.where(b|)": {"schemaPath":["a"],"token":"b"} 1`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[`sum module invocation function invocation "a.where|(b)": {"schemaPath":["a"],"token":"where"} 1`] = `"{"schemaPath":["a"],"token":"where"}"`;
+
+exports[`sum module invocation function invocation "a|.where(b)": {"schemaPath":[],"token":"a"} 1`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module invocation one invocation "|a.b": {"schemaPath":[],"token":"a"} 1`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module invocation one invocation "a.|b": {"schemaPath":["a"],"token":"b"} 1`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[`sum module invocation one invocation "a.b|": {"schemaPath":["a"],"token":"b"} 1`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[`sum module invocation one invocation "a|.b": {"schemaPath":[],"token":"a"} 1`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module invocation one invocation: {"schemaPath":["a"],"token":"b"} 1`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[`sum module invocation one invocation: {"schemaPath":["a"],"token":"b"} 2`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[`sum module invocation one invocation: {"schemaPath":[],"token":"a"} 1`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module invocation one invocation: {"schemaPath":[],"token":"a"} 2`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module invocation partial function invocation "|a.where(": {"schemaPath":[],"token":"a"} 1`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module invocation partial function invocation "a.|where(": {"schemaPath":["a"],"token":"where"} 1`] = `"{"schemaPath":["a"],"token":"where"}"`;
+
+exports[`sum module invocation partial function invocation "a.where(|": {"schemaPath":["a"],"token":""} 1`] = `"{"schemaPath":["a"],"token":""}"`;
+
+exports[`sum module invocation partial function invocation "a.where(|b": {"schemaPath":["a"],"token":"a"} 1`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[`sum module invocation partial function invocation "a.where(|b": {"schemaPath":["a"],"token":"b"} 1`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[`sum module invocation partial function invocation "a.where(b|": {"schemaPath":["a"],"token":"b"} 1`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[`sum module invocation partial function invocation "a.where|(": {"schemaPath":["a"],"token":"where"} 1`] = `"{"schemaPath":["a"],"token":"where"}"`;
+
+exports[`sum module invocation partial function invocation "a|.where(": {"schemaPath":[],"token":"a"} 1`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module invocation partial invocation "|a.": {"schemaPath":[],"token":"a"} 1`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module invocation partial invocation "a.|": {"schemaPath":["a"],"token":""} 1`] = `"{"schemaPath":["a"],"token":""}"`;
+
+exports[`sum module invocation partial invocation "a.|": {"schemaPath":[],"token":"a"} 1`] = `"{"schemaPath":["a"],"token":""}"`;
+
+exports[`sum module invocation partial invocation "a.|b.": {"schemaPath":["a"],"token":"b"} 1`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[`sum module invocation partial invocation "a.|b.": {"schemaPath":[],"token":"a"} 1`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[`sum module invocation partial invocation "a.b.|": {"schemaPath":["a","b"],"token":""} 1`] = `"{"schemaPath":["a","b"],"token":""}"`;
+
+exports[`sum module invocation partial invocation "a.b.|": {"schemaPath":["a","b"],"token":"c"} 1`] = `"{"schemaPath":["a","b"],"token":""}"`;
+
+exports[`sum module invocation partial invocation "a.b.|c.": {"schemaPath":["a","b","c"],"token":""} 1`] = `"{"schemaPath":["a","b"],"token":"c"}"`;
+
+exports[`sum module invocation partial invocation "a.b.|c.": {"schemaPath":["a","b"],"token":"c"} 1`] = `"{"schemaPath":["a","b"],"token":"c"}"`;
+
+exports[`sum module invocation partial invocation "a.b.c.|": {"schemaPath":["a","b","c"],"token":""} 1`] = `"{"schemaPath":["a","b","c"],"token":""}"`;
+
+exports[`sum module invocation partial invocation "a.b.c|.": {"schemaPath":["a","b","c"],"token":""} 1`] = `"{"schemaPath":["a","b"],"token":"c"}"`;
+
+exports[`sum module invocation partial invocation "a.b.c|.": {"schemaPath":["a","b"],"token":"c"} 1`] = `"{"schemaPath":["a","b"],"token":"c"}"`;
+
+exports[`sum module invocation partial invocation "a.b|.": {"schemaPath":["a","b"],"token":"c"} 1`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[`sum module invocation partial invocation "a.b|.": {"schemaPath":["a"],"token":"b"} 1`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[`sum module invocation partial invocation "a|.": {"schemaPath":[],"token":"a"} 1`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module invocation partial invocation: {"schemaPath":[],"token":"a"} 1`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module invocation partial invocation: {"schemaPath":[],"token":"a"} 2`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module invocation two invocations "|a.b.c": {"schemaPath":[],"token":"a"} 1`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module invocation two invocations "a.|b.c": {"schemaPath":["a"],"token":"b"} 1`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[`sum module invocation two invocations "a.b.|c": {"schemaPath":["a","b"],"token":"c"} 1`] = `"{"schemaPath":["a","b"],"token":"c"}"`;
+
+exports[`sum module invocation two invocations "a.b.c|": {"schemaPath":["a","b"],"token":"c"} 1`] = `"{"schemaPath":["a","b"],"token":"c"}"`;
+
+exports[`sum module invocation two invocations "a.b|.c": {"schemaPath":["a"],"token":"b"} 1`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[`sum module invocation two invocations "a|.b.c": {"schemaPath":[],"token":"a"} 1`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module invocation two invocations: {"schemaPath":["a","b"],"token":"c"} 1`] = `"{"schemaPath":["a","b"],"token":"c"}"`;
+
+exports[`sum module invocation two invocations: {"schemaPath":["a","b"],"token":"c"} 2`] = `"{"schemaPath":["a","b"],"token":"c"}"`;
+
+exports[`sum module invocation two invocations: {"schemaPath":["a"],"token":"b"} 1`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[`sum module invocation two invocations: {"schemaPath":["a"],"token":"b"} 2`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[`sum module invocation two invocations: {"schemaPath":[],"token":"a"} 1`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module invocation two invocations: {"schemaPath":[],"token":"a"} 2`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module invocation: {"schemaPath":["a"],"token":"b"} 1`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[`sum module invocation: {"schemaPath":["a"],"token":"b"} 2`] = `"{"schemaPath":["a"],"token":"b"}"`;
+
+exports[`sum module invocation: {"schemaPath":[],"token":"a"} 1`] = `"{"schemaPath":[],"token":"a"}"`;
+
+exports[`sum module invocation: {"schemaPath":[],"token":"a"} 2`] = `"{"schemaPath":[],"token":"a"}"`;
