@@ -65,13 +65,16 @@ export declare class FHIRPathParser extends Parser {
     static readonly T__53 = 54;
     static readonly DATETIME = 55;
     static readonly TIME = 56;
-    static readonly IDENTIFIER = 57;
-    static readonly DELIMITEDIDENTIFIER = 58;
-    static readonly STRING = 59;
-    static readonly NUMBER = 60;
-    static readonly WS = 61;
-    static readonly COMMENT = 62;
-    static readonly LINE_COMMENT = 63;
+    static readonly DATESTARTSYMBOL = 57;
+    static readonly IDENTIFIER = 58;
+    static readonly DELIMITEDIDENTIFIER = 59;
+    static readonly UDELIMITEDIDENTIFIER = 60;
+    static readonly STRING = 61;
+    static readonly USTRING = 62;
+    static readonly NUMBER = 63;
+    static readonly WS = 64;
+    static readonly COMMENT = 65;
+    static readonly LINE_COMMENT = 66;
     static readonly RULE_expression = 0;
     static readonly RULE_term = 1;
     static readonly RULE_literal = 2;
@@ -289,6 +292,13 @@ export declare class StringLiteralContext extends LiteralContext {
     exitRule(listener: FHIRPathListener): void;
     accept<Result>(visitor: FHIRPathVisitor<Result>): Result;
 }
+export declare class UstringLiteralContext extends LiteralContext {
+    USTRING(): TerminalNode;
+    constructor(ctx: LiteralContext);
+    enterRule(listener: FHIRPathListener): void;
+    exitRule(listener: FHIRPathListener): void;
+    accept<Result>(visitor: FHIRPathVisitor<Result>): Result;
+}
 export declare class NumberLiteralContext extends LiteralContext {
     NUMBER(): TerminalNode;
     constructor(ctx: LiteralContext);
@@ -305,6 +315,13 @@ export declare class DateTimeLiteralContext extends LiteralContext {
 }
 export declare class TimeLiteralContext extends LiteralContext {
     TIME(): TerminalNode;
+    constructor(ctx: LiteralContext);
+    enterRule(listener: FHIRPathListener): void;
+    exitRule(listener: FHIRPathListener): void;
+    accept<Result>(visitor: FHIRPathVisitor<Result>): Result;
+}
+export declare class DateStartSymbolLiteralContext extends LiteralContext {
+    DATESTARTSYMBOL(): TerminalNode;
     constructor(ctx: LiteralContext);
     enterRule(listener: FHIRPathListener): void;
     exitRule(listener: FHIRPathListener): void;
@@ -434,6 +451,7 @@ export declare class QualifiedIdentifierContext extends ParserRuleContext {
 export declare class IdentifierContext extends ParserRuleContext {
     IDENTIFIER(): TerminalNode | undefined;
     DELIMITEDIDENTIFIER(): TerminalNode | undefined;
+    UDELIMITEDIDENTIFIER(): TerminalNode | undefined;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: FHIRPathListener): void;

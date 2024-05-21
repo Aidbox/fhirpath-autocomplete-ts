@@ -44,7 +44,6 @@ gen/
 /target/
 /tool/target/
 doc/
-lib/
 
 # Visual Studio build output and per-user files
 obj/

@@ -16,9 +16,11 @@ import { ImpliesExpressionContext } from "./FHIRPathParser";
 import { NullLiteralContext } from "./FHIRPathParser";
 import { BooleanLiteralContext } from "./FHIRPathParser";
 import { StringLiteralContext } from "./FHIRPathParser";
+import { UstringLiteralContext } from "./FHIRPathParser";
 import { NumberLiteralContext } from "./FHIRPathParser";
 import { DateTimeLiteralContext } from "./FHIRPathParser";
 import { TimeLiteralContext } from "./FHIRPathParser";
+import { DateStartSymbolLiteralContext } from "./FHIRPathParser";
 import { QuantityLiteralContext } from "./FHIRPathParser";
 import { MemberInvocationContext } from "./FHIRPathParser";
 import { FunctionInvocationContext } from "./FHIRPathParser";
@@ -253,6 +255,18 @@ export interface FHIRPathListener extends ParseTreeListener {
      */
     exitStringLiteral?: (ctx: StringLiteralContext) => void;
     /**
+     * Enter a parse tree produced by the `ustringLiteral`
+     * labeled alternative in `FHIRPathParser.literal`.
+     * @param ctx the parse tree
+     */
+    enterUstringLiteral?: (ctx: UstringLiteralContext) => void;
+    /**
+     * Exit a parse tree produced by the `ustringLiteral`
+     * labeled alternative in `FHIRPathParser.literal`.
+     * @param ctx the parse tree
+     */
+    exitUstringLiteral?: (ctx: UstringLiteralContext) => void;
+    /**
      * Enter a parse tree produced by the `numberLiteral`
      * labeled alternative in `FHIRPathParser.literal`.
      * @param ctx the parse tree
@@ -288,6 +302,18 @@ export interface FHIRPathListener extends ParseTreeListener {
      * @param ctx the parse tree
      */
     exitTimeLiteral?: (ctx: TimeLiteralContext) => void;
+    /**
+     * Enter a parse tree produced by the `dateStartSymbolLiteral`
+     * labeled alternative in `FHIRPathParser.literal`.
+     * @param ctx the parse tree
+     */
+    enterDateStartSymbolLiteral?: (ctx: DateStartSymbolLiteralContext) => void;
+    /**
+     * Exit a parse tree produced by the `dateStartSymbolLiteral`
+     * labeled alternative in `FHIRPathParser.literal`.
+     * @param ctx the parse tree
+     */
+    exitDateStartSymbolLiteral?: (ctx: DateStartSymbolLiteralContext) => void;
     /**
      * Enter a parse tree produced by the `quantityLiteral`
      * labeled alternative in `FHIRPathParser.literal`.
