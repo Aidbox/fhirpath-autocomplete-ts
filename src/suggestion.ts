@@ -1,4 +1,3 @@
-import { text } from 'stream/consumers';
 import { AutocompleteContext, ScopeType, FHIRToken, FHIRTokenType, Range, reduce } from './treeReducer'
 import { FHIRPATH_FUNCTIONS, FHIRPATH_FUNCTIONS_MAP, FhirpathFunction } from './fhirpath_functions';
 
@@ -30,8 +29,8 @@ namespace CompletionItemKind {
 	export const TypeParameter = 25;
 }
 
-export type CompletionItemKind = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25; 
-                
+export type CompletionItemKind = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25;
+
 function resolveReference(specmap: Map<string, Object>, node: Object) : Object {
     if (node.hasOwnProperty("elementReference")) {
         return specmap[node["elementReference"]]
@@ -113,7 +112,7 @@ function makeFullSchemaPath(type: string, parentContext: AutocompleteContext, th
     if (parentContext.schemaPath.length > 0) {
         fullPath = makePathWithType(type, parentContext)
         fullPath = fullPath.concat(thisContext.schemaPath)
-    } else if (parentContext.token && 
+    } else if (parentContext.token &&
                parentContext.token.type === FHIRTokenType.Identifier ||
                parentContext.token.type === FHIRTokenType.Type) {
         fullPath = fullPath.concat(makePathFromToken(type, parentContext))
@@ -131,7 +130,7 @@ function enrichWithRange(object: Object, text: string, range: Range) {
         range: range,
         newText: text
     }
-} 
+}
 
 function filterFunctionsOnType(type: string, functions: Array<FhirpathFunction>) {
     return functions.filter(f => {
@@ -165,20 +164,20 @@ function filterFunctionsOnType(type: string, functions: Array<FhirpathFunction>)
 //            |------------| - absolute path
 // |---| - path
 // [Patient name]
-// 
+//
 // name.where($this.|)
-// 
+//
 // [name]
-// 
+//
 // name.where($index.|)
-// 
+//
 // []
 //
 // name.where($total.|)
-// 
+//
 // []
 //
-// Naive implementation first 
+// Naive implementation first
 // Observation.value.ofType(Quantity).|
 //                   |--------------| - last type expression
 // [Quantity]
@@ -197,18 +196,18 @@ function filterFunctionsOnType(type: string, functions: Array<FhirpathFunction>)
 // type convertion
 export function suggest(specmap: Map<string, Object>, type: string, parentExpressions: Array<string>, fhirpath: string, cursor: number) {
     let parentExpression = parentExpressions.join(".")
-    let parentContext = reduce(parentExpression, parentExpression.length + 1) 
-    
+    let parentContext = reduce(parentExpression, parentExpression.length + 1)
+
     let autocompleteContext = reduce(fhirpath, cursor)
     let fullSchemaPath = makeFullSchemaPath(type, parentContext, autocompleteContext)
     let schemaNode = resolvePath(specmap, fullSchemaPath)
-    let nodeElements = resolveWhile(specmap, schemaNode, "elements")                
+    let nodeElements = resolveWhile(specmap, schemaNode, "elements")
 
     let scopeValue = autocompleteContext.scope.value
     let options = []
     switch (autocompleteContext.scope.type) {
         case ScopeType.None:
-            options = options.concat(nodeToOptions(nodeElements, CompletionItemKind.Field, autocompleteContext.token.range))      
+            options = options.concat(nodeToOptions(nodeElements, CompletionItemKind.Field, autocompleteContext.token.range))
             if (parentExpressions.length > 0) {
                 let parentFullPath : Array<FHIRToken>
                 if (parentContext.schemaPath.length > 0) {
@@ -224,7 +223,7 @@ export function suggest(specmap: Map<string, Object>, type: string, parentExpres
             break
         case ScopeType.Function:
             if (FHIRPATH_FUNCTIONS_MAP.has(autocompleteContext.scope.value.value)) {
-                let fhirpathFunction = FHIRPATH_FUNCTIONS_MAP.get(autocompleteContext.scope.value.value) 
+                let fhirpathFunction = FHIRPATH_FUNCTIONS_MAP.get(autocompleteContext.scope.value.value)
                 if (fhirpathFunction.parameterTypes.some(type => type === "expression")) {
                     let indexKeyword = IndexKeyword
                     let thisKeyword = ThisKeyword
@@ -242,7 +241,7 @@ export function suggest(specmap: Map<string, Object>, type: string, parentExpres
             options = options.concat(nodeToOptions(nodeElements, CompletionItemKind.Field, autocompleteContext.token.range))
             break
         case ScopeType.Invocation:
-            options = options.concat(nodeToOptions(nodeElements, CompletionItemKind.Field, autocompleteContext.token.range))      
+            options = options.concat(nodeToOptions(nodeElements, CompletionItemKind.Field, autocompleteContext.token.range))
             console.log(schemaNode)
             let functions = filterFunctionsOnType(schemaNode["type"], FHIRPATH_FUNCTIONS)
             options = options.concat(functionsToOptions(functions, autocompleteContext.token.range))
@@ -269,7 +268,7 @@ export function suggest(specmap: Map<string, Object>, type: string, parentExpres
     }
     if (autocompleteContext.token.type === FHIRTokenType.NonTriggeringCharacter) {
         options = []
-    } 
+    }
     return {
         isComplete: true,
         items : options
