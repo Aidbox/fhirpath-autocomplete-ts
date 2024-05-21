@@ -1,4 +1,4 @@
-import { CharStreams, CommonTokenStream, ParserRuleContext, RuleContext, Token} from 'antlr4ts';
+import { CharStreams, CommonTokenStream, ParserRuleContext, RuleContext, Token } from 'antlr4ts';
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor'
 import { ParseTree, TerminalNode } from 'antlr4ts/tree'
 import { FHIRPathLexer } from './generated/FHIRPathLexer';
@@ -100,17 +100,17 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
         return super.visit(tree)
     }
 
-    rangeFromRule(ctx: ParserRuleContext) : Range {
+    rangeFromRule(ctx: ParserRuleContext): Range {
         if (ctx.stop !== undefined && ctx.stop !== null) {
-        return new Range(
-            new Position(ctx.start.line - 1, ctx.start.startIndex),
-            new Position(ctx.stop.line - 1, ctx.stop.stopIndex + 1),
-        )
+            return new Range(
+                new Position(ctx.start.line - 1, ctx.start.startIndex),
+                new Position(ctx.stop.line - 1, ctx.stop.stopIndex + 1),
+            )
         }
         return null
     }
 
-    rangeFromNode(ctx: TerminalNode) : Range {
+    rangeFromNode(ctx: TerminalNode): Range {
         let symbol = ctx.symbol
         return new Range(
             new Position(symbol.line - 1, symbol.charPositionInLine),
@@ -118,14 +118,14 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
         )
     }
 
-    rangeFromCtx(root: ParseTree) : Range {
+    rangeFromCtx(root: ParseTree): Range {
         if (root instanceof TerminalNode) {
             return this.rangeFromNode(root)
         }
         return this.rangeFromRule(root as ParserRuleContext)
     }
 
-    endRangeFromRule(ctx: ParserRuleContext) : Range {
+    endRangeFromRule(ctx: ParserRuleContext): Range {
         if (ctx.stop !== undefined && ctx.stop !== null) {
             return new Range(
                 new Position(ctx.start.line - 1, ctx.stop.stopIndex + 1),
@@ -135,7 +135,7 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
         return null
     }
 
-    endRangeFromNode(ctx: TerminalNode) : Range {
+    endRangeFromNode(ctx: TerminalNode): Range {
         let symbol = ctx.symbol
         let end = symbol.charPositionInLine + (symbol.stopIndex - symbol.startIndex + 1)
         return new Range(
@@ -144,7 +144,7 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
         )
     }
 
-    endRangeFromCtx(root: ParseTree) : Range {
+    endRangeFromCtx(root: ParseTree): Range {
         if (root instanceof TerminalNode) {
             return this.endRangeFromNode(root)
         }
@@ -164,13 +164,71 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
             if (!context.start || !context.stop) { // Invalid tree?
                 return undefined;
             }
+
             return (context.start.startIndex <= this.cursor && context.stop.stopIndex + 1 >= this.cursor) ||
-                (context.stop.stopIndex <= this.cursor && context.start.startIndex >= this.cursor);
+                (context.stop.stopIndex + 1 <= this.cursor && context.start.startIndex >= this.cursor);
+        }
+    }
+
+    leftFrom(root: ParseTree): boolean | undefined {
+        if (root instanceof TerminalNode) {
+            let terminal = (root as TerminalNode);
+            let token = terminal.symbol;
+
+            return token.charPositionInLine >= this.cursor;
+        } else {
+            let context = (root as ParserRuleContext);
+            if (!context.start || !context.stop) { // Invalid tree?
+                return undefined;
+            }
+
+            let start = Math.min(context.start.startIndex, context.stop.stopIndex + 1)
+
+            return start >= this.cursor;
+        }
+    }
+
+    rightFrom(root: ParseTree): boolean | undefined {
+        if (root instanceof TerminalNode) {
+            let terminal = (root as TerminalNode);
+            let token = terminal.symbol;
+
+            let tokenStop = token.charPositionInLine + (token.stopIndex - token.startIndex + 1);
+
+            return tokenStop <= this.cursor;
+        } else {
+            let context = (root as ParserRuleContext);
+            if (!context.start || !context.stop) { // Invalid tree?
+                return undefined;
+            }
+
+            let stop = Math.max(context.start.startIndex, context.stop.stopIndex + 1)
+
+            return stop <= this.cursor;
+        }
+    }
+
+    exact(root: ParseTree): boolean | undefined {
+        if (root instanceof TerminalNode) {
+            let terminal = (root as TerminalNode);
+            let token = terminal.symbol;
+
+            let tokenStop = token.charPositionInLine + (token.stopIndex - token.startIndex + 1);
+
+            return token.charPositionInLine == this.cursor || tokenStop === this.cursor;
+        } else {
+            let context = (root as ParserRuleContext);
+            if (!context.start || !context.stop) { // Invalid tree?
+                return undefined;
+            }
+
+            return context.start.startIndex === this.cursor ||
+                context.stop.stopIndex + 1 === this.cursor;
         }
     }
 
     defaultResult() {
-        let range : Range
+        let range: Range
         if (this.parentTree !== undefined && this.parentTree !== null) {
             range = this.endRangeFromCtx(this.parentTree)
         }
@@ -181,6 +239,10 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
             )
         }
         return new FHIRToken(FHIRTokenType.Empty, "", range);
+    }
+
+    rangeFromCursor(): Range {
+        return new Range(new Position(0, this.cursor), new Position(0, this.cursor))
     }
 
     // visitChildren(node: RuleNode): FHIRToken {
@@ -218,7 +280,7 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
     }
 
     visitInvocationExpression?: (ctx: InvocationExpressionContext) => FHIRToken | null = (ctx: InvocationExpressionContext) => {
-        console.log(ctx.text)
+        // console.log(ctx.text)
         let leftNode = ctx.getChild(0)
         let left = this.visit(leftNode)
         if (this.inRange(leftNode)) {
@@ -230,8 +292,10 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
         let rightNode = ctx.getChild(2)
         if (this.inRange(rightNode)) {
             this.scope.type = ScopeType.Invocation
-            if (this.schemaPath.length > 0) {
+            if (left !== null && left !== undefined) {
                 this.scope.value = left
+            } else if (this.schemaPath.length > 0) {
+                this.scope.value = this.schemaPath[this.schemaPath.length - 1]
             } else {
                 this.scope.value = new FHIRToken(FHIRTokenType.Empty, "")
             }
@@ -250,40 +314,40 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
             if (this.inRange(ctx.getChild(2))) {
                 return this.visit(ctx.getChild(2))
             } else if (this.inRange(ctx.getChild(3))) {
-                return new FHIRToken(FHIRTokenType.NonTriggeringCharacter, "]", this.endRangeFromCtx(ctx.getChild(3)))
+                return new FHIRToken(FHIRTokenType.NonTriggeringCharacter, "]", this.rangeFromCursor())
             } else if (this.inRange(ctx.getChild(1))) {
-                return new FHIRToken(FHIRTokenType.Empty, "", this.endRangeFromCtx(ctx.getChild(1)))
+                return new FHIRToken(FHIRTokenType.Empty, "", this.rangeFromCursor())
             }
         } else if (ctx.childCount > 2) {
             // Can be a closed paren or expression
             let thirdChild = ctx.getChild(2)
             if (this.inRange(thirdChild)) {
                 if (thirdChild.text == "]") {
-                    return new FHIRToken(FHIRTokenType.NonTriggeringCharacter, "]", this.endRangeFromCtx(ctx.getChild(2)))
+                    return new FHIRToken(FHIRTokenType.NonTriggeringCharacter, "]", this.rangeFromCursor())
                 }
                 return this.visit(thirdChild)
             } else if (this.inRange(ctx.getChild(1))) {
-                return new FHIRToken(FHIRTokenType.Empty, "", this.endRangeFromCtx(ctx.getChild(1)))
+                return new FHIRToken(FHIRTokenType.Empty, "", this.rangeFromCursor())
             }
         }
         if (this.inRange(ctx.getChild(1))) {
-            return new FHIRToken(FHIRTokenType.Empty, "", this.endRangeFromCtx(ctx.getChild(1)))
+            return new FHIRToken(FHIRTokenType.Empty, "", this.rangeFromCursor())
         }
         return null
     }
 
     binaryExpression: (ctx: RuleContext) => FHIRToken | null = (ctx: RuleContext) => {
-      let leftTree = ctx.getChild(0)
-      if (this.inRange(leftTree)) {
-        return this.visit(leftTree)
-      }
-      if (ctx.childCount > 2) {
-        let rightTree = ctx.getChild(2)
-        if (this.inRange(rightTree)) {
-          return this.visit(rightTree)
+        let leftTree = ctx.getChild(0)
+        if (this.inRange(leftTree)) {
+            return this.visit(leftTree)
         }
-      }
-      return null
+        if (ctx.childCount > 2) {
+            let rightTree = ctx.getChild(2)
+            if (this.inRange(rightTree)) {
+                return this.visit(rightTree)
+            }
+        }
+        return new FHIRToken(FHIRTokenType.Empty, "", this.rangeFromCursor())
     }
 
     visitAdditiveExpression?: (ctx: AdditiveExpressionContext) => FHIRToken | null = this.binaryExpression
@@ -299,7 +363,9 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
     visitTypeExpression?: (ctx: TypeExpressionContext) => FHIRToken | null = (ctx: TypeExpressionContext) => {
         let typeSpecifierTree = ctx.getChild(2) as ParserRuleContext
         let typeSpecifier = this.visit(typeSpecifierTree)
+        console.log("inneras")
         if (this.inRange(ctx)) {
+            console.log("innerasas")
             let expressionTree = ctx.getChild(0) as ParserRuleContext
             if (this.inRange(expressionTree)) {
                 return this.visit(expressionTree)
@@ -312,8 +378,11 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
                 return typeSpecifier
             }
         } else if (this.inRange(typeSpecifierTree)) {
+            console.log("innerin")
+            typeSpecifier.type = FHIRTokenType.Type
             return typeSpecifier
         } else {
+            console.log("innerelse")
             let operatorTree = ctx.getChild(1)
             if (operatorTree.text == 'is') {
                 this.schemaPath = [new FHIRToken(FHIRTokenType.Type, "Boolean", null)]
@@ -342,26 +411,26 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
             let innerExpression = ctx.getChild(1)
             if (this.inRange(innerExpression)) {
                 return this.visit(innerExpression)
-            } else if (this.inRange(ctx.getChild(2))) {
-                return new FHIRToken(FHIRTokenType.NonTriggeringCharacter, ")", this.endRangeFromCtx(ctx.getChild(2)))
-            } else if (this.inRange(ctx.getChild(0))) {
-                return new FHIRToken(FHIRTokenType.Empty, "", this.endRangeFromCtx(ctx.getChild(0)))
+            } else if (this.exact(ctx.getChild(2))) {
+                return new FHIRToken(FHIRTokenType.NonTriggeringCharacter, ")", this.rangeFromCursor())
+            } else if (this.exact(ctx.getChild(0))) {
+                return new FHIRToken(FHIRTokenType.Empty, "", this.rangeFromCursor())
             }
             this.processFHIRToken(this.visit(innerExpression))
         } else if (ctx.childCount > 1) {
             let secondChild = ctx.getChild(1)
             if (this.inRange(secondChild)) {
                 if (secondChild.text == ")") {
-                    return new FHIRToken(FHIRTokenType.NonTriggeringCharacter, ")", this.endRangeFromCtx(secondChild))
+                    return new FHIRToken(FHIRTokenType.NonTriggeringCharacter, ")", this.rangeFromCursor())
                 }
                 return this.visit(secondChild)
             } else if (this.inRange(ctx.getChild(0))) {
-                return new FHIRToken(FHIRTokenType.Empty, "", this.endRangeFromCtx(ctx.getChild(0)))
+                return new FHIRToken(FHIRTokenType.Empty, "", this.rangeFromCursor())
             }
             this.processFHIRToken(this.visit(secondChild))
         }
         if (this.inRange(ctx.getChild(0))) {
-            return new FHIRToken(FHIRTokenType.Empty, "", this.endRangeFromCtx(ctx.getChild(0)))
+            return new FHIRToken(FHIRTokenType.Empty, "", this.rangeFromCursor())
         }
         return null
     }
@@ -373,10 +442,11 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
         if (this.inRange(functionNameNodeTree)) {
             return functionName
         }
+        let openParen = ctx.getChild(1)
         if (ctx.childCount > 3) {
             let expressionNode = ctx.getChild(2)
             let closeParen = ctx.getChild(3)
-            if (this.inRange(expressionNode)) {
+            if ((this.rightFrom(openParen) && this.leftFrom(closeParen)) || this.inRange(expressionNode)) {
                 this.scope.type = ScopeType.Function
                 this.scope.value = functionName
                 return this.visit(expressionNode)
@@ -405,7 +475,6 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
                 return this.visit(thirdChild)
             }
         } else {
-            let openParen = ctx.getChild(1)
             if (this.inRange(openParen)) {
                 this.scope.type = ScopeType.Function
                 this.scope.value = functionName
@@ -419,15 +488,8 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
         return new FHIRToken(FHIRTokenType.Literal, ctx.text, this.rangeFromCtx(ctx))
     }
 
-    visitTerm?: (ctx: TermContext) => FHIRToken = (ctx: TermContext) => {
-        return null
-    }
-
     visitLiteralTerm?: (ctx: LiteralTermContext) => FHIRToken | null = (ctx: LiteralTermContext) => {
-        if (this.inRange(ctx)) {
-            return new FHIRToken(FHIRTokenType.Literal, ctx.text, this.rangeFromCtx(ctx))
-        }
-        return null
+        return new FHIRToken(FHIRTokenType.Literal, ctx.text, this.rangeFromCtx(ctx))
     }
 
     visitExternalConstantTerm?: (ctx: ExternalConstantTermContext) => FHIRToken = (ctx: ExternalConstantTermContext) => {
@@ -436,11 +498,14 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
     }
 
     visitParamList?: (ctx: ParamListContext) => FHIRToken | null = (ctx: ParamListContext) => {
-        let child = (ctx.children ?? []).find(c => this.inRange(c))
+        let child = (ctx.children ?? []).find(c => {
+            // console.log(this.rangeFromCtx(c))
+            return this.inRange(c)
+        })
         if (child) {
             return this.visit(child)
         }
-        return null
+        return new FHIRToken(FHIRTokenType.Empty, "", this.rangeFromCursor())
     }
 
     visitIdentifier?: (ctx: IdentifierContext) => FHIRToken | null = (ctx: IdentifierContext) => {
@@ -466,24 +531,24 @@ function prettyTree(tree: ParseTree, parser: FHIRPathParser, depth: number = 0):
 }
 
 class Lexer extends FHIRPathLexer {
-   emit(token?: unknown): Token {
-      switch(this.type) {
-        case FHIRPathLexer.USTRING:
-            this.type = FHIRPathLexer.STRING
-            let stringToken = super.emit()
-            return stringToken
-        case FHIRPathLexer.UDELIMITEDIDENTIFIER:
-            this.type = FHIRPathLexer.DELIMITEDIDENTIFIER
-            let delimitedIdentifierToken = super.emit()
-            return delimitedIdentifierToken
-        case FHIRPathLexer.DATESTARTSYMBOL:
-            this.type = FHIRPathLexer.DATETIME
-            let dateTime = super.emit()
-            return dateTime
-          default:
-            return super.emit()
-      }
-   }
+    emit(token?: unknown): Token {
+        switch (this.type) {
+            case FHIRPathLexer.USTRING:
+                this.type = FHIRPathLexer.STRING
+                let stringToken = super.emit()
+                return stringToken
+            case FHIRPathLexer.UDELIMITEDIDENTIFIER:
+                this.type = FHIRPathLexer.DELIMITEDIDENTIFIER
+                let delimitedIdentifierToken = super.emit()
+                return delimitedIdentifierToken
+            case FHIRPathLexer.DATESTARTSYMBOL:
+                this.type = FHIRPathLexer.DATETIME
+                let dateTime = super.emit()
+                return dateTime
+            default:
+                return super.emit()
+        }
+    }
 }
 
 export function reduce(fhirpath: string, cursor: number): AutocompleteContext {
@@ -494,6 +559,7 @@ export function reduce(fhirpath: string, cursor: number): AutocompleteContext {
     let visitor = new FHIRPathAutocompleteVisitor(cursor);
     let tree = parser.expression();
     let visitResult = visitor.visit(tree)
+    // console.log(prettyTree(tree, parser))
     return new AutocompleteContext({
         token: visitResult,
         schemaPath: visitor.schemaPath,

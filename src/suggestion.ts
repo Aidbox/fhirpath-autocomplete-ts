@@ -31,7 +31,7 @@ namespace CompletionItemKind {
 
 export type CompletionItemKind = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25;
 
-function resolveReference(specmap: Map<string, Object>, node: Object) : Object {
+function resolveReference(specmap: Object, node: Object) : Object {
     if (node.hasOwnProperty("elementReference")) {
         return specmap[node["elementReference"]]
     } else if (node.hasOwnProperty("elements")) {
@@ -47,7 +47,7 @@ function isPrimitive(node: Object) : boolean {
     return node.hasOwnProperty("kind") && node["kind"] === "primitive-type"
 }
 
-function resolveWhile(specmap: Map<string, Object>, node: Object, until: string) {
+function resolveWhile(specmap: Object, node: Object, until: string) {
     let currentNode = node
     while (currentNode !== null && !currentNode.hasOwnProperty(until) && !isPrimitive(currentNode)) {
         currentNode = resolveReference(specmap, currentNode) as Object
@@ -55,14 +55,17 @@ function resolveWhile(specmap: Map<string, Object>, node: Object, until: string)
     return currentNode ? currentNode[until] : null
 }
 
-function resolvePath(specmap: Map<string, object>, path: Array<FHIRToken>) : object {
+function resolvePath(specmap: Object, path: Array<FHIRToken>) : object {
     let currentNode = specmap[path[0].value] as Object
+    if (currentNode === null || currentNode === undefined) {
+        return null
+    }
     path.slice(1).forEach(p => {
-       if (currentNode.hasOwnProperty(p.value)) {
-           currentNode = currentNode[p.value]
-       } else {
-           currentNode = resolveWhile(specmap, currentNode, p.value)
-       }
+        if (currentNode.hasOwnProperty(p.value)) {
+            currentNode = currentNode[p.value]
+        } else {
+            currentNode = resolveWhile(specmap, currentNode, p.value)
+        }
     })
     return currentNode
 }
@@ -138,70 +141,58 @@ function filterFunctionsOnType(type: string, functions: Array<FhirpathFunction>)
     })
 }
 
-// name|
-// name.|
-// name.where()|
-// name.where().|
-// name.where(|)
-// name + |
-// name +|
-// name.where(Patient.name.family|)
-//            |------------------| - full-path
-// name.where().period.start|
-// |------------------| - schema path
-// name.where($this.count|())
-//      |-------------------| - scope
-// scopes:
-// | - None - identifiers + constants
-// name.| - invocation - identifier + methods
-// name.where(|) - selection - identifiers + $this + $index + constants
-// name.aggregate(|) - aggregation - identifiers + $this + $index + $total
-// name.aggregate(family.|) - invocation - identifiers + methods
-// name.count() + | - None - identifiers + constants
-// "dafsd|" - Literal - nothing
-//
-// name.where(Patient.name.|)
-//            |------------| - absolute path
-// |---| - path
-// [Patient name]
-//
-// name.where($this.|)
-//
-// [name]
-//
-// name.where($index.|)
-//
-// []
-//
-// name.where($total.|)
-//
-// []
-//
-// Naive implementation first
-// Observation.value.ofType(Quantity).|
-//                   |--------------| - last type expression
-// [Quantity]
-//
-// (Observation.value as Quantity).|
-// |-----------------------------| - last type expression
-// [Quantity]
-//
-// name.where(given.count() > 1).select(given.join(' ')).|
-// scope - invocation
-// schemaPath - [name]
-//
-// select is not supported
-// It can be supported by inspecting types from start of expression chain
-// to a first base type, or, if validation is not matter, to a first
-// type convertion
-export function suggest(specmap: Map<string, Object>, type: string, parentExpressions: Array<string>, fhirpath: string, cursor: number) {
+function nodeToOptions(node: object, kind, range) {
+    if (node) {
+        return Object.entries(node).map(([key, value]) => {
+            return {
+                label: key,
+                kind: kind,
+                detail: value["type"],
+                textEdit: {
+                    range: range,
+                    newText: key
+                }
+            }
+        })
+    }
+    return []
+}
+
+function functionsToOptions(functions: Array<FhirpathFunction>, range: Range) {
+    return functions.map(f => {
+        return {
+            label: f.name,
+            kind: CompletionItemKind.Method,
+            detail: f.returnType,
+            textEdit: {
+                range: range,
+                newText: f.insertText
+            }
+        }
+    })
+}
+
+// TODO: $this
+export function suggest(specmap: Object, type: string, parentExpressions: Array<string>, fhirpath: string, cursor: number) {
     let parentExpression = parentExpressions.join(".")
     let parentContext = reduce(parentExpression, parentExpression.length + 1)
 
     let autocompleteContext = reduce(fhirpath, cursor)
     let fullSchemaPath = makeFullSchemaPath(type, parentContext, autocompleteContext)
     let schemaNode = resolvePath(specmap, fullSchemaPath)
+    if (schemaNode === null && schemaNode === undefined) {
+        return {
+            isComplete: true,
+            items: []
+        };
+    }
     let nodeElements = resolveWhile(specmap, schemaNode, "elements")
+    if (nodeElements === null && nodeElements === undefined) {
+        return {
+            isComplete: true,
+            items: []
+        };
+    }
 
     let scopeValue = autocompleteContext.scope.value
     let options = []
@@ -242,7 +233,6 @@ export function suggest(specmap: Map<string, Object>, type: string, parentExpres
             break
         case ScopeType.Invocation:
             options = options.concat(nodeToOptions(nodeElements, CompletionItemKind.Field, autocompleteContext.token.range))
-            console.log(schemaNode)
             let functions = filterFunctionsOnType(schemaNode["type"], FHIRPATH_FUNCTIONS)
             options = options.concat(functionsToOptions(functions, autocompleteContext.token.range))
             break
@@ -254,17 +244,19 @@ export function suggest(specmap: Map<string, Object>, type: string, parentExpres
             options = []
             break
         case FHIRTokenType.Type:
-            options = Array.from(specmap.keys()).map(key => {
-                return {
-                    label: key,
-                    kind: CompletionItemKind.Class,
-                    detail: "Type",
-                    textEdit: {
-                        range: autocompleteContext.token.range,
-                        newText: key
+            options = Object.keys(specmap)
+                .filter(k => !k.startsWith("http"))
+                .map(key => {
+                    return {
+                        label: key,
+                        kind: CompletionItemKind.Class,
+                        detail: "Type",
+                        textEdit: {
+                            range: autocompleteContext.token.range,
+                            newText: key
+                        }
                     }
-                }
-            })
+                })
     }
     if (autocompleteContext.token.type === FHIRTokenType.NonTriggeringCharacter) {
         options = []
@@ -273,35 +265,4 @@ export function suggest(specmap: Map<string, Object>, type: string, parentExpres
         isComplete: true,
         items : options
     };
-}
-
-function nodeToOptions(node: object, kind, range) {
-    if (node) {
-        return Object.entries(node).map(([key, value]) => {
-            return {
-                label: key,
-                kind: kind,
-                detail: value["type"],
-                textEdit: {
-                    range: range,
-                    newText: key
-                }
-            }
-        })
-    }
-    return []
-}
-
-function functionsToOptions(functions: Array<FhirpathFunction>, range: Range) {
-    return functions.map(f => {
-        return {
-            label: f.name,
-            kind: CompletionItemKind.Method,
-            detail: f.returnType,
-            textEdit: {
-                range: range,
-                newText: f.insertText
-            }
-        }
-    })
 }
