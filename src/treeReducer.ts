@@ -15,11 +15,11 @@ export enum ScopeType {
 
 export class Scope {
     type: ScopeType
-    value: FHIRToken
+    token: FHIRToken
 
-    constructor(type: ScopeType, value: FHIRToken | null) {
+    constructor(type: ScopeType, token: FHIRToken | null) {
         this.type = type
-        this.value = value
+        this.token = token
     }
 }
 
@@ -27,6 +27,7 @@ export enum FHIRTokenType {
     Empty,
     Identifier,
     FunctionIdentifier,
+    Keyword,
     Type,
     Literal,
     ExternalConstant,
@@ -256,6 +257,9 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
                 case FHIRTokenType.Identifier:
                     this.schemaPath.push(token)
                     break
+                case FHIRTokenType.Keyword:
+                    this.schemaPath.push(token)
+                    break
                 case FHIRTokenType.Type:
                     this.schemaPath = [token]
                     break
@@ -268,15 +272,15 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
     }
 
     visitThisInvocation?: (ctx: ThisInvocationContext) => FHIRToken = (ctx: ThisInvocationContext) => {
-        return new FHIRToken(FHIRTokenType.Identifier, ctx.text, this.rangeFromRule(ctx))
+        return new FHIRToken(FHIRTokenType.Keyword, ctx.text, this.rangeFromRule(ctx))
     }
 
     visitIndexInvocation?: (ctx: IndexInvocationContext) => FHIRToken = (ctx: IndexInvocationContext) => {
-        return new FHIRToken(FHIRTokenType.Identifier, ctx.text, this.rangeFromRule(ctx))
+        return new FHIRToken(FHIRTokenType.Keyword, ctx.text, this.rangeFromRule(ctx))
     }
 
     visitTotalInvocation?: (ctx: TotalInvocationContext) => FHIRToken = (ctx: TotalInvocationContext) => {
-        return new FHIRToken(FHIRTokenType.Identifier, ctx.text, this.rangeFromRule(ctx))
+        return new FHIRToken(FHIRTokenType.Keyword, ctx.text, this.rangeFromRule(ctx))
     }
 
     visitInvocationExpression?: (ctx: InvocationExpressionContext) => FHIRToken | null = (ctx: InvocationExpressionContext) => {
@@ -293,11 +297,11 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
         if (this.inRange(rightNode)) {
             this.scope.type = ScopeType.Invocation
             if (left !== null && left !== undefined) {
-                this.scope.value = left
+                this.scope.token = left
             } else if (this.schemaPath.length > 0) {
-                this.scope.value = this.schemaPath[this.schemaPath.length - 1]
+                this.scope.token = this.schemaPath[this.schemaPath.length - 1]
             } else {
-                this.scope.value = new FHIRToken(FHIRTokenType.Empty, "")
+                this.scope.token = new FHIRToken(FHIRTokenType.Empty, "")
             }
         }
         return this.visit(rightNode)
@@ -448,7 +452,7 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
             let closeParen = ctx.getChild(3)
             if ((this.rightFrom(openParen) && this.leftFrom(closeParen)) || this.inRange(expressionNode)) {
                 this.scope.type = ScopeType.Function
-                this.scope.value = functionName
+                this.scope.token = functionName
                 return this.visit(expressionNode)
             } else if (functionName.value === "select") {
                 let result = this.visit(expressionNode)
@@ -465,19 +469,19 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
                 let openParen = ctx.getChild(1)
                 if (this.inRange(openParen)) {
                     this.scope.type = ScopeType.Function
-                    this.scope.value = functionName
+                    this.scope.token = functionName
                     return new FHIRToken(FHIRTokenType.Empty, "", this.endRangeFromCtx(openParen))
                 }
                 return new FHIRToken(FHIRTokenType.NonTriggeringCharacter, ")", this.endRangeFromCtx(thirdChild))
             } else if (this.inRange(thirdChild)) {
                 this.scope.type = ScopeType.Function
-                this.scope.value = functionName
+                this.scope.token = functionName
                 return this.visit(thirdChild)
             }
         } else {
             if (this.inRange(openParen)) {
                 this.scope.type = ScopeType.Function
-                this.scope.value = functionName
+                this.scope.token = functionName
                 return new FHIRToken(FHIRTokenType.Empty, "", this.endRangeFromCtx(openParen))
             }
         }

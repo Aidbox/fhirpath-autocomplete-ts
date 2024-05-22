@@ -87,41 +87,27 @@ const TotalKeyword = {
     kind: CompletionItemKind.Keyword
 }
 
-function makePathFromToken(type: string, context: AutocompleteContext) {
+function makePathFromParentContext(type: string, context: AutocompleteContext) {
     let fullPath = []
-    if (context.token.type !== FHIRTokenType.Type) {
-        fullPath.push(new FHIRToken(FHIRTokenType.Type, type))
+    if (context.schemaPath.length > 0) {
+        if (context.schemaPath[0].type !== FHIRTokenType.Type) {
+            fullPath.push(new FHIRToken(FHIRTokenType.Type, type))
+        }
+        fullPath = fullPath.concat(context.schemaPath)
     }
-    if (context.token.type === FHIRTokenType.Identifier) {
+    if (context.token.type !== FHIRTokenType.Type) {
         fullPath.push(context.token)
     }
     return fullPath
 }
 
-function makePathWithType(type: string, context: AutocompleteContext) {
+function makePathFromContext(type: string, context: AutocompleteContext) {
     let fullPath = []
-    console.log(context.schemaPath)
-    if (context.schemaPath[0].type === FHIRTokenType.Type) {
-        fullPath = context.schemaPath
-    } else {
-        fullPath.push(new FHIRToken(FHIRTokenType.Type, type))
+    if (context.schemaPath.length > 0) {
+        if (context.schemaPath[0].type !== FHIRTokenType.Type) {
+            fullPath.push(new FHIRToken(FHIRTokenType.Type, type))
+        }
         fullPath = fullPath.concat(context.schemaPath)
-    }
-    return fullPath
-}
-
-function makeFullSchemaPath(type: string, parentContext: AutocompleteContext, thisContext: AutocompleteContext) {
-    let fullPath = []
-    if (parentContext.schemaPath.length > 0) {
-        fullPath = makePathWithType(type, parentContext)
-        fullPath = fullPath.concat(thisContext.schemaPath)
-    } else if (parentContext.token &&
-               parentContext.token.type === FHIRTokenType.Identifier ||
-               parentContext.token.type === FHIRTokenType.Type) {
-        fullPath = fullPath.concat(makePathFromToken(type, parentContext))
-        fullPath = fullPath.concat(thisContext.schemaPath)
-    } else if (thisContext.schemaPath.length > 0) {
-        fullPath = makePathWithType(type, thisContext)
     } else {
         fullPath.push(new FHIRToken(FHIRTokenType.Type, type))
     }
@@ -141,19 +127,35 @@ function filterFunctionsOnType(type: string, functions: Array<FhirpathFunction>)
     })
 }
 
+function isPolymorphic(value : Object) : boolean {
+    return value.hasOwnProperty("choiceOf")    
+}
+
+function isBasePolymorphic(value: Object) : boolean {
+    return value.hasOwnProperty("choices")
+}
+
 function nodeToOptions(node: object, kind, range) {
     if (node) {
-        return Object.entries(node).map(([key, value]) => {
-            return {
-                label: key,
-                kind: kind,
-                detail: value["type"],
-                textEdit: {
-                    range: range,
-                    newText: key
+        return Object.entries(node)
+            .filter(([_, value]) => !isBasePolymorphic(value))
+            .map(([key, value]) => {
+                let newText : string
+                if (isPolymorphic(value)) {
+                    newText = `${value["choiceOf"]}.ofType(${value["type"]})`
+                } else {
+                    newText = key
                 }
-            }
-        })
+                return {
+                    label: key,
+                    kind: kind,
+                    detail: value["type"],
+                    textEdit: {
+                        range: range,
+                        newText: newText
+                    }
+                }
+            })
     }
     return []
 }
@@ -172,14 +174,74 @@ function functionsToOptions(functions: Array<FhirpathFunction>, range: Range) {
     })
 }
 
-// TODO: $this
-export function suggest(specmap: Object, type: string, parentExpressions: Array<string>, fhirpath: string, cursor: number) {
-    let parentExpression = parentExpressions.join(".")
-    let parentContext = reduce(parentExpression, parentExpression.length + 1)
+function getSpecMapTypes(specmap: Object, range: Range) {
+    return Object.keys(specmap)
+        .filter(k => !k.startsWith("http"))
+        .map(key => {
+            return {
+                label: key,
+                kind: CompletionItemKind.Class,
+                detail: "Type",
+                textEdit: {
+                    range: range,
+                    newText: key
+                }
+            }
+        })
 
+}
+
+function replaceKeywords(path: Array<FHIRToken>, outerType: string | null = null) {
+    if (path.length > 0) {
+        if (path[0].type === FHIRTokenType.Keyword) {
+            if (path[0].value === "$this") {
+                if (outerType === null || outerType === undefined) {
+                    return []
+                }
+                path[0] = new FHIRToken(FHIRTokenType.Type, outerType)
+            } else if (path[0].value === "$index") {
+                path[0] = new FHIRToken(FHIRTokenType.Type, "integer")                
+            }
+        }
+        let schemaPath = []
+        path.forEach(p => {
+            if (p.type === FHIRTokenType.Keyword) {
+                if (p.value === "$index") {
+                    schemaPath.push(new FHIRToken(FHIRTokenType.Type, "integer")) 
+                }
+            } else {
+                schemaPath.push(p)
+            }
+        })
+        return schemaPath
+    }
+    return path
+}
+
+export function suggest(specmap: Object, type: string, parentExpressions: Array<string>, fhirpath: string, cursor: number) {
+    let schemaNode = null
+    let parentContext = null
+    let parentNode = null
     let autocompleteContext = reduce(fhirpath, cursor)
-    let fullSchemaPath = makeFullSchemaPath(type, parentContext, autocompleteContext)
-    let schemaNode = resolvePath(specmap, fullSchemaPath)
+    if (parentExpressions.length > 0) {
+        let parentExpression = parentExpressions.join(".")
+        parentContext = reduce(parentExpression, parentExpression.length + 1)
+        let parentPath = makePathFromParentContext(type, parentContext)
+        let parentPathWithourKeywords = replaceKeywords(parentPath, type)
+        parentNode = resolvePath(specmap, parentPathWithourKeywords)
+        if (parentNode === null || parentNode === undefined) { 
+            return {
+                isComplete: true,
+                items: []
+            };
+        }
+        let schemaPath = replaceKeywords(autocompleteContext.schemaPath, parentNode["type"])
+        schemaNode = resolvePath(specmap, schemaPath)
+    } else {
+        let fullSchemaPath = makePathFromContext(type, autocompleteContext)
+        let schemaPathWithoutKeywords = replaceKeywords(fullSchemaPath, type)
+        schemaNode = resolvePath(specmap, schemaPathWithoutKeywords)
+    }
     if (schemaNode === null && schemaNode === undefined) {
         return {
             isComplete: true,
@@ -194,27 +256,20 @@ export function suggest(specmap: Object, type: string, parentExpressions: Array<
         };
     }
 
-    let scopeValue = autocompleteContext.scope.value
+    let scopeValue = autocompleteContext.scope.token
     let options = []
     switch (autocompleteContext.scope.type) {
         case ScopeType.None:
             options = options.concat(nodeToOptions(nodeElements, CompletionItemKind.Field, autocompleteContext.token.range))
             if (parentExpressions.length > 0) {
-                let parentFullPath : Array<FHIRToken>
-                if (parentContext.schemaPath.length > 0) {
-                    parentFullPath = makePathWithType(type, parentContext)
-                } else {
-                    parentFullPath = makePathFromToken(type, parentContext)
-                }
-                let parentNode = resolvePath(specmap, parentFullPath)
                 let thisKeyword = ThisKeyword
                 thisKeyword.detail = parentNode["type"]
                 options = options.concat([thisKeyword])
             }
             break
         case ScopeType.Function:
-            if (FHIRPATH_FUNCTIONS_MAP.has(autocompleteContext.scope.value.value)) {
-                let fhirpathFunction = FHIRPATH_FUNCTIONS_MAP.get(autocompleteContext.scope.value.value)
+            if (FHIRPATH_FUNCTIONS_MAP.has(autocompleteContext.scope.token.value)) {
+                let fhirpathFunction = FHIRPATH_FUNCTIONS_MAP.get(autocompleteContext.scope.token.value)
                 if (fhirpathFunction.parameterTypes.some(type => type === "expression")) {
                     let indexKeyword = IndexKeyword
                     let thisKeyword = ThisKeyword
@@ -227,9 +282,11 @@ export function suggest(specmap: Object, type: string, parentExpressions: Array<
                         enrichWithRange(totalKeyword, totalKeyword.label, autocompleteContext.token.range)
                         options.push(totalKeyword)
                     }
+                    options = options.concat(nodeToOptions(nodeElements, CompletionItemKind.Field, autocompleteContext.token.range))
+                } else if (fhirpathFunction.parameterTypes.some(type => type === "Type")) {
+                    options = getSpecMapTypes(specmap, autocompleteContext.token.range)
                 }
             }
-            options = options.concat(nodeToOptions(nodeElements, CompletionItemKind.Field, autocompleteContext.token.range))
             break
         case ScopeType.Invocation:
             options = options.concat(nodeToOptions(nodeElements, CompletionItemKind.Field, autocompleteContext.token.range))
@@ -244,22 +301,7 @@ export function suggest(specmap: Object, type: string, parentExpressions: Array<
             options = []
             break
         case FHIRTokenType.Type:
-            options = Object.keys(specmap)
-                .filter(k => !k.startsWith("http"))
-                .map(key => {
-                    return {
-                        label: key,
-                        kind: CompletionItemKind.Class,
-                        detail: "Type",
-                        textEdit: {
-                            range: autocompleteContext.token.range,
-                            newText: key
-                        }
-                    }
-                })
-    }
-    if (autocompleteContext.token.type === FHIRTokenType.NonTriggeringCharacter) {
-        options = []
+            options = getSpecMapTypes(specmap, autocompleteContext.token.range)
     }
     return {
         isComplete: true,

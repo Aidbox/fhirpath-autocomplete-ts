@@ -343,15 +343,15 @@ describe('expression', () => {
             describe('SPECIAL', () => {
                 test('"$this"', () => {
                     expect(JSON.stringify(reduceAt("$this|")))
-                        .toEqual(JAC({ ttext: "$this", s: 0, e: 5 }));
+                        .toEqual(JAC({ ttext: "$this", ttype: FHIRTokenType.Keyword, s: 0, e: 5 }));
                 })
                 test('"$index"', () => {
                     expect(JSON.stringify(reduceAt("$index|")))
-                        .toEqual(JAC({ ttext: "$index", s: 0, e: 6 }));
+                        .toEqual(JAC({ ttext: "$index", ttype: FHIRTokenType.Keyword, s: 0, e: 6 }));
                 })
                 test('"$total"', () => {
                     expect(JSON.stringify(reduceAt("$total|")))
-                        .toEqual(JAC({ ttext: "$total", s:0, e: 6 }));
+                        .toEqual(JAC({ ttext: "$total", ttype: FHIRTokenType.Keyword, s:0, e: 6 }));
                 })
             })
         })
@@ -559,40 +559,94 @@ describe('expression', () => {
         })
     })
     // describe('invocation', () => {
-    //     describe('one invocation', () => {
-    //         test('"|a.b"', () => {
-    //             expect(JSON.stringify(reduceAt("|a.b"))).toEqual(JAC({ttext: "a"}));
-    //         })
-    //         test('"a|.b"', () => {
-    //             expect(JSON.stringify(reduceAt("a|.b"))).toEqual(JAC({ttext: "a"}));
-    //         })
-    //         test('"a.|b"', () => {
-    //             expect(JSON.stringify(reduceAt("a.|b"))).toEqual(JAC({ttext: "b", stype: ScopeType.Invocation, svalue: T("a"), schemaPath: [T("a")]}));
-    //         })
-    //         test('"a.b|"', () => {
-    //             expect(JSON.stringify(reduceAt("a.b|"))).toEqual(JAC({ttext: "b", stype: ScopeType.Invocation, svalue: T("a"), schemaPath: [T("a")]}));
-    //         })
-    //     })
-    //     describe('two invocations', () => {
-    //         test('"|a.b.c"', () => {
-    //             expect(JSON.stringify(reduceAt("|a.b.c"))).toEqual(JAC({ttext: "a"}));
-    //         })
-    //         test('"a|.b.c"', () => {
-    //             expect(JSON.stringify(reduceAt("a|.b.c"))).toEqual(JAC({ttext: "a"}));
-    //         })
-    //         test('"a.|b.c"', () => {
-    //             expect(JSON.stringify(reduceAt("a.|b.c"))).toEqual(JAC({ttext: "b", stype: ScopeType.Invocation, svalue: T("a"), schemaPath: [T("a")]}));
-    //         })
-    //         test('"a.b|.c"', () => {
-    //             expect(JSON.stringify(reduceAt("a.b|.c"))).toEqual(JAC({ttext: "b", stype: ScopeType.Invocation, svalue: T("a"), schemaPath: [T("a")]}));
-    //         })
-    //         test('"a.b.|c"', () => {
-    //             expect(JSON.stringify(reduceAt("a.b.|c"))).toEqual(JAC({ttext: "c", stype: ScopeType.Invocation, svalue: T("b"), schemaPath: [T("a"), T("b")]}));
-    //         })
-    //         test('"a.b.c|"', () => {
-    //             expect(JSON.stringify(reduceAt("a.b.c|"))).toEqual(JAC({ttext: "c", stype: ScopeType.Invocation, svalue: T("b"), schemaPath: [T("a"), T("b")]}));
-    //         })
-    //     })
+        describe('one invocation', () => {
+            test('"|a.b"', () => {
+                expect(JSON.stringify(reduceAt("|a.b")))
+                .toEqual(JAC({
+                    token: T("a", FHIRTokenType.Identifier, 0, 1)
+                }));
+            })
+            test('"a|.b"', () => {
+                expect(JSON.stringify(reduceAt("a|.b")))
+                    .toEqual(JAC({
+                        token: T("a", FHIRTokenType.Identifier, 0, 1)
+                    }));
+            })
+            test('"a.|b"', () => {
+                expect(JSON.stringify(reduceAt("a.|b")))
+                    .toEqual(JAC({
+                        stype: ScopeType.Invocation,
+                        svalue: T("a", FHIRTokenType.Identifier, 0, 1),
+                        token: T("b", FHIRTokenType.Identifier, 2, 3),
+                        schemaPath: [T("a", FHIRTokenType.Identifier, 0, 1)]
+                    }));
+            })
+            test('"a.b|"', () => {
+                expect(JSON.stringify(reduceAt("a.b|")))
+                    .toEqual(JAC({
+                        stype: ScopeType.Invocation,
+                        svalue: T("a", FHIRTokenType.Identifier, 0, 1),
+                        token: T("b", FHIRTokenType.Identifier, 2, 3),
+                        schemaPath: [T("a", FHIRTokenType.Identifier, 0, 1)]
+                    }));
+            })
+        })
+        describe('two invocations', () => {
+            test('"|a.b.c"', () => {
+                expect(JSON.stringify(reduceAt("|a.b.c")))
+                    .toEqual(JAC({
+                        token: T("a", FHIRTokenType.Identifier, 0, 1)
+                    }));
+            })
+            test('"a|.b.c"', () => {
+                expect(JSON.stringify(reduceAt("a|.b.c")))
+                    .toEqual(JAC({
+                        token: T("a", FHIRTokenType.Identifier, 0, 1)
+                    }));
+            })
+            test('"a.|b.c"', () => {
+                expect(JSON.stringify(reduceAt("a.|b.c")))
+                    .toEqual(JAC({
+                        stype: ScopeType.Invocation,
+                        svalue: T("a", FHIRTokenType.Identifier, 0, 1),
+                        token: T("b", FHIRTokenType.Identifier, 2, 3),
+                        schemaPath: [T("a", FHIRTokenType.Identifier, 0, 1)]
+                    }));
+            })
+            test('"a.b|.c"', () => {
+                expect(JSON.stringify(reduceAt("a.b|.c")))
+                    .toEqual(JAC({
+                        stype: ScopeType.Invocation,
+                        svalue: T("a", FHIRTokenType.Identifier, 0, 1),
+                        token: T("b", FHIRTokenType.Identifier, 2, 3),
+                        schemaPath: [T("a", FHIRTokenType.Identifier, 0, 1)]
+                    }));
+            })
+            test('"a.b.|c"', () => {
+                expect(JSON.stringify(reduceAt("a.b.|c")))
+                    .toEqual(JAC({
+                        stype: ScopeType.Invocation,
+                        svalue: T("b", FHIRTokenType.Identifier, 2, 3),
+                        token: T("c", FHIRTokenType.Identifier, 4, 5),
+                        schemaPath: [
+                            T("a", FHIRTokenType.Identifier, 0, 1),
+                            T("b", FHIRTokenType.Identifier, 2, 3)
+                        ]
+                    }));
+            })
+            test('"a.b.c|"', () => {
+                expect(JSON.stringify(reduceAt("a.b.c|")))
+                    .toEqual(JAC({
+                        stype: ScopeType.Invocation,
+                        svalue: T("b", FHIRTokenType.Identifier, 2, 3),
+                        token: T("c", FHIRTokenType.Identifier, 4, 5),
+                        schemaPath: [
+                            T("a", FHIRTokenType.Identifier, 0, 1),
+                            T("b", FHIRTokenType.Identifier, 2, 3)
+                        ]
+                    }));
+            })
+        })
     //     describe('partial invocation', () => {
     //         test('"|a."', () => {
     //             expect(JSON.stringify(reduceAt("|a.")))
@@ -674,35 +728,55 @@ describe('expression', () => {
     //             .toEqual(JAC({ ttext: "]", ttype: FHIRTokenType.NonTriggeringCharacter, schemaPath: [T("Patient", FHIRTokenType.Type)] }));
     //     })
     // })
-    // describe('is,as', () => {
-    //     test('"name| is String"', () => {
-    //         expect(JSON.stringify(reduceAt("name| is String")))
-    //             .toEqual(JAC({ ttext: "name", ttype: FHIRTokenType.Identifier }));
-    //     })
-    //     // TODO: Broken case
-    //     test('"| is String"', () => {
-    //         expect(JSON.stringify(reduceAt("| is String")))
-    //             .toEqual(JAC({ ttext: "is", ttype: FHIRTokenType.Identifier }));
-    //     })
-    //     test('"name is| String"', () => {
-    //         expect(JSON.stringify(reduceAt("name is| String")))
-    //             .toEqual(JAC({ ttext: "is", ttype: FHIRTokenType.NonTriggeringCharacter }));
-    //     })
-    //     test('"name is String|"', () => {
-    //         expect(JSON.stringify(reduceAt("name is String|")))
-    //             .toEqual(JAC({ ttext: "String", ttype: FHIRTokenType.Type }));
-    //     })
-    //     test('"name is |"', () => {
-    //         expect(JSON.stringify(reduceAt("name is |")))
-    //             .toEqual(JAC({ ttext: "", ttype: FHIRTokenType.Empty }));
-    //     })
-    //     test('"(name as String).|"', () => {
-    //         expect(JSON.stringify(reduceAt("(name as String).|")))
-    //             .toEqual(JAC({ stype: ScopeType.Invocation, svalue: T("String"), ttext: "", ttype: FHIRTokenType.Empty, schemaPath: [T("String", FHIRTokenType.Type)] }));
-    //     })
-    //     test('"(name is String).|"', () => {
-    //         expect(JSON.stringify(reduceAt("(name is String).|")))
-    //             .toEqual(JAC({ stype: ScopeType.Invocation, svalue: T("Boolean"), ttext: "", ttype: FHIRTokenType.Empty, schemaPath: [T("Boolean", FHIRTokenType.Type)] }));
-    //     })
-    // })
+    describe('is,as', () => {
+        test('"name| is String"', () => {
+            expect(JSON.stringify(reduceAt("name| is String")))
+                .toEqual(JAC({ 
+                    token: T("name", FHIRTokenType.Identifier, 0, 4)
+                }));
+        })
+        // TODO: Broken case
+        test('"| is String"', () => {
+            expect(JSON.stringify(reduceAt("| is String")))
+                .toEqual(JAC({ 
+                    token: T("is", FHIRTokenType.Identifier, 1, 3)
+                }));
+        })
+        test('"name is| String"', () => {
+            expect(JSON.stringify(reduceAt("name is| String")))
+                .toEqual(JAC({ 
+                    token: T("is", FHIRTokenType.NonTriggeringCharacter, 7, 7)
+                }));
+        })
+        test('"name is String|"', () => {
+            expect(JSON.stringify(reduceAt("name is String|")))
+                .toEqual(JAC({ 
+                    token: T("String", FHIRTokenType.Type, 8, 14)
+                }));
+        })
+        test('"name is |"', () => {
+            expect(JSON.stringify(reduceAt("name is |")))
+                .toEqual(JAC({ 
+                    token: T("", FHIRTokenType.Type, 7, 7)
+                }));
+        })
+        test('"(name as String).|"', () => {
+            expect(JSON.stringify(reduceAt("(name as String).|")))
+                .toEqual(JAC({ 
+                    stype: ScopeType.Invocation,
+                    svalue: T("String", FHIRTokenType.Type, 9, 15),
+                    token: T("", FHIRTokenType.Empty, 17, 17),
+                    schemaPath: [T("String", FHIRTokenType.Type, 9, 15)]
+                }));
+        })
+        test('"(name is String).|"', () => {
+            expect(JSON.stringify(reduceAt("(name is String).|")))
+                .toEqual(JAC({ 
+                    stype: ScopeType.Invocation,
+                    svalue: T("Boolean", FHIRTokenType.Type),
+                    token: T("", FHIRTokenType.Empty, 17, 17),
+                    schemaPath: [T("Boolean", FHIRTokenType.Type)]
+                }));
+        })
+    })
 });
