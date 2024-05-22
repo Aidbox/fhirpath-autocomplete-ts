@@ -7,17 +7,18 @@ export declare enum ScopeType {
 }
 export declare class Scope {
     type: ScopeType;
-    value: FHIRToken;
-    constructor(type: ScopeType, value: FHIRToken | null);
+    token: FHIRToken;
+    constructor(type: ScopeType, token: FHIRToken | null);
 }
 export declare enum FHIRTokenType {
     Empty = 0,
     Identifier = 1,
     FunctionIdentifier = 2,
-    Type = 3,
-    Literal = 4,
-    ExternalConstant = 5,
-    NonTriggeringCharacter = 6
+    Keyword = 3,
+    Type = 4,
+    Literal = 5,
+    ExternalConstant = 6,
+    NonTriggeringCharacter = 7
 }
 export declare class Position {
     line: number;
