@@ -260,7 +260,7 @@ export function suggest(specmap: Object, type: string, parentExpressions: Array<
     let options = []
     switch (autocompleteContext.scope.type) {
         case ScopeType.None:
-            console.debug("scope.none", autocompleteContext)
+            console.debug("fhirautocomplete.scope.none", autocompleteContext)
             options = options.concat(nodeToOptions(nodeElements, CompletionItemKind.Field, autocompleteContext.token.range))
             if (parentExpressions.length > 0) {
                 let thisKeyword = ThisKeyword
@@ -269,7 +269,7 @@ export function suggest(specmap: Object, type: string, parentExpressions: Array<
             }
             break
         case ScopeType.Function:
-            console.debug("scope.function", autocompleteContext)
+            console.debug("fhirautocomplete.scope.function", autocompleteContext)
             if (FHIRPATH_FUNCTIONS_MAP.has(autocompleteContext.scope.token.value)) {
                 let fhirpathFunction = FHIRPATH_FUNCTIONS_MAP.get(autocompleteContext.scope.token.value)
                 if (fhirpathFunction.parameterTypes.some(type => type === "expression")) {
@@ -291,14 +291,16 @@ export function suggest(specmap: Object, type: string, parentExpressions: Array<
             }
             break
         case ScopeType.Invocation:
-            console.debug("scope.invocation", autocompleteContext)
+            console.debug("fhirautocomplete.scope.invocation", autocompleteContext)
             options = options.concat(nodeToOptions(nodeElements, CompletionItemKind.Field, autocompleteContext.token.range))
             let functions = filterFunctionsOnType(schemaNode["type"], FHIRPATH_FUNCTIONS)
             options = options.concat(functionsToOptions(functions, autocompleteContext.token.range))
             break
         case ScopeType.Literal:
+            console.log('fhirautocomplete.scope.literal')
             break
     }
+    console.log('fhirautocomplete.token.type', autocompleteContext.token.type)
     switch (autocompleteContext.token.type) {
         case FHIRTokenType.NonTriggeringCharacter:
             options = []
