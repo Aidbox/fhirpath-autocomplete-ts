@@ -176,11 +176,11 @@ function constantsToOptions(currentValue: FHIRToken, constants: Array<Object>, r
             let newText : string
             if (currentValue.type === FHIRTokenType.ExternalConstant) {
                 if (currentValue.value.startsWith('`')) {
-                    newText = '`' + constant["name"] + '`'
+                    newText = '%`' + constant["name"] + '`'
                 } else if (currentValue.value.startsWith("'")) {
-                    newText = "'" + constant["name"] + "'"
+                    newText = "%'" + constant["name"] + "'"
                 } else {
-                    newText = constant["name"]
+                    newText = "%" + constant["name"]
                 }
             } else {
                 newText = constant["name"]
@@ -260,6 +260,7 @@ function _suggest(specmap: Object, type: string, parentExpressions: Array<string
     let parentContext = null
     let parentNode = null
     let autocompleteContext = reduce(fhirpath, cursor)
+    console.debug("fhirpathautocomplete.autocompleteContext", autocompleteContext)
     if (parentExpressions.length > 0) {
         let parentExpression = parentExpressions.join(".")
         parentContext = reduce(parentExpression, parentExpression.length + 1)
@@ -273,7 +274,6 @@ function _suggest(specmap: Object, type: string, parentExpressions: Array<string
             };
         }
         let schemaPath = replaceKeywords(autocompleteContext.schemaPath, parentNode["type"])
-        console.log(parentContext)
         schemaNode = resolvePath(specmap, schemaPath) ?? parentNode
     } else {
         let fullSchemaPath = makePathFromContext(type, autocompleteContext)
