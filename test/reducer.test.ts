@@ -280,6 +280,33 @@ describe('expression', () => {
                                 schemaPath: [T("a", FHIRTokenType.Identifier, 0, 1)] 
                             }));
                     })
+                    test('"a.where(b |="', () => {
+                        expect(JSON.stringify(reduceAt("a.where(b |=")))
+                            .toEqual(JAC({ 
+                                stype: ScopeType.Function, 
+                                svalue: T("where", FHIRTokenType.FunctionIdentifier, 2, 7), 
+                                token: T("=", FHIRTokenType.NonTriggeringCharacter, 10, 11),
+                                schemaPath: [T("a", FHIRTokenType.Identifier, 0, 1)] 
+                            }));
+                    })
+                    test('"a.where(b =|"', () => {
+                        expect(JSON.stringify(reduceAt("a.where(b =|")))
+                            .toEqual(JAC({ 
+                                stype: ScopeType.Function, 
+                                svalue: T("where", FHIRTokenType.FunctionIdentifier, 2, 7), 
+                                token: T("=", FHIRTokenType.NonTriggeringCharacter, 10, 11),
+                                schemaPath: [T("a", FHIRTokenType.Identifier, 0, 1)] 
+                            }));
+                    })
+                    test('"a.where(b = |"', () => {
+                        expect(JSON.stringify(reduceAt("a.where(b = |")))
+                            .toEqual(JAC({ 
+                                stype: ScopeType.Function, 
+                                svalue: T("where", FHIRTokenType.FunctionIdentifier, 2, 7), 
+                                token: T("", FHIRTokenType.Empty, 12, 12),
+                                schemaPath: [T("a", FHIRTokenType.Identifier, 0, 1)] 
+                            }));
+                    })
                     test('"a.where(|b"', () => {
                         expect(JSON.stringify(reduceAt("a.where(|b")))
                             .toEqual(JAC({ 
@@ -548,6 +575,24 @@ describe('expression', () => {
                 expect(JSON.stringify(reduceAt("(name|")))
                     .toEqual(JAC({ 
                         token: T("name", FHIRTokenType.Identifier, 1, 5)
+                     }));
+            })
+            test("(name = |", () => {
+                expect(JSON.stringify(reduceAt("(name = |")))
+                    .toEqual(JAC({ 
+                        token: T("", FHIRTokenType.Empty, 8, 8)
+                     }));
+            })
+            test("(name =|", () => {
+                expect(JSON.stringify(reduceAt("(name =|")))
+                    .toEqual(JAC({ 
+                        token: T("=", FHIRTokenType.NonTriggeringCharacter, 6, 7)
+                     }));
+            })
+            test("(name |=", () => {
+                expect(JSON.stringify(reduceAt("(name |=")))
+                    .toEqual(JAC({ 
+                        token: T("=", FHIRTokenType.NonTriggeringCharacter, 6, 7)
                      }));
             })
             test("('name|", () => {
