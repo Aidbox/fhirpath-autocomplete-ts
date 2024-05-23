@@ -11,7 +11,14 @@
 // function suggestAt(specmap, fhirpath: string) {
 //   let cursor = fhirpath.indexOf("|") 
 //   let path = fhirpath.replace("|", "")
-//   return suggest(specmap, "Patient", [], [{name: "hello", type: "string", value: "hello"}], path, cursor)
+//   return suggest({
+//     fhirschemas: specmap,
+//     type: "Patient",
+//     forEachExpressions: [],
+//     externalConstants: [{name: "hello", type: "string", value: "hello"}],
+//     fhirpath: path,
+//     cursor: cursor
+//   })
 // }
 
 // let file = readFileSync("./test/fhir_schemas.json")
@@ -22,11 +29,11 @@
 // 	specmap[schema["url"]] = schema
 // })
 
-// TODO: add to tests
-// console.log(reduceAt("name as    |").token)
-// console.log(reduceAt("name as |").token)
-// console.log(JSON.stringify(reduceAt("name.|"), null, 4))
-//  console.log(reduce("name.where(name = 'dj')", 21,))
+// // TODO: add to tests
+// // console.log(reduceAt("name as    |").token)
+// // console.log(reduceAt("name as |").token)
+// // console.log(JSON.stringify(reduceAt("name.|"), null, 4))
+// //  console.log(reduce("name.where(name = 'dj')", 21,))
 // console.log(suggestAt(specmap, "name.where(%|").items)
 
 export * from './suggestion'

@@ -255,7 +255,7 @@ function replaceKeywords(path: Array<FHIRToken>, outerType: string | null = null
     return path
 }
 
-export function suggest(specmap: Object, type: string, parentExpressions: Array<string>, constants: Array<Object>, fhirpath: string, cursor: number) {
+function _suggest(specmap: Object, type: string, parentExpressions: Array<string>, constants: Array<Object>, fhirpath: string, cursor: number) {
     let schemaNode = null
     let parentContext = null
     let parentNode = null
@@ -356,4 +356,23 @@ export function suggest(specmap: Object, type: string, parentExpressions: Array<
         isComplete: true,
         items : options
     };
+}
+
+export function suggest(params: Partial<{
+    fhirschemas: Object,
+    type: string,
+    forEachExpressions: Array<string>,
+    externalConstants: Array<{ name: string, value: string, type: string }>,
+    fhirpath: string,
+    cursor: number
+}>) {
+    let fhirpath = params.fhirpath ?? ""
+    return _suggest(
+        params.fhirschemas ?? {},
+        params.type,
+        params.forEachExpressions ?? [],
+        params.externalConstants ?? [],
+        fhirpath,
+        params.cursor ?? Math.max(0, fhirpath.length - 1)
+    )
 }
