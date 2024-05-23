@@ -367,9 +367,7 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
     visitTypeExpression?: (ctx: TypeExpressionContext) => FHIRToken | null = (ctx: TypeExpressionContext) => {
         let typeSpecifierTree = ctx.getChild(2) as ParserRuleContext
         let typeSpecifier = this.visit(typeSpecifierTree)
-        console.log("inneras")
         if (this.inRange(ctx)) {
-            console.log("innerasas")
             let expressionTree = ctx.getChild(0) as ParserRuleContext
             if (this.inRange(expressionTree)) {
                 return this.visit(expressionTree)
@@ -382,11 +380,13 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
                 return typeSpecifier
             }
         } else if (this.inRange(typeSpecifierTree)) {
-            console.log("innerin")
-            typeSpecifier.type = FHIRTokenType.Type
-            return typeSpecifier
+            if (typeSpecifier.type === FHIRTokenType.Empty) {
+                return new FHIRToken(FHIRTokenType.Type, "", this.rangeFromCursor()) 
+            } else {
+                typeSpecifier.type = FHIRTokenType.Type
+                return typeSpecifier
+            }
         } else {
-            console.log("innerelse")
             let operatorTree = ctx.getChild(1)
             if (operatorTree.text == 'is') {
                 this.schemaPath = [new FHIRToken(FHIRTokenType.Type, "Boolean", null)]

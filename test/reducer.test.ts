@@ -757,7 +757,7 @@ describe('expression', () => {
         test('"name is |"', () => {
             expect(JSON.stringify(reduceAt("name is |")))
                 .toEqual(JAC({ 
-                    token: T("", FHIRTokenType.Type, 7, 7)
+                    token: T("", FHIRTokenType.Type, 8, 8)
                 }));
         })
         test('"(name as String).|"', () => {
