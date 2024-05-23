@@ -30,7 +30,7 @@
 // })
 
 // // TODO: add to tests
-// // console.log(reduceAt("name.where(use=%`abc|)").token)
+// // console.log(reduceAt("extension.value.ofType(Adskfjasdfkj).|"))
 // // console.log(reduceAt("name as |").token)
 // // console.log(JSON.stringify(reduceAt("name.|"), null, 4))
 // //  console.log(reduce("name.where(name = 'dj')", 21,))

@@ -284,7 +284,6 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
     }
 
     visitInvocationExpression?: (ctx: InvocationExpressionContext) => FHIRToken | null = (ctx: InvocationExpressionContext) => {
-        // console.log(ctx.text)
         let leftNode = ctx.getChild(0)
         let left = this.visit(leftNode)
         if (this.inRange(leftNode)) {
@@ -459,6 +458,12 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
                 if (result !== null) {
                     this.schemaPath.push(result)
                 }
+            } else if (functionName.value === "ofType") {
+                let result = this.visit(expressionNode)
+                if (result !== null) {
+                    result.type = FHIRTokenType.Type
+                    this.schemaPath = [result]
+                }
             }
             if (this.inRange(closeParen)) {
                 return new FHIRToken(FHIRTokenType.NonTriggeringCharacter, ")", this.endRangeFromCtx(closeParen))
@@ -503,11 +508,13 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
 
     visitParamList?: (ctx: ParamListContext) => FHIRToken | null = (ctx: ParamListContext) => {
         let child = (ctx.children ?? []).find(c => {
-            // console.log(this.rangeFromCtx(c))
             return this.inRange(c)
         })
         if (child) {
             return this.visit(child)
+        }
+        if (ctx.childCount == 1) {
+            return this.visit(ctx.getChild(0))
         }
         return new FHIRToken(FHIRTokenType.Empty, "", this.rangeFromCursor())
     }

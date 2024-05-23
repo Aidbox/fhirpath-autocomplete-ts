@@ -81,19 +81,51 @@ function resolveElements(fhirschemas: Object, node: Object): Array<[string, Obje
     return elements
 }
 
-function resolvePath(specmap: Object, path: Array<FHIRToken>) : object | null {
+function findField(fhirschemas: Object, node: Object, field: string) : Object | null {
+    let currentNode = node
+    let visitedTypes = new Set<string>()
+    while (currentNode) {
+        if (currentNode.hasOwnProperty(field)) {
+            return currentNode[field]
+        } 
+        if (currentNode.hasOwnProperty("elements")) {
+            let elements = currentNode["elements"] as Object
+            if (elements.hasOwnProperty(field)) {
+                return elements[field]                
+            } 
+        }
+        if (currentNode.hasOwnProperty("elementReference")) {
+            return resolvePath(fhirschemas, currentNode["elementReference"])
+        }
+        if (currentNode.hasOwnProperty("base")) {
+            currentNode = fhirschemas[currentNode["base"]]    
+        } else if (currentNode.hasOwnProperty("type")) {
+            currentNode = fhirschemas[currentNode["type"]]
+        }  else {
+            return null
+        }
+        if (currentNode) {
+            let id = currentNode["id"]
+            if (visitedTypes.has(id)) {
+                return null
+            }
+            visitedTypes.add(currentNode["id"])
+        }
+    }
+}
+
+function resolvePath(specmap: Object, path: Array<string>) : object | null {
     if (path.length > 0) {
-        let currentNode = specmap[path[0].value] as Object
+        let currentNode = specmap[path[0]] as Object
         if (currentNode === null || currentNode === undefined) {
             return null
         }
-        path.slice(1).forEach(p => {
-            if (currentNode.hasOwnProperty(p.value)) {
-                currentNode = currentNode[p.value]
-            } else {
-                currentNode = resolveWhile(specmap, currentNode, p.value)
+        for (let p of path.slice(1)) {
+            currentNode = findField(specmap, currentNode, p)
+            if (currentNode === null) {
+                return null
             }
-        })
+        }
         return currentNode
     }
     return null
@@ -254,7 +286,7 @@ function getSpecMapTypes(specmap: Object, range: Range) {
 
 }
 
-function replaceKeywords(path: Array<FHIRToken>, outerType: string | null = null) {
+function replaceKeywords(path: Array<FHIRToken>, outerType: string | null = null) : Array<FHIRToken> {
     if (path.length > 0) {
         if (path[0].type === FHIRTokenType.Keyword) {
             if (path[0].value === "$this") {
@@ -285,6 +317,7 @@ function _suggest(specmap: Object, type: string, parentExpressions: Array<string
     let schemaNode = null
     let parentContext = null
     let parentNode = null
+    console.debug("fhirpathautocomplete.args", `type: ${type}; forEachExpressions: ${parentExpressions}; fhirpath: ${fhirpath}; cursor: ${cursor}`)
     let autocompleteContext = reduce(fhirpath, cursor)
     console.debug("fhirpathautocomplete.autocompleteContext", autocompleteContext)
     if (parentExpressions.length > 0) {
@@ -292,7 +325,7 @@ function _suggest(specmap: Object, type: string, parentExpressions: Array<string
         parentContext = reduce(parentExpression, parentExpression.length + 1)
         let parentPath = makePathFromParentContext(type, parentContext)
         let parentPathWithourKeywords = replaceKeywords(parentPath, type)
-        parentNode = resolvePath(specmap, parentPathWithourKeywords)
+        parentNode = resolvePath(specmap, parentPathWithourKeywords.map(e => e.value))
         if (parentNode === null || parentNode === undefined) { 
             return {
                 isComplete: true,
@@ -300,26 +333,13 @@ function _suggest(specmap: Object, type: string, parentExpressions: Array<string
             };
         }
         let schemaPath = replaceKeywords(autocompleteContext.schemaPath, parentNode["type"])
-        schemaNode = resolvePath(specmap, schemaPath) ?? parentNode
+        schemaNode = resolvePath(specmap, schemaPath.map(e => e.value)) ?? parentNode
     } else {
         let fullSchemaPath = makePathFromContext(type, autocompleteContext)
         let schemaPathWithoutKeywords = replaceKeywords(fullSchemaPath, type)
-        schemaNode = resolvePath(specmap, schemaPathWithoutKeywords)
-    }
-    if (schemaNode === null && schemaNode === undefined) {
-        return {
-            isComplete: true,
-            items: []
-        };
+        schemaNode = resolvePath(specmap, schemaPathWithoutKeywords.map(e => e.value))
     }
     let nodeElements = resolveElements(specmap, schemaNode)
-    if (nodeElements === null && nodeElements === undefined) {
-        return {
-            isComplete: true,
-            items: []
-        };
-    }
-
     let scopeValue = autocompleteContext.scope.token
     let options = []
     switch (autocompleteContext.scope.type) {
@@ -359,7 +379,7 @@ function _suggest(specmap: Object, type: string, parentExpressions: Array<string
         case ScopeType.Invocation:
             console.debug("fhirautocomplete.scope.invocation", autocompleteContext)
             options = options.concat(nodeToOptions(nodeElements, CompletionItemKind.Field, autocompleteContext.token.range))
-            let functions = filterFunctionsOnType(schemaNode["type"], FHIRPATH_FUNCTIONS)
+            let functions = filterFunctionsOnType(schemaNode?.type, FHIRPATH_FUNCTIONS)
             options = options.concat(functionsToOptions(functions, autocompleteContext.token.range))
             break
         case ScopeType.Literal:

@@ -172,7 +172,7 @@ describe('expression', () => {
                             .toEqual(JAC({ 
                                 stype: ScopeType.Function, 
                                 svalue: T("where", FHIRTokenType.FunctionIdentifier, 2, 7), 
-                                token: T("", FHIRTokenType.Empty, 12, 12),
+                                token: T("", FHIRTokenType.Empty, 11, 11),
                                 schemaPath: [T("a", FHIRTokenType.Identifier, 0, 1)] 
                             }));
                     })
