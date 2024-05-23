@@ -478,7 +478,7 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
                     return new FHIRToken(FHIRTokenType.Empty, "", this.endRangeFromCtx(openParen))
                 }
                 return new FHIRToken(FHIRTokenType.NonTriggeringCharacter, ")", this.endRangeFromCtx(thirdChild))
-            } else if (this.inRange(thirdChild)) {
+            } else {
                 this.scope.type = ScopeType.Function
                 this.scope.token = functionName
                 return this.visit(thirdChild)
