@@ -170,6 +170,7 @@ function nodeToOptions(node: object, kind, range) {
 
 
 function constantsToOptions(currentValue: FHIRToken, constants: Array<Object>, range) {
+    console.debug("fhirpathautocomplete.constants", typeof constants, constants)
     return constants
         .map(constant => {
             let newText : string
