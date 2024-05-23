@@ -44,7 +44,7 @@ literal
         ;
 
 externalConstant
-        : '%' ( identifier | STRING )
+        : '%' ( identifier | STRING | USTRING)
         ;
 
 invocation                          // Terms that can be used after the function/member invocation '.'

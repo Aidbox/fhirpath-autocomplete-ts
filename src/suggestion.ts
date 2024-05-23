@@ -55,6 +55,32 @@ function resolveWhile(specmap: Object, node: Object, until: string) {
     return currentNode ? currentNode[until] : null
 }
 
+function resolveElements(fhirschemas: Object, node: Object): Array<[string, Object]> {
+    let elements = []
+    if (node) {
+        let typeDefinition: Object = null
+        if (node.hasOwnProperty("id")) {
+            typeDefinition = node
+        } else if (node.hasOwnProperty("type")) {
+            typeDefinition = fhirschemas[node["type"]]
+        }
+        if (typeDefinition === null) {
+            return elements
+        }
+        if (typeDefinition.hasOwnProperty("elements")) {
+            elements = elements.concat(Object.entries(typeDefinition["elements"]))            
+        } 
+        let baseNode = typeDefinition
+        while(baseNode && baseNode.hasOwnProperty("base")) {
+            baseNode = fhirschemas[baseNode["base"]]
+            if (baseNode && baseNode.hasOwnProperty("elements")) {
+                elements = elements.concat(Object.entries(baseNode["elements"]))
+            } 
+        }
+    }
+    return elements
+}
+
 function resolvePath(specmap: Object, path: Array<FHIRToken>) : object | null {
     if (path.length > 0) {
         let currentNode = specmap[path[0].value] as Object
@@ -143,9 +169,9 @@ function isBasePolymorphic(value: Object) : boolean {
     return value.hasOwnProperty("choices")
 }
 
-function nodeToOptions(node: object, kind, range) {
-    if (node) {
-        return Object.entries(node)
+function nodeToOptions(entries: Array<[string, Object]>, kind, range) {
+    if (entries) {
+        return entries
             .filter(([_, value]) => !isBasePolymorphic(value))
             .map(([key, value]) => {
                 let newText : string
@@ -183,7 +209,7 @@ function constantsToOptions(currentValue: FHIRToken, constants: Array<Object>, r
                     newText = "%" + constant["name"]
                 }
             } else {
-                newText = constant["name"]
+                newText = "%" + constant["name"]
             }
             return {
                 label: constant["name"],
@@ -286,7 +312,7 @@ function _suggest(specmap: Object, type: string, parentExpressions: Array<string
             items: []
         };
     }
-    let nodeElements = resolveWhile(specmap, schemaNode, "elements")
+    let nodeElements = resolveElements(specmap, schemaNode)
     if (nodeElements === null && nodeElements === undefined) {
         return {
             isComplete: true,
@@ -337,7 +363,7 @@ function _suggest(specmap: Object, type: string, parentExpressions: Array<string
             options = options.concat(functionsToOptions(functions, autocompleteContext.token.range))
             break
         case ScopeType.Literal:
-            console.log('fhirautocomplete.scope.literal')
+            console.debug('fhirautocomplete.scope.literal')
             break
     }
     console.debug('fhirautocomplete.token.type', autocompleteContext.token.type)

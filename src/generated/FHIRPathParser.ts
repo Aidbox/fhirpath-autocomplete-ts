@@ -734,7 +734,7 @@ export class FHIRPathParser extends Parser {
 			{
 			this.state = 98;
 			this.match(FHIRPathParser.T__33);
-			this.state = 101;
+			this.state = 102;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case FHIRPathParser.T__10:
@@ -753,6 +753,12 @@ export class FHIRPathParser extends Parser {
 				{
 				this.state = 100;
 				this.match(FHIRPathParser.STRING);
+				}
+				break;
+			case FHIRPathParser.USTRING:
+				{
+				this.state = 101;
+				this.match(FHIRPathParser.USTRING);
 				}
 				break;
 			default:
@@ -779,14 +785,14 @@ export class FHIRPathParser extends Parser {
 		let _localctx: InvocationContext = new InvocationContext(this._ctx, this.state);
 		this.enterRule(_localctx, 8, FHIRPathParser.RULE_invocation);
 		try {
-			this.state = 108;
+			this.state = 109;
 			this._errHandler.sync(this);
 			switch ( this.interpreter.adaptivePredict(this._input, 6, this._ctx) ) {
 			case 1:
 				_localctx = new MemberInvocationContext(_localctx);
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 103;
+				this.state = 104;
 				this.identifier();
 				}
 				break;
@@ -795,7 +801,7 @@ export class FHIRPathParser extends Parser {
 				_localctx = new FunctionInvocationContext(_localctx);
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 104;
+				this.state = 105;
 				this.function();
 				}
 				break;
@@ -804,7 +810,7 @@ export class FHIRPathParser extends Parser {
 				_localctx = new ThisInvocationContext(_localctx);
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 105;
+				this.state = 106;
 				this.match(FHIRPathParser.T__34);
 				}
 				break;
@@ -813,7 +819,7 @@ export class FHIRPathParser extends Parser {
 				_localctx = new IndexInvocationContext(_localctx);
 				this.enterOuterAlt(_localctx, 4);
 				{
-				this.state = 106;
+				this.state = 107;
 				this.match(FHIRPathParser.T__35);
 				}
 				break;
@@ -822,7 +828,7 @@ export class FHIRPathParser extends Parser {
 				_localctx = new TotalInvocationContext(_localctx);
 				this.enterOuterAlt(_localctx, 5);
 				{
-				this.state = 107;
+				this.state = 108;
 				this.match(FHIRPathParser.T__36);
 				}
 				break;
@@ -850,21 +856,21 @@ export class FHIRPathParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 110;
-			this.identifier();
 			this.state = 111;
+			this.identifier();
+			this.state = 112;
 			this.match(FHIRPathParser.T__27);
-			this.state = 113;
+			this.state = 114;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << FHIRPathParser.T__3) | (1 << FHIRPathParser.T__4) | (1 << FHIRPathParser.T__10) | (1 << FHIRPathParser.T__11) | (1 << FHIRPathParser.T__21) | (1 << FHIRPathParser.T__22) | (1 << FHIRPathParser.T__27) | (1 << FHIRPathParser.T__29))) !== 0) || ((((_la - 32)) & ~0x1F) === 0 && ((1 << (_la - 32)) & ((1 << (FHIRPathParser.T__31 - 32)) | (1 << (FHIRPathParser.T__32 - 32)) | (1 << (FHIRPathParser.T__33 - 32)) | (1 << (FHIRPathParser.T__34 - 32)) | (1 << (FHIRPathParser.T__35 - 32)) | (1 << (FHIRPathParser.T__36 - 32)) | (1 << (FHIRPathParser.DATETIME - 32)) | (1 << (FHIRPathParser.TIME - 32)) | (1 << (FHIRPathParser.DATESTARTSYMBOL - 32)) | (1 << (FHIRPathParser.IDENTIFIER - 32)) | (1 << (FHIRPathParser.DELIMITEDIDENTIFIER - 32)) | (1 << (FHIRPathParser.UDELIMITEDIDENTIFIER - 32)) | (1 << (FHIRPathParser.STRING - 32)) | (1 << (FHIRPathParser.USTRING - 32)) | (1 << (FHIRPathParser.NUMBER - 32)))) !== 0)) {
 				{
-				this.state = 112;
+				this.state = 113;
 				this.paramList();
 				}
 			}
 
-			this.state = 115;
+			this.state = 116;
 			this.match(FHIRPathParser.T__28);
 			}
 		}
@@ -890,21 +896,21 @@ export class FHIRPathParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 117;
+			this.state = 118;
 			this.expression(0);
-			this.state = 122;
+			this.state = 123;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while (_la === FHIRPathParser.T__37) {
 				{
 				{
-				this.state = 118;
-				this.match(FHIRPathParser.T__37);
 				this.state = 119;
+				this.match(FHIRPathParser.T__37);
+				this.state = 120;
 				this.expression(0);
 				}
 				}
-				this.state = 124;
+				this.state = 125;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
@@ -931,14 +937,14 @@ export class FHIRPathParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 125;
+			this.state = 126;
 			this.match(FHIRPathParser.NUMBER);
-			this.state = 127;
+			this.state = 128;
 			this._errHandler.sync(this);
 			switch ( this.interpreter.adaptivePredict(this._input, 9, this._ctx) ) {
 			case 1:
 				{
-				this.state = 126;
+				this.state = 127;
 				this.unit();
 				}
 				break;
@@ -964,7 +970,7 @@ export class FHIRPathParser extends Parser {
 		let _localctx: UnitContext = new UnitContext(this._ctx, this.state);
 		this.enterRule(_localctx, 16, FHIRPathParser.RULE_unit);
 		try {
-			this.state = 132;
+			this.state = 133;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case FHIRPathParser.T__38:
@@ -977,7 +983,7 @@ export class FHIRPathParser extends Parser {
 			case FHIRPathParser.T__45:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 129;
+				this.state = 130;
 				this.dateTimePrecision();
 				}
 				break;
@@ -991,14 +997,14 @@ export class FHIRPathParser extends Parser {
 			case FHIRPathParser.T__53:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 130;
+				this.state = 131;
 				this.pluralDateTimePrecision();
 				}
 				break;
 			case FHIRPathParser.STRING:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 131;
+				this.state = 132;
 				this.match(FHIRPathParser.STRING);
 				}
 				break;
@@ -1028,7 +1034,7 @@ export class FHIRPathParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 134;
+			this.state = 135;
 			_la = this._input.LA(1);
 			if (!(((((_la - 39)) & ~0x1F) === 0 && ((1 << (_la - 39)) & ((1 << (FHIRPathParser.T__38 - 39)) | (1 << (FHIRPathParser.T__39 - 39)) | (1 << (FHIRPathParser.T__40 - 39)) | (1 << (FHIRPathParser.T__41 - 39)) | (1 << (FHIRPathParser.T__42 - 39)) | (1 << (FHIRPathParser.T__43 - 39)) | (1 << (FHIRPathParser.T__44 - 39)) | (1 << (FHIRPathParser.T__45 - 39)))) !== 0))) {
 			this._errHandler.recoverInline(this);
@@ -1064,7 +1070,7 @@ export class FHIRPathParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 136;
+			this.state = 137;
 			_la = this._input.LA(1);
 			if (!(((((_la - 47)) & ~0x1F) === 0 && ((1 << (_la - 47)) & ((1 << (FHIRPathParser.T__46 - 47)) | (1 << (FHIRPathParser.T__47 - 47)) | (1 << (FHIRPathParser.T__48 - 47)) | (1 << (FHIRPathParser.T__49 - 47)) | (1 << (FHIRPathParser.T__50 - 47)) | (1 << (FHIRPathParser.T__51 - 47)) | (1 << (FHIRPathParser.T__52 - 47)) | (1 << (FHIRPathParser.T__53 - 47)))) !== 0))) {
 			this._errHandler.recoverInline(this);
@@ -1099,7 +1105,7 @@ export class FHIRPathParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 138;
+			this.state = 139;
 			this.qualifiedIdentifier();
 			}
 		}
@@ -1125,23 +1131,23 @@ export class FHIRPathParser extends Parser {
 			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 140;
+			this.state = 141;
 			this.identifier();
-			this.state = 145;
+			this.state = 146;
 			this._errHandler.sync(this);
 			_alt = this.interpreter.adaptivePredict(this._input, 11, this._ctx);
 			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
 				if (_alt === 1) {
 					{
 					{
-					this.state = 141;
-					this.match(FHIRPathParser.T__0);
 					this.state = 142;
+					this.match(FHIRPathParser.T__0);
+					this.state = 143;
 					this.identifier();
 					}
 					}
 				}
-				this.state = 147;
+				this.state = 148;
 				this._errHandler.sync(this);
 				_alt = this.interpreter.adaptivePredict(this._input, 11, this._ctx);
 			}
@@ -1169,7 +1175,7 @@ export class FHIRPathParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 148;
+			this.state = 149;
 			_la = this._input.LA(1);
 			if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << FHIRPathParser.T__10) | (1 << FHIRPathParser.T__11) | (1 << FHIRPathParser.T__21) | (1 << FHIRPathParser.T__22))) !== 0) || ((((_la - 58)) & ~0x1F) === 0 && ((1 << (_la - 58)) & ((1 << (FHIRPathParser.IDENTIFIER - 58)) | (1 << (FHIRPathParser.DELIMITEDIDENTIFIER - 58)) | (1 << (FHIRPathParser.UDELIMITEDIDENTIFIER - 58)))) !== 0))) {
 			this._errHandler.recoverInline(this);
@@ -1247,7 +1253,7 @@ export class FHIRPathParser extends Parser {
 	}
 
 	public static readonly _serializedATN: string =
-		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03D\x99\x04\x02" +
+		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03D\x9A\x04\x02" +
 		"\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07" +
 		"\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\v\t\v\x04\f\t\f\x04\r\t\r\x04" +
 		"\x0E\t\x0E\x04\x0F\t\x0F\x03\x02\x03\x02\x03\x02\x03\x02\x05\x02#\n\x02" +
@@ -1258,62 +1264,63 @@ export class FHIRPathParser extends Parser {
 		"\x03\x02\x03\x02\x07\x02K\n\x02\f\x02\x0E\x02N\v\x02\x03\x03\x03\x03\x03" +
 		"\x03\x03\x03\x03\x03\x03\x03\x03\x03\x05\x03W\n\x03\x03\x04\x03\x04\x03" +
 		"\x04\x03\x04\x03\x04\x03\x04\x03\x04\x03\x04\x03\x04\x03\x04\x05\x04c" +
-		"\n\x04\x03\x05\x03\x05\x03\x05\x05\x05h\n\x05\x03\x06\x03\x06\x03\x06" +
-		"\x03\x06\x03\x06\x05\x06o\n\x06\x03\x07\x03\x07\x03\x07\x05\x07t\n\x07" +
-		"\x03\x07\x03\x07\x03\b\x03\b\x03\b\x07\b{\n\b\f\b\x0E\b~\v\b\x03\t\x03" +
-		"\t\x05\t\x82\n\t\x03\n\x03\n\x03\n\x05\n\x87\n\n\x03\v\x03\v\x03\f\x03" +
-		"\f\x03\r\x03\r\x03\x0E\x03\x0E\x03\x0E\x07\x0E\x92\n\x0E\f\x0E\x0E\x0E" +
-		"\x95\v\x0E\x03\x0F\x03\x0F\x03\x0F\x02\x02\x03\x02\x10\x02\x02\x04\x02" +
-		"\x06\x02\b\x02\n\x02\f\x02\x0E\x02\x10\x02\x12\x02\x14\x02\x16\x02\x18" +
-		"\x02\x1A\x02\x1C\x02\x02\x0E\x03\x02\x06\x07\x03\x02\b\v\x04\x02\x06\x07" +
-		"\f\f\x03\x02\x10\x13\x03\x02\x14\x17\x03\x02\x18\x19\x03\x02\x1B\x1C\x03" +
-		"\x02\r\x0E\x03\x02\"#\x03\x02)0\x03\x0218\x05\x02\r\x0E\x18\x19<>\x02" +
-		"\xAD\x02\"\x03\x02\x02\x02\x04V\x03\x02\x02\x02\x06b\x03\x02\x02\x02\b" +
-		"d\x03\x02\x02\x02\nn\x03\x02\x02\x02\fp\x03\x02\x02\x02\x0Ew\x03\x02\x02" +
-		"\x02\x10\x7F\x03\x02\x02\x02\x12\x86\x03\x02\x02\x02\x14\x88\x03\x02\x02" +
-		"\x02\x16\x8A\x03\x02\x02\x02\x18\x8C\x03\x02\x02\x02\x1A\x8E\x03\x02\x02" +
-		"\x02\x1C\x96\x03\x02\x02\x02\x1E\x1F\b\x02\x01\x02\x1F#\x05\x04\x03\x02" +
-		" !\t\x02\x02\x02!#\x05\x02\x02\r\"\x1E\x03\x02\x02\x02\" \x03\x02\x02" +
-		"\x02#L\x03\x02\x02\x02$%\f\f\x02\x02%&\t\x03\x02\x02&K\x05\x02\x02\r\'" +
-		"(\f\v\x02\x02()\t\x04\x02\x02)K\x05\x02\x02\f*+\f\t\x02\x02+,\x07\x0F" +
-		"\x02\x02,K\x05\x02\x02\n-.\f\b\x02\x02./\t\x05\x02\x02/K\x05\x02\x02\t" +
-		"01\f\x07\x02\x0212\t\x06\x02\x022K\x05\x02\x02\b34\f\x06\x02\x0245\t\x07" +
-		"\x02\x025K\x05\x02\x02\x0767\f\x05\x02\x0278\x07\x1A\x02\x028K\x05\x02" +
-		"\x02\x069:\f\x04\x02\x02:;\t\b\x02\x02;K\x05\x02\x02\x05<=\f\x03\x02\x02" +
-		"=>\x07\x1D\x02\x02>K\x05\x02\x02\x04?@\f\x0F\x02\x02@A\x07\x03\x02\x02" +
-		"AK\x05\n\x06\x02BC\f\x0E\x02\x02CD\x07\x04\x02\x02DE\x05\x02\x02\x02E" +
-		"F\x07\x05\x02\x02FK\x03\x02\x02\x02GH\f\n\x02\x02HI\t\t\x02\x02IK\x05" +
-		"\x18\r\x02J$\x03\x02\x02\x02J\'\x03\x02\x02\x02J*\x03\x02\x02\x02J-\x03" +
-		"\x02\x02\x02J0\x03\x02\x02\x02J3\x03\x02\x02\x02J6\x03\x02\x02\x02J9\x03" +
-		"\x02\x02\x02J<\x03\x02\x02\x02J?\x03\x02\x02\x02JB\x03\x02\x02\x02JG\x03" +
-		"\x02\x02\x02KN\x03\x02\x02\x02LJ\x03\x02\x02\x02LM\x03\x02\x02\x02M\x03" +
-		"\x03\x02\x02\x02NL\x03\x02\x02\x02OW\x05\n\x06\x02PW\x05\x06\x04\x02Q" +
-		"W\x05\b\x05\x02RS\x07\x1E\x02\x02ST\x05\x02\x02\x02TU\x07\x1F\x02\x02" +
-		"UW\x03\x02\x02\x02VO\x03\x02\x02\x02VP\x03\x02\x02\x02VQ\x03\x02\x02\x02" +
-		"VR\x03\x02\x02\x02W\x05\x03\x02\x02\x02XY\x07 \x02\x02Yc\x07!\x02\x02" +
-		"Zc\t\n\x02\x02[c\x07?\x02\x02\\c\x07@\x02\x02]c\x07A\x02\x02^c\x079\x02" +
-		"\x02_c\x07:\x02\x02`c\x07;\x02\x02ac\x05\x10\t\x02bX\x03\x02\x02\x02b" +
-		"Z\x03\x02\x02\x02b[\x03\x02\x02\x02b\\\x03\x02\x02\x02b]\x03\x02\x02\x02" +
-		"b^\x03\x02\x02\x02b_\x03\x02\x02\x02b`\x03\x02\x02\x02ba\x03\x02\x02\x02" +
-		"c\x07\x03\x02\x02\x02dg\x07$\x02\x02eh\x05\x1C\x0F\x02fh\x07?\x02\x02" +
-		"ge\x03\x02\x02\x02gf\x03\x02\x02\x02h\t\x03\x02\x02\x02io\x05\x1C\x0F" +
-		"\x02jo\x05\f\x07\x02ko\x07%\x02\x02lo\x07&\x02\x02mo\x07\'\x02\x02ni\x03" +
-		"\x02\x02\x02nj\x03\x02\x02\x02nk\x03\x02\x02\x02nl\x03\x02\x02\x02nm\x03" +
-		"\x02\x02\x02o\v\x03\x02\x02\x02pq\x05\x1C\x0F\x02qs\x07\x1E\x02\x02rt" +
-		"\x05\x0E\b\x02sr\x03\x02\x02\x02st\x03\x02\x02\x02tu\x03\x02\x02\x02u" +
-		"v\x07\x1F\x02\x02v\r\x03\x02\x02\x02w|\x05\x02\x02\x02xy\x07(\x02\x02" +
-		"y{\x05\x02\x02\x02zx\x03\x02\x02\x02{~\x03\x02\x02\x02|z\x03\x02\x02\x02" +
-		"|}\x03\x02\x02\x02}\x0F\x03\x02\x02\x02~|\x03\x02\x02\x02\x7F\x81\x07" +
-		"A\x02\x02\x80\x82\x05\x12\n\x02\x81\x80\x03\x02\x02\x02\x81\x82\x03\x02" +
-		"\x02\x02\x82\x11\x03\x02\x02\x02\x83\x87\x05\x14\v\x02\x84\x87\x05\x16" +
-		"\f\x02\x85\x87\x07?\x02\x02\x86\x83\x03\x02\x02\x02\x86\x84\x03\x02\x02" +
-		"\x02\x86\x85\x03\x02\x02\x02\x87\x13\x03\x02\x02\x02\x88\x89\t\v\x02\x02" +
-		"\x89\x15\x03\x02\x02\x02\x8A\x8B\t\f\x02\x02\x8B\x17\x03\x02\x02\x02\x8C" +
-		"\x8D\x05\x1A\x0E\x02\x8D\x19\x03\x02\x02\x02\x8E\x93\x05\x1C\x0F\x02\x8F" +
-		"\x90\x07\x03\x02\x02\x90\x92\x05\x1C\x0F\x02\x91\x8F\x03\x02\x02\x02\x92" +
-		"\x95\x03\x02\x02\x02\x93\x91\x03\x02\x02\x02\x93\x94\x03\x02\x02\x02\x94" +
-		"\x1B\x03\x02\x02\x02\x95\x93\x03\x02\x02\x02\x96\x97\t\r\x02\x02\x97\x1D" +
-		"\x03\x02\x02\x02\x0E\"JLVbgns|\x81\x86\x93";
+		"\n\x04\x03\x05\x03\x05\x03\x05\x03\x05\x05\x05i\n\x05\x03\x06\x03\x06" +
+		"\x03\x06\x03\x06\x03\x06\x05\x06p\n\x06\x03\x07\x03\x07\x03\x07\x05\x07" +
+		"u\n\x07\x03\x07\x03\x07\x03\b\x03\b\x03\b\x07\b|\n\b\f\b\x0E\b\x7F\v\b" +
+		"\x03\t\x03\t\x05\t\x83\n\t\x03\n\x03\n\x03\n\x05\n\x88\n\n\x03\v\x03\v" +
+		"\x03\f\x03\f\x03\r\x03\r\x03\x0E\x03\x0E\x03\x0E\x07\x0E\x93\n\x0E\f\x0E" +
+		"\x0E\x0E\x96\v\x0E\x03\x0F\x03\x0F\x03\x0F\x02\x02\x03\x02\x10\x02\x02" +
+		"\x04\x02\x06\x02\b\x02\n\x02\f\x02\x0E\x02\x10\x02\x12\x02\x14\x02\x16" +
+		"\x02\x18\x02\x1A\x02\x1C\x02\x02\x0E\x03\x02\x06\x07\x03\x02\b\v\x04\x02" +
+		"\x06\x07\f\f\x03\x02\x10\x13\x03\x02\x14\x17\x03\x02\x18\x19\x03\x02\x1B" +
+		"\x1C\x03\x02\r\x0E\x03\x02\"#\x03\x02)0\x03\x0218\x05\x02\r\x0E\x18\x19" +
+		"<>\x02\xAF\x02\"\x03\x02\x02\x02\x04V\x03\x02\x02\x02\x06b\x03\x02\x02" +
+		"\x02\bd\x03\x02\x02\x02\no\x03\x02\x02\x02\fq\x03\x02\x02\x02\x0Ex\x03" +
+		"\x02\x02\x02\x10\x80\x03\x02\x02\x02\x12\x87\x03\x02\x02\x02\x14\x89\x03" +
+		"\x02\x02\x02\x16\x8B\x03\x02\x02\x02\x18\x8D\x03\x02\x02\x02\x1A\x8F\x03" +
+		"\x02\x02\x02\x1C\x97\x03\x02\x02\x02\x1E\x1F\b\x02\x01\x02\x1F#\x05\x04" +
+		"\x03\x02 !\t\x02\x02\x02!#\x05\x02\x02\r\"\x1E\x03\x02\x02\x02\" \x03" +
+		"\x02\x02\x02#L\x03\x02\x02\x02$%\f\f\x02\x02%&\t\x03\x02\x02&K\x05\x02" +
+		"\x02\r\'(\f\v\x02\x02()\t\x04\x02\x02)K\x05\x02\x02\f*+\f\t\x02\x02+," +
+		"\x07\x0F\x02\x02,K\x05\x02\x02\n-.\f\b\x02\x02./\t\x05\x02\x02/K\x05\x02" +
+		"\x02\t01\f\x07\x02\x0212\t\x06\x02\x022K\x05\x02\x02\b34\f\x06\x02\x02" +
+		"45\t\x07\x02\x025K\x05\x02\x02\x0767\f\x05\x02\x0278\x07\x1A\x02\x028" +
+		"K\x05\x02\x02\x069:\f\x04\x02\x02:;\t\b\x02\x02;K\x05\x02\x02\x05<=\f" +
+		"\x03\x02\x02=>\x07\x1D\x02\x02>K\x05\x02\x02\x04?@\f\x0F\x02\x02@A\x07" +
+		"\x03\x02\x02AK\x05\n\x06\x02BC\f\x0E\x02\x02CD\x07\x04\x02\x02DE\x05\x02" +
+		"\x02\x02EF\x07\x05\x02\x02FK\x03\x02\x02\x02GH\f\n\x02\x02HI\t\t\x02\x02" +
+		"IK\x05\x18\r\x02J$\x03\x02\x02\x02J\'\x03\x02\x02\x02J*\x03\x02\x02\x02" +
+		"J-\x03\x02\x02\x02J0\x03\x02\x02\x02J3\x03\x02\x02\x02J6\x03\x02\x02\x02" +
+		"J9\x03\x02\x02\x02J<\x03\x02\x02\x02J?\x03\x02\x02\x02JB\x03\x02\x02\x02" +
+		"JG\x03\x02\x02\x02KN\x03\x02\x02\x02LJ\x03\x02\x02\x02LM\x03\x02\x02\x02" +
+		"M\x03\x03\x02\x02\x02NL\x03\x02\x02\x02OW\x05\n\x06\x02PW\x05\x06\x04" +
+		"\x02QW\x05\b\x05\x02RS\x07\x1E\x02\x02ST\x05\x02\x02\x02TU\x07\x1F\x02" +
+		"\x02UW\x03\x02\x02\x02VO\x03\x02\x02\x02VP\x03\x02\x02\x02VQ\x03\x02\x02" +
+		"\x02VR\x03\x02\x02\x02W\x05\x03\x02\x02\x02XY\x07 \x02\x02Yc\x07!\x02" +
+		"\x02Zc\t\n\x02\x02[c\x07?\x02\x02\\c\x07@\x02\x02]c\x07A\x02\x02^c\x07" +
+		"9\x02\x02_c\x07:\x02\x02`c\x07;\x02\x02ac\x05\x10\t\x02bX\x03\x02\x02" +
+		"\x02bZ\x03\x02\x02\x02b[\x03\x02\x02\x02b\\\x03\x02\x02\x02b]\x03\x02" +
+		"\x02\x02b^\x03\x02\x02\x02b_\x03\x02\x02\x02b`\x03\x02\x02\x02ba\x03\x02" +
+		"\x02\x02c\x07\x03\x02\x02\x02dh\x07$\x02\x02ei\x05\x1C\x0F\x02fi\x07?" +
+		"\x02\x02gi\x07@\x02\x02he\x03\x02\x02\x02hf\x03\x02\x02\x02hg\x03\x02" +
+		"\x02\x02i\t\x03\x02\x02\x02jp\x05\x1C\x0F\x02kp\x05\f\x07\x02lp\x07%\x02" +
+		"\x02mp\x07&\x02\x02np\x07\'\x02\x02oj\x03\x02\x02\x02ok\x03\x02\x02\x02" +
+		"ol\x03\x02\x02\x02om\x03\x02\x02\x02on\x03\x02\x02\x02p\v\x03\x02\x02" +
+		"\x02qr\x05\x1C\x0F\x02rt\x07\x1E\x02\x02su\x05\x0E\b\x02ts\x03\x02\x02" +
+		"\x02tu\x03\x02\x02\x02uv\x03\x02\x02\x02vw\x07\x1F\x02\x02w\r\x03\x02" +
+		"\x02\x02x}\x05\x02\x02\x02yz\x07(\x02\x02z|\x05\x02\x02\x02{y\x03\x02" +
+		"\x02\x02|\x7F\x03\x02\x02\x02}{\x03\x02\x02\x02}~\x03\x02\x02\x02~\x0F" +
+		"\x03\x02\x02\x02\x7F}\x03\x02\x02\x02\x80\x82\x07A\x02\x02\x81\x83\x05" +
+		"\x12\n\x02\x82\x81\x03\x02\x02\x02\x82\x83\x03\x02\x02\x02\x83\x11\x03" +
+		"\x02\x02\x02\x84\x88\x05\x14\v\x02\x85\x88\x05\x16\f\x02\x86\x88\x07?" +
+		"\x02\x02\x87\x84\x03\x02\x02\x02\x87\x85\x03\x02\x02\x02\x87\x86\x03\x02" +
+		"\x02\x02\x88\x13\x03\x02\x02\x02\x89\x8A\t\v\x02\x02\x8A\x15\x03\x02\x02" +
+		"\x02\x8B\x8C\t\f\x02\x02\x8C\x17\x03\x02\x02\x02\x8D\x8E\x05\x1A\x0E\x02" +
+		"\x8E\x19\x03\x02\x02\x02\x8F\x94\x05\x1C\x0F\x02\x90\x91\x07\x03\x02\x02" +
+		"\x91\x93\x05\x1C\x0F\x02\x92\x90\x03\x02\x02\x02\x93\x96\x03\x02\x02\x02" +
+		"\x94\x92\x03\x02\x02\x02\x94\x95\x03\x02\x02\x02\x95\x1B\x03\x02\x02\x02" +
+		"\x96\x94\x03\x02\x02\x02\x97\x98\t\r\x02\x02\x98\x1D\x03\x02\x02\x02\x0E" +
+		"\"JLVbhot}\x82\x87\x94";
 	public static __ATN: ATN;
 	public static get _ATN(): ATN {
 		if (!FHIRPathParser.__ATN) {
@@ -2197,6 +2204,7 @@ export class ExternalConstantContext extends ParserRuleContext {
 		return this.tryGetRuleContext(0, IdentifierContext);
 	}
 	public STRING(): TerminalNode | undefined { return this.tryGetToken(FHIRPathParser.STRING, 0); }
+	public USTRING(): TerminalNode | undefined { return this.tryGetToken(FHIRPathParser.USTRING, 0); }
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}

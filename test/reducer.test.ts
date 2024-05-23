@@ -497,6 +497,12 @@ describe('expression', () => {
                             token: T("`a", FHIRTokenType.ExternalConstant, 0, 3),
                         }));
             })
+            test("(%`a|)", () => {
+                expect(JSON.stringify(reduceAt("(%`a|)")))
+                        .toEqual(JAC({ 
+                            token: T("`a", FHIRTokenType.ExternalConstant, 1, 4),
+                        }));
+            })
             test("%'a'|", () => {
                 expect(JSON.stringify(reduceAt("%'a'|")))
                         .toEqual(JAC({ 

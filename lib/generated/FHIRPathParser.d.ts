@@ -337,6 +337,7 @@ export declare class QuantityLiteralContext extends LiteralContext {
 export declare class ExternalConstantContext extends ParserRuleContext {
     identifier(): IdentifierContext | undefined;
     STRING(): TerminalNode | undefined;
+    USTRING(): TerminalNode | undefined;
     constructor(parent: ParserRuleContext | undefined, invokingState: number);
     get ruleIndex(): number;
     enterRule(listener: FHIRPathListener): void;
