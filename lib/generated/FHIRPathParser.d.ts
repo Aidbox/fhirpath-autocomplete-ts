@@ -63,32 +63,47 @@ export declare class FHIRPathParser extends Parser {
     static readonly T__51 = 52;
     static readonly T__52 = 53;
     static readonly T__53 = 54;
-    static readonly DATETIME = 55;
-    static readonly TIME = 56;
-    static readonly DATESTARTSYMBOL = 57;
-    static readonly IDENTIFIER = 58;
-    static readonly DELIMITEDIDENTIFIER = 59;
-    static readonly UDELIMITEDIDENTIFIER = 60;
-    static readonly STRING = 61;
-    static readonly USTRING = 62;
-    static readonly NUMBER = 63;
-    static readonly WS = 64;
-    static readonly COMMENT = 65;
-    static readonly LINE_COMMENT = 66;
+    static readonly T__54 = 55;
+    static readonly T__55 = 56;
+    static readonly T__56 = 57;
+    static readonly T__57 = 58;
+    static readonly T__58 = 59;
+    static readonly T__59 = 60;
+    static readonly T__60 = 61;
+    static readonly T__61 = 62;
+    static readonly T__62 = 63;
+    static readonly T__63 = 64;
+    static readonly T__64 = 65;
+    static readonly DATETIME = 66;
+    static readonly TIME = 67;
+    static readonly DATESTARTSYMBOL = 68;
+    static readonly IDENTIFIER = 69;
+    static readonly DELIMITEDIDENTIFIER = 70;
+    static readonly UDELIMITEDIDENTIFIER = 71;
+    static readonly STRING = 72;
+    static readonly USTRING = 73;
+    static readonly NUMBER = 74;
+    static readonly WS = 75;
+    static readonly COMMENT = 76;
+    static readonly LINE_COMMENT = 77;
     static readonly RULE_expression = 0;
     static readonly RULE_term = 1;
     static readonly RULE_literal = 2;
     static readonly RULE_externalConstant = 3;
     static readonly RULE_invocation = 4;
-    static readonly RULE_function = 5;
-    static readonly RULE_paramList = 6;
-    static readonly RULE_quantity = 7;
-    static readonly RULE_unit = 8;
-    static readonly RULE_dateTimePrecision = 9;
-    static readonly RULE_pluralDateTimePrecision = 10;
-    static readonly RULE_typeSpecifier = 11;
-    static readonly RULE_qualifiedIdentifier = 12;
-    static readonly RULE_identifier = 13;
+    static readonly RULE_keyword = 5;
+    static readonly RULE_thisKeyword = 6;
+    static readonly RULE_indexKeyword = 7;
+    static readonly RULE_totalKeyword = 8;
+    static readonly RULE_function = 9;
+    static readonly RULE_paramList = 10;
+    static readonly RULE_quantity = 11;
+    static readonly RULE_unit = 12;
+    static readonly RULE_dateTimePrecision = 13;
+    static readonly RULE_pluralDateTimePrecision = 14;
+    static readonly RULE_typeSpecifier = 15;
+    static readonly RULE_qualifiedIdentifier = 16;
+    static readonly RULE_identifier = 17;
     static readonly ruleNames: string[];
     private static readonly _LITERAL_NAMES;
     private static readonly _SYMBOLIC_NAMES;
@@ -105,6 +120,10 @@ export declare class FHIRPathParser extends Parser {
     literal(): LiteralContext;
     externalConstant(): ExternalConstantContext;
     invocation(): InvocationContext;
+    keyword(): KeywordContext;
+    thisKeyword(): ThisKeywordContext;
+    indexKeyword(): IndexKeywordContext;
+    totalKeyword(): TotalKeywordContext;
     function(): FunctionContext;
     paramList(): ParamListContext;
     quantity(): QuantityContext;
@@ -364,19 +383,57 @@ export declare class FunctionInvocationContext extends InvocationContext {
     accept<Result>(visitor: FHIRPathVisitor<Result>): Result;
 }
 export declare class ThisInvocationContext extends InvocationContext {
+    thisKeyword(): ThisKeywordContext;
     constructor(ctx: InvocationContext);
     enterRule(listener: FHIRPathListener): void;
     exitRule(listener: FHIRPathListener): void;
     accept<Result>(visitor: FHIRPathVisitor<Result>): Result;
 }
 export declare class IndexInvocationContext extends InvocationContext {
+    indexKeyword(): IndexKeywordContext;
     constructor(ctx: InvocationContext);
     enterRule(listener: FHIRPathListener): void;
     exitRule(listener: FHIRPathListener): void;
     accept<Result>(visitor: FHIRPathVisitor<Result>): Result;
 }
 export declare class TotalInvocationContext extends InvocationContext {
+    totalKeyword(): TotalKeywordContext;
     constructor(ctx: InvocationContext);
+    enterRule(listener: FHIRPathListener): void;
+    exitRule(listener: FHIRPathListener): void;
+    accept<Result>(visitor: FHIRPathVisitor<Result>): Result;
+}
+export declare class KeywordInvocationContext extends InvocationContext {
+    keyword(): KeywordContext;
+    constructor(ctx: InvocationContext);
+    enterRule(listener: FHIRPathListener): void;
+    exitRule(listener: FHIRPathListener): void;
+    accept<Result>(visitor: FHIRPathVisitor<Result>): Result;
+}
+export declare class KeywordContext extends ParserRuleContext {
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: FHIRPathListener): void;
+    exitRule(listener: FHIRPathListener): void;
+    accept<Result>(visitor: FHIRPathVisitor<Result>): Result;
+}
+export declare class ThisKeywordContext extends ParserRuleContext {
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: FHIRPathListener): void;
+    exitRule(listener: FHIRPathListener): void;
+    accept<Result>(visitor: FHIRPathVisitor<Result>): Result;
+}
+export declare class IndexKeywordContext extends ParserRuleContext {
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
+    enterRule(listener: FHIRPathListener): void;
+    exitRule(listener: FHIRPathListener): void;
+    accept<Result>(visitor: FHIRPathVisitor<Result>): Result;
+}
+export declare class TotalKeywordContext extends ParserRuleContext {
+    constructor(parent: ParserRuleContext | undefined, invokingState: number);
+    get ruleIndex(): number;
     enterRule(listener: FHIRPathListener): void;
     exitRule(listener: FHIRPathListener): void;
     accept<Result>(visitor: FHIRPathVisitor<Result>): Result;

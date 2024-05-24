@@ -31,6 +31,7 @@ import { FunctionInvocationContext } from "./FHIRPathParser";
 import { ThisInvocationContext } from "./FHIRPathParser";
 import { IndexInvocationContext } from "./FHIRPathParser";
 import { TotalInvocationContext } from "./FHIRPathParser";
+import { KeywordInvocationContext } from "./FHIRPathParser";
 import { InvocationTermContext } from "./FHIRPathParser";
 import { LiteralTermContext } from "./FHIRPathParser";
 import { ExternalConstantTermContext } from "./FHIRPathParser";
@@ -40,6 +41,10 @@ import { TermContext } from "./FHIRPathParser";
 import { LiteralContext } from "./FHIRPathParser";
 import { ExternalConstantContext } from "./FHIRPathParser";
 import { InvocationContext } from "./FHIRPathParser";
+import { KeywordContext } from "./FHIRPathParser";
+import { ThisKeywordContext } from "./FHIRPathParser";
+import { IndexKeywordContext } from "./FHIRPathParser";
+import { TotalKeywordContext } from "./FHIRPathParser";
 import { FunctionContext } from "./FHIRPathParser";
 import { ParamListContext } from "./FHIRPathParser";
 import { QuantityContext } from "./FHIRPathParser";
@@ -284,6 +289,14 @@ export interface FHIRPathVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitTotalInvocation?: (ctx: TotalInvocationContext) => Result;
 
 	/**
+	 * Visit a parse tree produced by the `keywordInvocation`
+	 * labeled alternative in `FHIRPathParser.invocation`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitKeywordInvocation?: (ctx: KeywordInvocationContext) => Result;
+
+	/**
 	 * Visit a parse tree produced by the `invocationTerm`
 	 * labeled alternative in `FHIRPathParser.term`.
 	 * @param ctx the parse tree
@@ -349,6 +362,34 @@ export interface FHIRPathVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitInvocation?: (ctx: InvocationContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `FHIRPathParser.keyword`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitKeyword?: (ctx: KeywordContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `FHIRPathParser.thisKeyword`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitThisKeyword?: (ctx: ThisKeywordContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `FHIRPathParser.indexKeyword`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitIndexKeyword?: (ctx: IndexKeywordContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `FHIRPathParser.totalKeyword`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitTotalKeyword?: (ctx: TotalKeywordContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `FHIRPathParser.function`.

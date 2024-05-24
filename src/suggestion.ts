@@ -58,17 +58,17 @@ function resolveWhile(specmap: Object, node: Object, until: string) {
 function resolveElements(fhirschemas: Object, node: Object): Array<[string, Object]> {
     let elements = []
     if (node) {
+        if (node.hasOwnProperty("elements")) {
+            elements = elements.concat(Object.entries(node["elements"]))            
+        } 
         let typeDefinition: Object = null
-        if (node.hasOwnProperty("id")) {
-            typeDefinition = node
-        } else if (node.hasOwnProperty("type")) {
+        if (node.hasOwnProperty("type")) {
             typeDefinition = fhirschemas[node["type"]]
-        }
-        if (typeDefinition === null) {
+        } else {
             return elements
         }
         if (typeDefinition.hasOwnProperty("elements")) {
-            elements = elements.concat(Object.entries(typeDefinition["elements"]))            
+            elements = elements.concat(Object.entries(typeDefinition["elements"]))
         } 
         let baseNode = typeDefinition
         while(baseNode && baseNode.hasOwnProperty("base")) {

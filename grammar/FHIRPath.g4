@@ -50,9 +50,37 @@ externalConstant
 invocation                          // Terms that can be used after the function/member invocation '.'
         : identifier                                            #memberInvocation
         | function                                              #functionInvocation
-        | '$this'                                               #thisInvocation
-        | '$index'                                              #indexInvocation
-        | '$total'                                              #totalInvocation
+        | thisKeyword                                           #thisInvocation
+        | indexKeyword                                          #indexInvocation
+        | totalKeyword                                          #totalInvocation
+        | keyword                                               #keywordInvocation
+        ;
+
+keyword
+        : '$'
+        ;
+
+thisKeyword
+        : '$t'
+        | '$th'
+        | '$thi'
+        | '$this'
+        ;
+
+indexKeyword
+        : '$i'
+        | '$in'
+        | '$ind'
+        | '$inde'
+        | '$index'
+        ;
+
+totalKeyword
+        : '$t'
+        | '$to'
+        | '$tot'
+        | '$tota'
+        | '$total'
         ;
 
 function

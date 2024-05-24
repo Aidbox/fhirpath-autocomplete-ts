@@ -17,6 +17,8 @@ export declare const OFTYPE: FhirpathFunction;
 export declare const FIRST: FhirpathFunction;
 export declare const LOWBOUNDARY: FhirpathFunction;
 export declare const HIGHBOUNDARY: FhirpathFunction;
+export declare const GETRESOURCEKEY: FhirpathFunction;
+export declare const GETREFERENCEKEY: FhirpathFunction;
 export declare const FHIRPATH_FUNCTIONS: Array<FhirpathFunction>;
 export declare const FHIRPATH_FUNCTIONS_MAP: Map<string, FhirpathFunction>;
 //# sourceMappingURL=fhirpath_functions.d.ts.map

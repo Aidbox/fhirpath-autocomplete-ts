@@ -2,7 +2,7 @@ import { CharStreams, CommonTokenStream, ParserRuleContext, RuleContext, Token }
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor'
 import { ErrorNode, ParseTree, TerminalNode } from 'antlr4ts/tree'
 import { FHIRPathLexer } from './generated/FHIRPathLexer';
-import { AdditiveExpressionContext, AndExpressionContext, EqualityExpressionContext, ExternalConstantTermContext, FHIRPathParser, FunctionContext, IdentifierContext, ImpliesExpressionContext, IndexInvocationContext, IndexerExpressionContext, InequalityExpressionContext, InvocationExpressionContext, LiteralTermContext, MembershipExpressionContext, MultiplicativeExpressionContext, OrExpressionContext, ParamListContext, ParenthesizedTermContext, StringLiteralContext, TermContext, ThisInvocationContext, TotalInvocationContext, TypeExpressionContext, TypeSpecifierContext, UnionExpressionContext } from './generated/FHIRPathParser';
+import { AdditiveExpressionContext, AndExpressionContext, EqualityExpressionContext, ExternalConstantTermContext, FHIRPathParser, FunctionContext, IdentifierContext, ImpliesExpressionContext, IndexInvocationContext, IndexerExpressionContext, InequalityExpressionContext, InvocationExpressionContext, KeywordContext, LiteralTermContext, MembershipExpressionContext, MultiplicativeExpressionContext, OrExpressionContext, ParamListContext, ParenthesizedTermContext, StringLiteralContext, TermContext, ThisInvocationContext, TotalInvocationContext, TypeExpressionContext, TypeSpecifierContext, UnionExpressionContext } from './generated/FHIRPathParser';
 import { FHIRPathVisitor } from './generated/FHIRPathVisitor';
 
 export enum ScopeType {
@@ -269,6 +269,10 @@ class FHIRPathAutocompleteVisitor extends AbstractParseTreeVisitor<FHIRToken | n
                     break
             }
         }
+    }
+    
+    visitKeyword?: (ctx: KeywordContext) => FHIRToken = (ctx: KeywordContext) => {
+        return new FHIRToken(FHIRTokenType.Keyword, ctx.text, this.rangeFromRule(ctx))
     }
 
     visitThisInvocation?: (ctx: ThisInvocationContext) => FHIRToken = (ctx: ThisInvocationContext) => {

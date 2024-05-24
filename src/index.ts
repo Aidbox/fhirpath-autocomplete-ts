@@ -30,7 +30,7 @@
 // })
 
 // // TODO: add to tests
-// console.log(reduceAt("(given = |)"))
+// console.log(reduceAt("(given = $thi|)"))
 // // console.log(reduceAt("name as |").token)
 // // console.log(JSON.stringify(reduceAt("name.|"), null, 4))
 // //  console.log(reduce("name.where(name = 'dj')", 21,))

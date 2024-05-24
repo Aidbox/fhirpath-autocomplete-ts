@@ -103,6 +103,24 @@ export const HIGHBOUNDARY = new FhirpathFunction({
     onType: new Set(["decimal", "integer", "dateTime", "instant", "date", "time", "Quantity"])
 })
 
+export const GETRESOURCEKEY = new FhirpathFunction({
+    name: "getResourceKey",
+    insertText: "getResourceKey()",
+    parametersCount: 0,
+    optionalParamer: true,
+    parameterTypes: [],
+    returnType: "KeyType",
+})
+
+export const GETREFERENCEKEY = new FhirpathFunction({
+    name: "getReferenceKey",
+    insertText: "getReferenceKey($0)",
+    parametersCount: 1,
+    optionalParamer: true,
+    parameterTypes: [],
+    returnType: "KeyType",
+})
+
 export const FHIRPATH_FUNCTIONS : Array<FhirpathFunction> = [
     WHERE,
     EXISTS,
@@ -112,7 +130,9 @@ export const FHIRPATH_FUNCTIONS : Array<FhirpathFunction> = [
     OFTYPE,
     FIRST,
     LOWBOUNDARY,
-    HIGHBOUNDARY
+    HIGHBOUNDARY,
+    GETRESOURCEKEY,
+    GETREFERENCEKEY
 ]
 
 export const FHIRPATH_FUNCTIONS_MAP : Map<string, FhirpathFunction> = new Map([
@@ -124,5 +144,7 @@ export const FHIRPATH_FUNCTIONS_MAP : Map<string, FhirpathFunction> = new Map([
     ["ofType", OFTYPE],
     ["first", FIRST],
     ["lowboundary", LOWBOUNDARY],
-    ["highboundary", HIGHBOUNDARY]
+    ["highboundary", HIGHBOUNDARY],
+    ["getResourceKey", GETRESOURCEKEY],
+    ["getReferenceKey", GETREFERENCEKEY]
 ])

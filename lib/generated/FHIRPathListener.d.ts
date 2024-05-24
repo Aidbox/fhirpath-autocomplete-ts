@@ -27,6 +27,7 @@ import { FunctionInvocationContext } from "./FHIRPathParser";
 import { ThisInvocationContext } from "./FHIRPathParser";
 import { IndexInvocationContext } from "./FHIRPathParser";
 import { TotalInvocationContext } from "./FHIRPathParser";
+import { KeywordInvocationContext } from "./FHIRPathParser";
 import { InvocationTermContext } from "./FHIRPathParser";
 import { LiteralTermContext } from "./FHIRPathParser";
 import { ExternalConstantTermContext } from "./FHIRPathParser";
@@ -36,6 +37,10 @@ import { TermContext } from "./FHIRPathParser";
 import { LiteralContext } from "./FHIRPathParser";
 import { ExternalConstantContext } from "./FHIRPathParser";
 import { InvocationContext } from "./FHIRPathParser";
+import { KeywordContext } from "./FHIRPathParser";
+import { ThisKeywordContext } from "./FHIRPathParser";
+import { IndexKeywordContext } from "./FHIRPathParser";
+import { TotalKeywordContext } from "./FHIRPathParser";
 import { FunctionContext } from "./FHIRPathParser";
 import { ParamListContext } from "./FHIRPathParser";
 import { QuantityContext } from "./FHIRPathParser";
@@ -387,6 +392,18 @@ export interface FHIRPathListener extends ParseTreeListener {
      */
     exitTotalInvocation?: (ctx: TotalInvocationContext) => void;
     /**
+     * Enter a parse tree produced by the `keywordInvocation`
+     * labeled alternative in `FHIRPathParser.invocation`.
+     * @param ctx the parse tree
+     */
+    enterKeywordInvocation?: (ctx: KeywordInvocationContext) => void;
+    /**
+     * Exit a parse tree produced by the `keywordInvocation`
+     * labeled alternative in `FHIRPathParser.invocation`.
+     * @param ctx the parse tree
+     */
+    exitKeywordInvocation?: (ctx: KeywordInvocationContext) => void;
+    /**
      * Enter a parse tree produced by the `invocationTerm`
      * labeled alternative in `FHIRPathParser.term`.
      * @param ctx the parse tree
@@ -484,6 +501,46 @@ export interface FHIRPathListener extends ParseTreeListener {
      * @param ctx the parse tree
      */
     exitInvocation?: (ctx: InvocationContext) => void;
+    /**
+     * Enter a parse tree produced by `FHIRPathParser.keyword`.
+     * @param ctx the parse tree
+     */
+    enterKeyword?: (ctx: KeywordContext) => void;
+    /**
+     * Exit a parse tree produced by `FHIRPathParser.keyword`.
+     * @param ctx the parse tree
+     */
+    exitKeyword?: (ctx: KeywordContext) => void;
+    /**
+     * Enter a parse tree produced by `FHIRPathParser.thisKeyword`.
+     * @param ctx the parse tree
+     */
+    enterThisKeyword?: (ctx: ThisKeywordContext) => void;
+    /**
+     * Exit a parse tree produced by `FHIRPathParser.thisKeyword`.
+     * @param ctx the parse tree
+     */
+    exitThisKeyword?: (ctx: ThisKeywordContext) => void;
+    /**
+     * Enter a parse tree produced by `FHIRPathParser.indexKeyword`.
+     * @param ctx the parse tree
+     */
+    enterIndexKeyword?: (ctx: IndexKeywordContext) => void;
+    /**
+     * Exit a parse tree produced by `FHIRPathParser.indexKeyword`.
+     * @param ctx the parse tree
+     */
+    exitIndexKeyword?: (ctx: IndexKeywordContext) => void;
+    /**
+     * Enter a parse tree produced by `FHIRPathParser.totalKeyword`.
+     * @param ctx the parse tree
+     */
+    enterTotalKeyword?: (ctx: TotalKeywordContext) => void;
+    /**
+     * Exit a parse tree produced by `FHIRPathParser.totalKeyword`.
+     * @param ctx the parse tree
+     */
+    exitTotalKeyword?: (ctx: TotalKeywordContext) => void;
     /**
      * Enter a parse tree produced by `FHIRPathParser.function`.
      * @param ctx the parse tree

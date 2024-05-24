@@ -82,48 +82,65 @@ export class FHIRPathParser extends Parser {
 	public static readonly T__51 = 52;
 	public static readonly T__52 = 53;
 	public static readonly T__53 = 54;
-	public static readonly DATETIME = 55;
-	public static readonly TIME = 56;
-	public static readonly DATESTARTSYMBOL = 57;
-	public static readonly IDENTIFIER = 58;
-	public static readonly DELIMITEDIDENTIFIER = 59;
-	public static readonly UDELIMITEDIDENTIFIER = 60;
-	public static readonly STRING = 61;
-	public static readonly USTRING = 62;
-	public static readonly NUMBER = 63;
-	public static readonly WS = 64;
-	public static readonly COMMENT = 65;
-	public static readonly LINE_COMMENT = 66;
+	public static readonly T__54 = 55;
+	public static readonly T__55 = 56;
+	public static readonly T__56 = 57;
+	public static readonly T__57 = 58;
+	public static readonly T__58 = 59;
+	public static readonly T__59 = 60;
+	public static readonly T__60 = 61;
+	public static readonly T__61 = 62;
+	public static readonly T__62 = 63;
+	public static readonly T__63 = 64;
+	public static readonly T__64 = 65;
+	public static readonly DATETIME = 66;
+	public static readonly TIME = 67;
+	public static readonly DATESTARTSYMBOL = 68;
+	public static readonly IDENTIFIER = 69;
+	public static readonly DELIMITEDIDENTIFIER = 70;
+	public static readonly UDELIMITEDIDENTIFIER = 71;
+	public static readonly STRING = 72;
+	public static readonly USTRING = 73;
+	public static readonly NUMBER = 74;
+	public static readonly WS = 75;
+	public static readonly COMMENT = 76;
+	public static readonly LINE_COMMENT = 77;
 	public static readonly RULE_expression = 0;
 	public static readonly RULE_term = 1;
 	public static readonly RULE_literal = 2;
 	public static readonly RULE_externalConstant = 3;
 	public static readonly RULE_invocation = 4;
-	public static readonly RULE_function = 5;
-	public static readonly RULE_paramList = 6;
-	public static readonly RULE_quantity = 7;
-	public static readonly RULE_unit = 8;
-	public static readonly RULE_dateTimePrecision = 9;
-	public static readonly RULE_pluralDateTimePrecision = 10;
-	public static readonly RULE_typeSpecifier = 11;
-	public static readonly RULE_qualifiedIdentifier = 12;
-	public static readonly RULE_identifier = 13;
+	public static readonly RULE_keyword = 5;
+	public static readonly RULE_thisKeyword = 6;
+	public static readonly RULE_indexKeyword = 7;
+	public static readonly RULE_totalKeyword = 8;
+	public static readonly RULE_function = 9;
+	public static readonly RULE_paramList = 10;
+	public static readonly RULE_quantity = 11;
+	public static readonly RULE_unit = 12;
+	public static readonly RULE_dateTimePrecision = 13;
+	public static readonly RULE_pluralDateTimePrecision = 14;
+	public static readonly RULE_typeSpecifier = 15;
+	public static readonly RULE_qualifiedIdentifier = 16;
+	public static readonly RULE_identifier = 17;
 	// tslint:disable:no-trailing-whitespace
 	public static readonly ruleNames: string[] = [
-		"expression", "term", "literal", "externalConstant", "invocation", "function", 
-		"paramList", "quantity", "unit", "dateTimePrecision", "pluralDateTimePrecision", 
-		"typeSpecifier", "qualifiedIdentifier", "identifier",
+		"expression", "term", "literal", "externalConstant", "invocation", "keyword", 
+		"thisKeyword", "indexKeyword", "totalKeyword", "function", "paramList", 
+		"quantity", "unit", "dateTimePrecision", "pluralDateTimePrecision", "typeSpecifier", 
+		"qualifiedIdentifier", "identifier",
 	];
 
 	private static readonly _LITERAL_NAMES: Array<string | undefined> = [
 		undefined, "'.'", "'['", "']'", "'+'", "'-'", "'*'", "'/'", "'div'", "'mod'", 
 		"'&'", "'is'", "'as'", "'|'", "'<='", "'<'", "'>'", "'>='", "'='", "'~'", 
 		"'!='", "'!~'", "'in'", "'contains'", "'and'", "'or'", "'xor'", "'implies'", 
-		"'('", "')'", "'{'", "'}'", "'true'", "'false'", "'%'", "'$this'", "'$index'", 
-		"'$total'", "','", "'year'", "'month'", "'week'", "'day'", "'hour'", "'minute'", 
-		"'second'", "'millisecond'", "'years'", "'months'", "'weeks'", "'days'", 
-		"'hours'", "'minutes'", "'seconds'", "'milliseconds'", undefined, undefined, 
-		"'@'",
+		"'('", "')'", "'{'", "'}'", "'true'", "'false'", "'%'", "'$'", "'$t'", 
+		"'$th'", "'$thi'", "'$this'", "'$i'", "'$in'", "'$ind'", "'$inde'", "'$index'", 
+		"'$to'", "'$tot'", "'$tota'", "'$total'", "','", "'year'", "'month'", 
+		"'week'", "'day'", "'hour'", "'minute'", "'second'", "'millisecond'", 
+		"'years'", "'months'", "'weeks'", "'days'", "'hours'", "'minutes'", "'seconds'", 
+		"'milliseconds'", undefined, undefined, "'@'",
 	];
 	private static readonly _SYMBOLIC_NAMES: Array<string | undefined> = [
 		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
@@ -133,9 +150,11 @@ export class FHIRPathParser extends Parser {
 		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
 		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
 		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
-		undefined, undefined, undefined, undefined, undefined, undefined, "DATETIME", 
-		"TIME", "DATESTARTSYMBOL", "IDENTIFIER", "DELIMITEDIDENTIFIER", "UDELIMITEDIDENTIFIER", 
-		"STRING", "USTRING", "NUMBER", "WS", "COMMENT", "LINE_COMMENT",
+		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
+		undefined, undefined, undefined, undefined, undefined, undefined, undefined, 
+		undefined, undefined, undefined, "DATETIME", "TIME", "DATESTARTSYMBOL", 
+		"IDENTIFIER", "DELIMITEDIDENTIFIER", "UDELIMITEDIDENTIFIER", "STRING", 
+		"USTRING", "NUMBER", "WS", "COMMENT", "LINE_COMMENT",
 	];
 	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(FHIRPathParser._LITERAL_NAMES, FHIRPathParser._SYMBOLIC_NAMES, []);
 
@@ -183,7 +202,7 @@ export class FHIRPathParser extends Parser {
 			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 32;
+			this.state = 40;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case FHIRPathParser.T__10:
@@ -198,6 +217,17 @@ export class FHIRPathParser extends Parser {
 			case FHIRPathParser.T__34:
 			case FHIRPathParser.T__35:
 			case FHIRPathParser.T__36:
+			case FHIRPathParser.T__37:
+			case FHIRPathParser.T__38:
+			case FHIRPathParser.T__39:
+			case FHIRPathParser.T__40:
+			case FHIRPathParser.T__41:
+			case FHIRPathParser.T__42:
+			case FHIRPathParser.T__43:
+			case FHIRPathParser.T__44:
+			case FHIRPathParser.T__45:
+			case FHIRPathParser.T__46:
+			case FHIRPathParser.T__47:
 			case FHIRPathParser.DATETIME:
 			case FHIRPathParser.TIME:
 			case FHIRPathParser.DATESTARTSYMBOL:
@@ -212,7 +242,7 @@ export class FHIRPathParser extends Parser {
 				this._ctx = _localctx;
 				_prevctx = _localctx;
 
-				this.state = 29;
+				this.state = 37;
 				this.term();
 				}
 				break;
@@ -222,7 +252,7 @@ export class FHIRPathParser extends Parser {
 				_localctx = new PolarityExpressionContext(_localctx);
 				this._ctx = _localctx;
 				_prevctx = _localctx;
-				this.state = 30;
+				this.state = 38;
 				_la = this._input.LA(1);
 				if (!(_la === FHIRPathParser.T__3 || _la === FHIRPathParser.T__4)) {
 				this._errHandler.recoverInline(this);
@@ -234,7 +264,7 @@ export class FHIRPathParser extends Parser {
 					this._errHandler.reportMatch(this);
 					this.consume();
 				}
-				this.state = 31;
+				this.state = 39;
 				this.expression(11);
 				}
 				break;
@@ -242,7 +272,7 @@ export class FHIRPathParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			this._ctx._stop = this._input.tryLT(-1);
-			this.state = 74;
+			this.state = 82;
 			this._errHandler.sync(this);
 			_alt = this.interpreter.adaptivePredict(this._input, 2, this._ctx);
 			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
@@ -252,18 +282,18 @@ export class FHIRPathParser extends Parser {
 					}
 					_prevctx = _localctx;
 					{
-					this.state = 72;
+					this.state = 80;
 					this._errHandler.sync(this);
 					switch ( this.interpreter.adaptivePredict(this._input, 1, this._ctx) ) {
 					case 1:
 						{
 						_localctx = new MultiplicativeExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						this.pushNewRecursionContext(_localctx, _startState, FHIRPathParser.RULE_expression);
-						this.state = 34;
+						this.state = 42;
 						if (!(this.precpred(this._ctx, 10))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 10)");
 						}
-						this.state = 35;
+						this.state = 43;
 						_la = this._input.LA(1);
 						if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << FHIRPathParser.T__5) | (1 << FHIRPathParser.T__6) | (1 << FHIRPathParser.T__7) | (1 << FHIRPathParser.T__8))) !== 0))) {
 						this._errHandler.recoverInline(this);
@@ -275,7 +305,7 @@ export class FHIRPathParser extends Parser {
 							this._errHandler.reportMatch(this);
 							this.consume();
 						}
-						this.state = 36;
+						this.state = 44;
 						this.expression(11);
 						}
 						break;
@@ -284,11 +314,11 @@ export class FHIRPathParser extends Parser {
 						{
 						_localctx = new AdditiveExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						this.pushNewRecursionContext(_localctx, _startState, FHIRPathParser.RULE_expression);
-						this.state = 37;
+						this.state = 45;
 						if (!(this.precpred(this._ctx, 9))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 9)");
 						}
-						this.state = 38;
+						this.state = 46;
 						_la = this._input.LA(1);
 						if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << FHIRPathParser.T__3) | (1 << FHIRPathParser.T__4) | (1 << FHIRPathParser.T__9))) !== 0))) {
 						this._errHandler.recoverInline(this);
@@ -300,7 +330,7 @@ export class FHIRPathParser extends Parser {
 							this._errHandler.reportMatch(this);
 							this.consume();
 						}
-						this.state = 39;
+						this.state = 47;
 						this.expression(10);
 						}
 						break;
@@ -309,13 +339,13 @@ export class FHIRPathParser extends Parser {
 						{
 						_localctx = new UnionExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						this.pushNewRecursionContext(_localctx, _startState, FHIRPathParser.RULE_expression);
-						this.state = 40;
+						this.state = 48;
 						if (!(this.precpred(this._ctx, 7))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 7)");
 						}
-						this.state = 41;
+						this.state = 49;
 						this.match(FHIRPathParser.T__12);
-						this.state = 42;
+						this.state = 50;
 						this.expression(8);
 						}
 						break;
@@ -324,11 +354,11 @@ export class FHIRPathParser extends Parser {
 						{
 						_localctx = new InequalityExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						this.pushNewRecursionContext(_localctx, _startState, FHIRPathParser.RULE_expression);
-						this.state = 43;
+						this.state = 51;
 						if (!(this.precpred(this._ctx, 6))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 6)");
 						}
-						this.state = 44;
+						this.state = 52;
 						_la = this._input.LA(1);
 						if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << FHIRPathParser.T__13) | (1 << FHIRPathParser.T__14) | (1 << FHIRPathParser.T__15) | (1 << FHIRPathParser.T__16))) !== 0))) {
 						this._errHandler.recoverInline(this);
@@ -340,7 +370,7 @@ export class FHIRPathParser extends Parser {
 							this._errHandler.reportMatch(this);
 							this.consume();
 						}
-						this.state = 45;
+						this.state = 53;
 						this.expression(7);
 						}
 						break;
@@ -349,11 +379,11 @@ export class FHIRPathParser extends Parser {
 						{
 						_localctx = new EqualityExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						this.pushNewRecursionContext(_localctx, _startState, FHIRPathParser.RULE_expression);
-						this.state = 46;
+						this.state = 54;
 						if (!(this.precpred(this._ctx, 5))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 5)");
 						}
-						this.state = 47;
+						this.state = 55;
 						_la = this._input.LA(1);
 						if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << FHIRPathParser.T__17) | (1 << FHIRPathParser.T__18) | (1 << FHIRPathParser.T__19) | (1 << FHIRPathParser.T__20))) !== 0))) {
 						this._errHandler.recoverInline(this);
@@ -365,7 +395,7 @@ export class FHIRPathParser extends Parser {
 							this._errHandler.reportMatch(this);
 							this.consume();
 						}
-						this.state = 48;
+						this.state = 56;
 						this.expression(6);
 						}
 						break;
@@ -374,11 +404,11 @@ export class FHIRPathParser extends Parser {
 						{
 						_localctx = new MembershipExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						this.pushNewRecursionContext(_localctx, _startState, FHIRPathParser.RULE_expression);
-						this.state = 49;
+						this.state = 57;
 						if (!(this.precpred(this._ctx, 4))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 4)");
 						}
-						this.state = 50;
+						this.state = 58;
 						_la = this._input.LA(1);
 						if (!(_la === FHIRPathParser.T__21 || _la === FHIRPathParser.T__22)) {
 						this._errHandler.recoverInline(this);
@@ -390,7 +420,7 @@ export class FHIRPathParser extends Parser {
 							this._errHandler.reportMatch(this);
 							this.consume();
 						}
-						this.state = 51;
+						this.state = 59;
 						this.expression(5);
 						}
 						break;
@@ -399,13 +429,13 @@ export class FHIRPathParser extends Parser {
 						{
 						_localctx = new AndExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						this.pushNewRecursionContext(_localctx, _startState, FHIRPathParser.RULE_expression);
-						this.state = 52;
+						this.state = 60;
 						if (!(this.precpred(this._ctx, 3))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 3)");
 						}
-						this.state = 53;
+						this.state = 61;
 						this.match(FHIRPathParser.T__23);
-						this.state = 54;
+						this.state = 62;
 						this.expression(4);
 						}
 						break;
@@ -414,11 +444,11 @@ export class FHIRPathParser extends Parser {
 						{
 						_localctx = new OrExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						this.pushNewRecursionContext(_localctx, _startState, FHIRPathParser.RULE_expression);
-						this.state = 55;
+						this.state = 63;
 						if (!(this.precpred(this._ctx, 2))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 2)");
 						}
-						this.state = 56;
+						this.state = 64;
 						_la = this._input.LA(1);
 						if (!(_la === FHIRPathParser.T__24 || _la === FHIRPathParser.T__25)) {
 						this._errHandler.recoverInline(this);
@@ -430,7 +460,7 @@ export class FHIRPathParser extends Parser {
 							this._errHandler.reportMatch(this);
 							this.consume();
 						}
-						this.state = 57;
+						this.state = 65;
 						this.expression(3);
 						}
 						break;
@@ -439,13 +469,13 @@ export class FHIRPathParser extends Parser {
 						{
 						_localctx = new ImpliesExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						this.pushNewRecursionContext(_localctx, _startState, FHIRPathParser.RULE_expression);
-						this.state = 58;
+						this.state = 66;
 						if (!(this.precpred(this._ctx, 1))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 1)");
 						}
-						this.state = 59;
+						this.state = 67;
 						this.match(FHIRPathParser.T__26);
-						this.state = 60;
+						this.state = 68;
 						this.expression(2);
 						}
 						break;
@@ -454,13 +484,13 @@ export class FHIRPathParser extends Parser {
 						{
 						_localctx = new InvocationExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						this.pushNewRecursionContext(_localctx, _startState, FHIRPathParser.RULE_expression);
-						this.state = 61;
+						this.state = 69;
 						if (!(this.precpred(this._ctx, 13))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 13)");
 						}
-						this.state = 62;
+						this.state = 70;
 						this.match(FHIRPathParser.T__0);
-						this.state = 63;
+						this.state = 71;
 						this.invocation();
 						}
 						break;
@@ -469,15 +499,15 @@ export class FHIRPathParser extends Parser {
 						{
 						_localctx = new IndexerExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						this.pushNewRecursionContext(_localctx, _startState, FHIRPathParser.RULE_expression);
-						this.state = 64;
+						this.state = 72;
 						if (!(this.precpred(this._ctx, 12))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 12)");
 						}
-						this.state = 65;
+						this.state = 73;
 						this.match(FHIRPathParser.T__1);
-						this.state = 66;
+						this.state = 74;
 						this.expression(0);
-						this.state = 67;
+						this.state = 75;
 						this.match(FHIRPathParser.T__2);
 						}
 						break;
@@ -486,11 +516,11 @@ export class FHIRPathParser extends Parser {
 						{
 						_localctx = new TypeExpressionContext(new ExpressionContext(_parentctx, _parentState));
 						this.pushNewRecursionContext(_localctx, _startState, FHIRPathParser.RULE_expression);
-						this.state = 69;
+						this.state = 77;
 						if (!(this.precpred(this._ctx, 8))) {
 							throw this.createFailedPredicateException("this.precpred(this._ctx, 8)");
 						}
-						this.state = 70;
+						this.state = 78;
 						_la = this._input.LA(1);
 						if (!(_la === FHIRPathParser.T__10 || _la === FHIRPathParser.T__11)) {
 						this._errHandler.recoverInline(this);
@@ -502,14 +532,14 @@ export class FHIRPathParser extends Parser {
 							this._errHandler.reportMatch(this);
 							this.consume();
 						}
-						this.state = 71;
+						this.state = 79;
 						this.typeSpecifier();
 						}
 						break;
 					}
 					}
 				}
-				this.state = 76;
+				this.state = 84;
 				this._errHandler.sync(this);
 				_alt = this.interpreter.adaptivePredict(this._input, 2, this._ctx);
 			}
@@ -534,7 +564,7 @@ export class FHIRPathParser extends Parser {
 		let _localctx: TermContext = new TermContext(this._ctx, this.state);
 		this.enterRule(_localctx, 2, FHIRPathParser.RULE_term);
 		try {
-			this.state = 84;
+			this.state = 92;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case FHIRPathParser.T__10:
@@ -544,13 +574,24 @@ export class FHIRPathParser extends Parser {
 			case FHIRPathParser.T__34:
 			case FHIRPathParser.T__35:
 			case FHIRPathParser.T__36:
+			case FHIRPathParser.T__37:
+			case FHIRPathParser.T__38:
+			case FHIRPathParser.T__39:
+			case FHIRPathParser.T__40:
+			case FHIRPathParser.T__41:
+			case FHIRPathParser.T__42:
+			case FHIRPathParser.T__43:
+			case FHIRPathParser.T__44:
+			case FHIRPathParser.T__45:
+			case FHIRPathParser.T__46:
+			case FHIRPathParser.T__47:
 			case FHIRPathParser.IDENTIFIER:
 			case FHIRPathParser.DELIMITEDIDENTIFIER:
 			case FHIRPathParser.UDELIMITEDIDENTIFIER:
 				_localctx = new InvocationTermContext(_localctx);
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 77;
+				this.state = 85;
 				this.invocation();
 				}
 				break;
@@ -566,7 +607,7 @@ export class FHIRPathParser extends Parser {
 				_localctx = new LiteralTermContext(_localctx);
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 78;
+				this.state = 86;
 				this.literal();
 				}
 				break;
@@ -574,7 +615,7 @@ export class FHIRPathParser extends Parser {
 				_localctx = new ExternalConstantTermContext(_localctx);
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 79;
+				this.state = 87;
 				this.externalConstant();
 				}
 				break;
@@ -582,11 +623,11 @@ export class FHIRPathParser extends Parser {
 				_localctx = new ParenthesizedTermContext(_localctx);
 				this.enterOuterAlt(_localctx, 4);
 				{
-				this.state = 80;
+				this.state = 88;
 				this.match(FHIRPathParser.T__27);
-				this.state = 81;
+				this.state = 89;
 				this.expression(0);
-				this.state = 82;
+				this.state = 90;
 				this.match(FHIRPathParser.T__28);
 				}
 				break;
@@ -614,16 +655,16 @@ export class FHIRPathParser extends Parser {
 		this.enterRule(_localctx, 4, FHIRPathParser.RULE_literal);
 		let _la: number;
 		try {
-			this.state = 96;
+			this.state = 104;
 			this._errHandler.sync(this);
 			switch ( this.interpreter.adaptivePredict(this._input, 4, this._ctx) ) {
 			case 1:
 				_localctx = new NullLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 86;
+				this.state = 94;
 				this.match(FHIRPathParser.T__29);
-				this.state = 87;
+				this.state = 95;
 				this.match(FHIRPathParser.T__30);
 				}
 				break;
@@ -632,7 +673,7 @@ export class FHIRPathParser extends Parser {
 				_localctx = new BooleanLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 88;
+				this.state = 96;
 				_la = this._input.LA(1);
 				if (!(_la === FHIRPathParser.T__31 || _la === FHIRPathParser.T__32)) {
 				this._errHandler.recoverInline(this);
@@ -651,7 +692,7 @@ export class FHIRPathParser extends Parser {
 				_localctx = new StringLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 89;
+				this.state = 97;
 				this.match(FHIRPathParser.STRING);
 				}
 				break;
@@ -660,7 +701,7 @@ export class FHIRPathParser extends Parser {
 				_localctx = new UstringLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 4);
 				{
-				this.state = 90;
+				this.state = 98;
 				this.match(FHIRPathParser.USTRING);
 				}
 				break;
@@ -669,7 +710,7 @@ export class FHIRPathParser extends Parser {
 				_localctx = new NumberLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 5);
 				{
-				this.state = 91;
+				this.state = 99;
 				this.match(FHIRPathParser.NUMBER);
 				}
 				break;
@@ -678,7 +719,7 @@ export class FHIRPathParser extends Parser {
 				_localctx = new DateTimeLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 6);
 				{
-				this.state = 92;
+				this.state = 100;
 				this.match(FHIRPathParser.DATETIME);
 				}
 				break;
@@ -687,7 +728,7 @@ export class FHIRPathParser extends Parser {
 				_localctx = new TimeLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 7);
 				{
-				this.state = 93;
+				this.state = 101;
 				this.match(FHIRPathParser.TIME);
 				}
 				break;
@@ -696,7 +737,7 @@ export class FHIRPathParser extends Parser {
 				_localctx = new DateStartSymbolLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 8);
 				{
-				this.state = 94;
+				this.state = 102;
 				this.match(FHIRPathParser.DATESTARTSYMBOL);
 				}
 				break;
@@ -705,7 +746,7 @@ export class FHIRPathParser extends Parser {
 				_localctx = new QuantityLiteralContext(_localctx);
 				this.enterOuterAlt(_localctx, 9);
 				{
-				this.state = 95;
+				this.state = 103;
 				this.quantity();
 				}
 				break;
@@ -732,9 +773,9 @@ export class FHIRPathParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 98;
+			this.state = 106;
 			this.match(FHIRPathParser.T__33);
-			this.state = 102;
+			this.state = 110;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case FHIRPathParser.T__10:
@@ -745,19 +786,19 @@ export class FHIRPathParser extends Parser {
 			case FHIRPathParser.DELIMITEDIDENTIFIER:
 			case FHIRPathParser.UDELIMITEDIDENTIFIER:
 				{
-				this.state = 99;
+				this.state = 107;
 				this.identifier();
 				}
 				break;
 			case FHIRPathParser.STRING:
 				{
-				this.state = 100;
+				this.state = 108;
 				this.match(FHIRPathParser.STRING);
 				}
 				break;
 			case FHIRPathParser.USTRING:
 				{
-				this.state = 101;
+				this.state = 109;
 				this.match(FHIRPathParser.USTRING);
 				}
 				break;
@@ -785,14 +826,14 @@ export class FHIRPathParser extends Parser {
 		let _localctx: InvocationContext = new InvocationContext(this._ctx, this.state);
 		this.enterRule(_localctx, 8, FHIRPathParser.RULE_invocation);
 		try {
-			this.state = 109;
+			this.state = 118;
 			this._errHandler.sync(this);
 			switch ( this.interpreter.adaptivePredict(this._input, 6, this._ctx) ) {
 			case 1:
 				_localctx = new MemberInvocationContext(_localctx);
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 104;
+				this.state = 112;
 				this.identifier();
 				}
 				break;
@@ -801,7 +842,7 @@ export class FHIRPathParser extends Parser {
 				_localctx = new FunctionInvocationContext(_localctx);
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 105;
+				this.state = 113;
 				this.function();
 				}
 				break;
@@ -810,8 +851,8 @@ export class FHIRPathParser extends Parser {
 				_localctx = new ThisInvocationContext(_localctx);
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 106;
-				this.match(FHIRPathParser.T__34);
+				this.state = 114;
+				this.thisKeyword();
 				}
 				break;
 
@@ -819,8 +860,8 @@ export class FHIRPathParser extends Parser {
 				_localctx = new IndexInvocationContext(_localctx);
 				this.enterOuterAlt(_localctx, 4);
 				{
-				this.state = 107;
-				this.match(FHIRPathParser.T__35);
+				this.state = 115;
+				this.indexKeyword();
 				}
 				break;
 
@@ -828,8 +869,17 @@ export class FHIRPathParser extends Parser {
 				_localctx = new TotalInvocationContext(_localctx);
 				this.enterOuterAlt(_localctx, 5);
 				{
-				this.state = 108;
-				this.match(FHIRPathParser.T__36);
+				this.state = 116;
+				this.totalKeyword();
+				}
+				break;
+
+			case 6:
+				_localctx = new KeywordInvocationContext(_localctx);
+				this.enterOuterAlt(_localctx, 6);
+				{
+				this.state = 117;
+				this.keyword();
 				}
 				break;
 			}
@@ -849,28 +899,161 @@ export class FHIRPathParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public function(): FunctionContext {
-		let _localctx: FunctionContext = new FunctionContext(this._ctx, this.state);
-		this.enterRule(_localctx, 10, FHIRPathParser.RULE_function);
+	public keyword(): KeywordContext {
+		let _localctx: KeywordContext = new KeywordContext(this._ctx, this.state);
+		this.enterRule(_localctx, 10, FHIRPathParser.RULE_keyword);
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 120;
+			this.match(FHIRPathParser.T__34);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public thisKeyword(): ThisKeywordContext {
+		let _localctx: ThisKeywordContext = new ThisKeywordContext(this._ctx, this.state);
+		this.enterRule(_localctx, 12, FHIRPathParser.RULE_thisKeyword);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 111;
+			this.state = 122;
+			_la = this._input.LA(1);
+			if (!(((((_la - 36)) & ~0x1F) === 0 && ((1 << (_la - 36)) & ((1 << (FHIRPathParser.T__35 - 36)) | (1 << (FHIRPathParser.T__36 - 36)) | (1 << (FHIRPathParser.T__37 - 36)) | (1 << (FHIRPathParser.T__38 - 36)))) !== 0))) {
+			this._errHandler.recoverInline(this);
+			} else {
+				if (this._input.LA(1) === Token.EOF) {
+					this.matchedEOF = true;
+				}
+
+				this._errHandler.reportMatch(this);
+				this.consume();
+			}
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public indexKeyword(): IndexKeywordContext {
+		let _localctx: IndexKeywordContext = new IndexKeywordContext(this._ctx, this.state);
+		this.enterRule(_localctx, 14, FHIRPathParser.RULE_indexKeyword);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 124;
+			_la = this._input.LA(1);
+			if (!(((((_la - 40)) & ~0x1F) === 0 && ((1 << (_la - 40)) & ((1 << (FHIRPathParser.T__39 - 40)) | (1 << (FHIRPathParser.T__40 - 40)) | (1 << (FHIRPathParser.T__41 - 40)) | (1 << (FHIRPathParser.T__42 - 40)) | (1 << (FHIRPathParser.T__43 - 40)))) !== 0))) {
+			this._errHandler.recoverInline(this);
+			} else {
+				if (this._input.LA(1) === Token.EOF) {
+					this.matchedEOF = true;
+				}
+
+				this._errHandler.reportMatch(this);
+				this.consume();
+			}
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public totalKeyword(): TotalKeywordContext {
+		let _localctx: TotalKeywordContext = new TotalKeywordContext(this._ctx, this.state);
+		this.enterRule(_localctx, 16, FHIRPathParser.RULE_totalKeyword);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 126;
+			_la = this._input.LA(1);
+			if (!(((((_la - 36)) & ~0x1F) === 0 && ((1 << (_la - 36)) & ((1 << (FHIRPathParser.T__35 - 36)) | (1 << (FHIRPathParser.T__44 - 36)) | (1 << (FHIRPathParser.T__45 - 36)) | (1 << (FHIRPathParser.T__46 - 36)) | (1 << (FHIRPathParser.T__47 - 36)))) !== 0))) {
+			this._errHandler.recoverInline(this);
+			} else {
+				if (this._input.LA(1) === Token.EOF) {
+					this.matchedEOF = true;
+				}
+
+				this._errHandler.reportMatch(this);
+				this.consume();
+			}
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public function(): FunctionContext {
+		let _localctx: FunctionContext = new FunctionContext(this._ctx, this.state);
+		this.enterRule(_localctx, 18, FHIRPathParser.RULE_function);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 128;
 			this.identifier();
-			this.state = 112;
+			this.state = 129;
 			this.match(FHIRPathParser.T__27);
-			this.state = 114;
+			this.state = 131;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << FHIRPathParser.T__3) | (1 << FHIRPathParser.T__4) | (1 << FHIRPathParser.T__10) | (1 << FHIRPathParser.T__11) | (1 << FHIRPathParser.T__21) | (1 << FHIRPathParser.T__22) | (1 << FHIRPathParser.T__27) | (1 << FHIRPathParser.T__29))) !== 0) || ((((_la - 32)) & ~0x1F) === 0 && ((1 << (_la - 32)) & ((1 << (FHIRPathParser.T__31 - 32)) | (1 << (FHIRPathParser.T__32 - 32)) | (1 << (FHIRPathParser.T__33 - 32)) | (1 << (FHIRPathParser.T__34 - 32)) | (1 << (FHIRPathParser.T__35 - 32)) | (1 << (FHIRPathParser.T__36 - 32)) | (1 << (FHIRPathParser.DATETIME - 32)) | (1 << (FHIRPathParser.TIME - 32)) | (1 << (FHIRPathParser.DATESTARTSYMBOL - 32)) | (1 << (FHIRPathParser.IDENTIFIER - 32)) | (1 << (FHIRPathParser.DELIMITEDIDENTIFIER - 32)) | (1 << (FHIRPathParser.UDELIMITEDIDENTIFIER - 32)) | (1 << (FHIRPathParser.STRING - 32)) | (1 << (FHIRPathParser.USTRING - 32)) | (1 << (FHIRPathParser.NUMBER - 32)))) !== 0)) {
+			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << FHIRPathParser.T__3) | (1 << FHIRPathParser.T__4) | (1 << FHIRPathParser.T__10) | (1 << FHIRPathParser.T__11) | (1 << FHIRPathParser.T__21) | (1 << FHIRPathParser.T__22) | (1 << FHIRPathParser.T__27) | (1 << FHIRPathParser.T__29))) !== 0) || ((((_la - 32)) & ~0x1F) === 0 && ((1 << (_la - 32)) & ((1 << (FHIRPathParser.T__31 - 32)) | (1 << (FHIRPathParser.T__32 - 32)) | (1 << (FHIRPathParser.T__33 - 32)) | (1 << (FHIRPathParser.T__34 - 32)) | (1 << (FHIRPathParser.T__35 - 32)) | (1 << (FHIRPathParser.T__36 - 32)) | (1 << (FHIRPathParser.T__37 - 32)) | (1 << (FHIRPathParser.T__38 - 32)) | (1 << (FHIRPathParser.T__39 - 32)) | (1 << (FHIRPathParser.T__40 - 32)) | (1 << (FHIRPathParser.T__41 - 32)) | (1 << (FHIRPathParser.T__42 - 32)) | (1 << (FHIRPathParser.T__43 - 32)) | (1 << (FHIRPathParser.T__44 - 32)) | (1 << (FHIRPathParser.T__45 - 32)) | (1 << (FHIRPathParser.T__46 - 32)) | (1 << (FHIRPathParser.T__47 - 32)))) !== 0) || ((((_la - 66)) & ~0x1F) === 0 && ((1 << (_la - 66)) & ((1 << (FHIRPathParser.DATETIME - 66)) | (1 << (FHIRPathParser.TIME - 66)) | (1 << (FHIRPathParser.DATESTARTSYMBOL - 66)) | (1 << (FHIRPathParser.IDENTIFIER - 66)) | (1 << (FHIRPathParser.DELIMITEDIDENTIFIER - 66)) | (1 << (FHIRPathParser.UDELIMITEDIDENTIFIER - 66)) | (1 << (FHIRPathParser.STRING - 66)) | (1 << (FHIRPathParser.USTRING - 66)) | (1 << (FHIRPathParser.NUMBER - 66)))) !== 0)) {
 				{
-				this.state = 113;
+				this.state = 130;
 				this.paramList();
 				}
 			}
 
-			this.state = 116;
+			this.state = 133;
 			this.match(FHIRPathParser.T__28);
 			}
 		}
@@ -891,26 +1074,26 @@ export class FHIRPathParser extends Parser {
 	// @RuleVersion(0)
 	public paramList(): ParamListContext {
 		let _localctx: ParamListContext = new ParamListContext(this._ctx, this.state);
-		this.enterRule(_localctx, 12, FHIRPathParser.RULE_paramList);
+		this.enterRule(_localctx, 20, FHIRPathParser.RULE_paramList);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 118;
+			this.state = 135;
 			this.expression(0);
-			this.state = 123;
+			this.state = 140;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			while (_la === FHIRPathParser.T__37) {
+			while (_la === FHIRPathParser.T__48) {
 				{
 				{
-				this.state = 119;
-				this.match(FHIRPathParser.T__37);
-				this.state = 120;
+				this.state = 136;
+				this.match(FHIRPathParser.T__48);
+				this.state = 137;
 				this.expression(0);
 				}
 				}
-				this.state = 125;
+				this.state = 142;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
@@ -933,18 +1116,18 @@ export class FHIRPathParser extends Parser {
 	// @RuleVersion(0)
 	public quantity(): QuantityContext {
 		let _localctx: QuantityContext = new QuantityContext(this._ctx, this.state);
-		this.enterRule(_localctx, 14, FHIRPathParser.RULE_quantity);
+		this.enterRule(_localctx, 22, FHIRPathParser.RULE_quantity);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 126;
+			this.state = 143;
 			this.match(FHIRPathParser.NUMBER);
-			this.state = 128;
+			this.state = 145;
 			this._errHandler.sync(this);
 			switch ( this.interpreter.adaptivePredict(this._input, 9, this._ctx) ) {
 			case 1:
 				{
-				this.state = 127;
+				this.state = 144;
 				this.unit();
 				}
 				break;
@@ -968,43 +1151,43 @@ export class FHIRPathParser extends Parser {
 	// @RuleVersion(0)
 	public unit(): UnitContext {
 		let _localctx: UnitContext = new UnitContext(this._ctx, this.state);
-		this.enterRule(_localctx, 16, FHIRPathParser.RULE_unit);
+		this.enterRule(_localctx, 24, FHIRPathParser.RULE_unit);
 		try {
-			this.state = 133;
+			this.state = 150;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case FHIRPathParser.T__38:
-			case FHIRPathParser.T__39:
-			case FHIRPathParser.T__40:
-			case FHIRPathParser.T__41:
-			case FHIRPathParser.T__42:
-			case FHIRPathParser.T__43:
-			case FHIRPathParser.T__44:
-			case FHIRPathParser.T__45:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 130;
-				this.dateTimePrecision();
-				}
-				break;
-			case FHIRPathParser.T__46:
-			case FHIRPathParser.T__47:
-			case FHIRPathParser.T__48:
 			case FHIRPathParser.T__49:
 			case FHIRPathParser.T__50:
 			case FHIRPathParser.T__51:
 			case FHIRPathParser.T__52:
 			case FHIRPathParser.T__53:
+			case FHIRPathParser.T__54:
+			case FHIRPathParser.T__55:
+			case FHIRPathParser.T__56:
+				this.enterOuterAlt(_localctx, 1);
+				{
+				this.state = 147;
+				this.dateTimePrecision();
+				}
+				break;
+			case FHIRPathParser.T__57:
+			case FHIRPathParser.T__58:
+			case FHIRPathParser.T__59:
+			case FHIRPathParser.T__60:
+			case FHIRPathParser.T__61:
+			case FHIRPathParser.T__62:
+			case FHIRPathParser.T__63:
+			case FHIRPathParser.T__64:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 131;
+				this.state = 148;
 				this.pluralDateTimePrecision();
 				}
 				break;
 			case FHIRPathParser.STRING:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 132;
+				this.state = 149;
 				this.match(FHIRPathParser.STRING);
 				}
 				break;
@@ -1029,14 +1212,14 @@ export class FHIRPathParser extends Parser {
 	// @RuleVersion(0)
 	public dateTimePrecision(): DateTimePrecisionContext {
 		let _localctx: DateTimePrecisionContext = new DateTimePrecisionContext(this._ctx, this.state);
-		this.enterRule(_localctx, 18, FHIRPathParser.RULE_dateTimePrecision);
+		this.enterRule(_localctx, 26, FHIRPathParser.RULE_dateTimePrecision);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 135;
+			this.state = 152;
 			_la = this._input.LA(1);
-			if (!(((((_la - 39)) & ~0x1F) === 0 && ((1 << (_la - 39)) & ((1 << (FHIRPathParser.T__38 - 39)) | (1 << (FHIRPathParser.T__39 - 39)) | (1 << (FHIRPathParser.T__40 - 39)) | (1 << (FHIRPathParser.T__41 - 39)) | (1 << (FHIRPathParser.T__42 - 39)) | (1 << (FHIRPathParser.T__43 - 39)) | (1 << (FHIRPathParser.T__44 - 39)) | (1 << (FHIRPathParser.T__45 - 39)))) !== 0))) {
+			if (!(((((_la - 50)) & ~0x1F) === 0 && ((1 << (_la - 50)) & ((1 << (FHIRPathParser.T__49 - 50)) | (1 << (FHIRPathParser.T__50 - 50)) | (1 << (FHIRPathParser.T__51 - 50)) | (1 << (FHIRPathParser.T__52 - 50)) | (1 << (FHIRPathParser.T__53 - 50)) | (1 << (FHIRPathParser.T__54 - 50)) | (1 << (FHIRPathParser.T__55 - 50)) | (1 << (FHIRPathParser.T__56 - 50)))) !== 0))) {
 			this._errHandler.recoverInline(this);
 			} else {
 				if (this._input.LA(1) === Token.EOF) {
@@ -1065,14 +1248,14 @@ export class FHIRPathParser extends Parser {
 	// @RuleVersion(0)
 	public pluralDateTimePrecision(): PluralDateTimePrecisionContext {
 		let _localctx: PluralDateTimePrecisionContext = new PluralDateTimePrecisionContext(this._ctx, this.state);
-		this.enterRule(_localctx, 20, FHIRPathParser.RULE_pluralDateTimePrecision);
+		this.enterRule(_localctx, 28, FHIRPathParser.RULE_pluralDateTimePrecision);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 137;
+			this.state = 154;
 			_la = this._input.LA(1);
-			if (!(((((_la - 47)) & ~0x1F) === 0 && ((1 << (_la - 47)) & ((1 << (FHIRPathParser.T__46 - 47)) | (1 << (FHIRPathParser.T__47 - 47)) | (1 << (FHIRPathParser.T__48 - 47)) | (1 << (FHIRPathParser.T__49 - 47)) | (1 << (FHIRPathParser.T__50 - 47)) | (1 << (FHIRPathParser.T__51 - 47)) | (1 << (FHIRPathParser.T__52 - 47)) | (1 << (FHIRPathParser.T__53 - 47)))) !== 0))) {
+			if (!(((((_la - 58)) & ~0x1F) === 0 && ((1 << (_la - 58)) & ((1 << (FHIRPathParser.T__57 - 58)) | (1 << (FHIRPathParser.T__58 - 58)) | (1 << (FHIRPathParser.T__59 - 58)) | (1 << (FHIRPathParser.T__60 - 58)) | (1 << (FHIRPathParser.T__61 - 58)) | (1 << (FHIRPathParser.T__62 - 58)) | (1 << (FHIRPathParser.T__63 - 58)) | (1 << (FHIRPathParser.T__64 - 58)))) !== 0))) {
 			this._errHandler.recoverInline(this);
 			} else {
 				if (this._input.LA(1) === Token.EOF) {
@@ -1101,11 +1284,11 @@ export class FHIRPathParser extends Parser {
 	// @RuleVersion(0)
 	public typeSpecifier(): TypeSpecifierContext {
 		let _localctx: TypeSpecifierContext = new TypeSpecifierContext(this._ctx, this.state);
-		this.enterRule(_localctx, 22, FHIRPathParser.RULE_typeSpecifier);
+		this.enterRule(_localctx, 30, FHIRPathParser.RULE_typeSpecifier);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 139;
+			this.state = 156;
 			this.qualifiedIdentifier();
 			}
 		}
@@ -1126,28 +1309,28 @@ export class FHIRPathParser extends Parser {
 	// @RuleVersion(0)
 	public qualifiedIdentifier(): QualifiedIdentifierContext {
 		let _localctx: QualifiedIdentifierContext = new QualifiedIdentifierContext(this._ctx, this.state);
-		this.enterRule(_localctx, 24, FHIRPathParser.RULE_qualifiedIdentifier);
+		this.enterRule(_localctx, 32, FHIRPathParser.RULE_qualifiedIdentifier);
 		try {
 			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 141;
+			this.state = 158;
 			this.identifier();
-			this.state = 146;
+			this.state = 163;
 			this._errHandler.sync(this);
 			_alt = this.interpreter.adaptivePredict(this._input, 11, this._ctx);
 			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
 				if (_alt === 1) {
 					{
 					{
-					this.state = 142;
+					this.state = 159;
 					this.match(FHIRPathParser.T__0);
-					this.state = 143;
+					this.state = 160;
 					this.identifier();
 					}
 					}
 				}
-				this.state = 148;
+				this.state = 165;
 				this._errHandler.sync(this);
 				_alt = this.interpreter.adaptivePredict(this._input, 11, this._ctx);
 			}
@@ -1170,14 +1353,14 @@ export class FHIRPathParser extends Parser {
 	// @RuleVersion(0)
 	public identifier(): IdentifierContext {
 		let _localctx: IdentifierContext = new IdentifierContext(this._ctx, this.state);
-		this.enterRule(_localctx, 26, FHIRPathParser.RULE_identifier);
+		this.enterRule(_localctx, 34, FHIRPathParser.RULE_identifier);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 149;
+			this.state = 166;
 			_la = this._input.LA(1);
-			if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << FHIRPathParser.T__10) | (1 << FHIRPathParser.T__11) | (1 << FHIRPathParser.T__21) | (1 << FHIRPathParser.T__22))) !== 0) || ((((_la - 58)) & ~0x1F) === 0 && ((1 << (_la - 58)) & ((1 << (FHIRPathParser.IDENTIFIER - 58)) | (1 << (FHIRPathParser.DELIMITEDIDENTIFIER - 58)) | (1 << (FHIRPathParser.UDELIMITEDIDENTIFIER - 58)))) !== 0))) {
+			if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << FHIRPathParser.T__10) | (1 << FHIRPathParser.T__11) | (1 << FHIRPathParser.T__21) | (1 << FHIRPathParser.T__22))) !== 0) || ((((_la - 69)) & ~0x1F) === 0 && ((1 << (_la - 69)) & ((1 << (FHIRPathParser.IDENTIFIER - 69)) | (1 << (FHIRPathParser.DELIMITEDIDENTIFIER - 69)) | (1 << (FHIRPathParser.UDELIMITEDIDENTIFIER - 69)))) !== 0))) {
 			this._errHandler.recoverInline(this);
 			} else {
 				if (this._input.LA(1) === Token.EOF) {
@@ -1253,74 +1436,81 @@ export class FHIRPathParser extends Parser {
 	}
 
 	public static readonly _serializedATN: string =
-		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03D\x9A\x04\x02" +
+		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03O\xAB\x04\x02" +
 		"\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07" +
 		"\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\v\t\v\x04\f\t\f\x04\r\t\r\x04" +
-		"\x0E\t\x0E\x04\x0F\t\x0F\x03\x02\x03\x02\x03\x02\x03\x02\x05\x02#\n\x02" +
-		"\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02" +
-		"\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02" +
-		"\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02" +
-		"\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02" +
-		"\x03\x02\x03\x02\x07\x02K\n\x02\f\x02\x0E\x02N\v\x02\x03\x03\x03\x03\x03" +
-		"\x03\x03\x03\x03\x03\x03\x03\x03\x03\x05\x03W\n\x03\x03\x04\x03\x04\x03" +
-		"\x04\x03\x04\x03\x04\x03\x04\x03\x04\x03\x04\x03\x04\x03\x04\x05\x04c" +
-		"\n\x04\x03\x05\x03\x05\x03\x05\x03\x05\x05\x05i\n\x05\x03\x06\x03\x06" +
-		"\x03\x06\x03\x06\x03\x06\x05\x06p\n\x06\x03\x07\x03\x07\x03\x07\x05\x07" +
-		"u\n\x07\x03\x07\x03\x07\x03\b\x03\b\x03\b\x07\b|\n\b\f\b\x0E\b\x7F\v\b" +
-		"\x03\t\x03\t\x05\t\x83\n\t\x03\n\x03\n\x03\n\x05\n\x88\n\n\x03\v\x03\v" +
-		"\x03\f\x03\f\x03\r\x03\r\x03\x0E\x03\x0E\x03\x0E\x07\x0E\x93\n\x0E\f\x0E" +
-		"\x0E\x0E\x96\v\x0E\x03\x0F\x03\x0F\x03\x0F\x02\x02\x03\x02\x10\x02\x02" +
-		"\x04\x02\x06\x02\b\x02\n\x02\f\x02\x0E\x02\x10\x02\x12\x02\x14\x02\x16" +
-		"\x02\x18\x02\x1A\x02\x1C\x02\x02\x0E\x03\x02\x06\x07\x03\x02\b\v\x04\x02" +
-		"\x06\x07\f\f\x03\x02\x10\x13\x03\x02\x14\x17\x03\x02\x18\x19\x03\x02\x1B" +
-		"\x1C\x03\x02\r\x0E\x03\x02\"#\x03\x02)0\x03\x0218\x05\x02\r\x0E\x18\x19" +
-		"<>\x02\xAF\x02\"\x03\x02\x02\x02\x04V\x03\x02\x02\x02\x06b\x03\x02\x02" +
-		"\x02\bd\x03\x02\x02\x02\no\x03\x02\x02\x02\fq\x03\x02\x02\x02\x0Ex\x03" +
-		"\x02\x02\x02\x10\x80\x03\x02\x02\x02\x12\x87\x03\x02\x02\x02\x14\x89\x03" +
-		"\x02\x02\x02\x16\x8B\x03\x02\x02\x02\x18\x8D\x03\x02\x02\x02\x1A\x8F\x03" +
-		"\x02\x02\x02\x1C\x97\x03\x02\x02\x02\x1E\x1F\b\x02\x01\x02\x1F#\x05\x04" +
-		"\x03\x02 !\t\x02\x02\x02!#\x05\x02\x02\r\"\x1E\x03\x02\x02\x02\" \x03" +
-		"\x02\x02\x02#L\x03\x02\x02\x02$%\f\f\x02\x02%&\t\x03\x02\x02&K\x05\x02" +
-		"\x02\r\'(\f\v\x02\x02()\t\x04\x02\x02)K\x05\x02\x02\f*+\f\t\x02\x02+," +
-		"\x07\x0F\x02\x02,K\x05\x02\x02\n-.\f\b\x02\x02./\t\x05\x02\x02/K\x05\x02" +
-		"\x02\t01\f\x07\x02\x0212\t\x06\x02\x022K\x05\x02\x02\b34\f\x06\x02\x02" +
-		"45\t\x07\x02\x025K\x05\x02\x02\x0767\f\x05\x02\x0278\x07\x1A\x02\x028" +
-		"K\x05\x02\x02\x069:\f\x04\x02\x02:;\t\b\x02\x02;K\x05\x02\x02\x05<=\f" +
-		"\x03\x02\x02=>\x07\x1D\x02\x02>K\x05\x02\x02\x04?@\f\x0F\x02\x02@A\x07" +
-		"\x03\x02\x02AK\x05\n\x06\x02BC\f\x0E\x02\x02CD\x07\x04\x02\x02DE\x05\x02" +
-		"\x02\x02EF\x07\x05\x02\x02FK\x03\x02\x02\x02GH\f\n\x02\x02HI\t\t\x02\x02" +
-		"IK\x05\x18\r\x02J$\x03\x02\x02\x02J\'\x03\x02\x02\x02J*\x03\x02\x02\x02" +
-		"J-\x03\x02\x02\x02J0\x03\x02\x02\x02J3\x03\x02\x02\x02J6\x03\x02\x02\x02" +
-		"J9\x03\x02\x02\x02J<\x03\x02\x02\x02J?\x03\x02\x02\x02JB\x03\x02\x02\x02" +
-		"JG\x03\x02\x02\x02KN\x03\x02\x02\x02LJ\x03\x02\x02\x02LM\x03\x02\x02\x02" +
-		"M\x03\x03\x02\x02\x02NL\x03\x02\x02\x02OW\x05\n\x06\x02PW\x05\x06\x04" +
-		"\x02QW\x05\b\x05\x02RS\x07\x1E\x02\x02ST\x05\x02\x02\x02TU\x07\x1F\x02" +
-		"\x02UW\x03\x02\x02\x02VO\x03\x02\x02\x02VP\x03\x02\x02\x02VQ\x03\x02\x02" +
-		"\x02VR\x03\x02\x02\x02W\x05\x03\x02\x02\x02XY\x07 \x02\x02Yc\x07!\x02" +
-		"\x02Zc\t\n\x02\x02[c\x07?\x02\x02\\c\x07@\x02\x02]c\x07A\x02\x02^c\x07" +
-		"9\x02\x02_c\x07:\x02\x02`c\x07;\x02\x02ac\x05\x10\t\x02bX\x03\x02\x02" +
-		"\x02bZ\x03\x02\x02\x02b[\x03\x02\x02\x02b\\\x03\x02\x02\x02b]\x03\x02" +
-		"\x02\x02b^\x03\x02\x02\x02b_\x03\x02\x02\x02b`\x03\x02\x02\x02ba\x03\x02" +
-		"\x02\x02c\x07\x03\x02\x02\x02dh\x07$\x02\x02ei\x05\x1C\x0F\x02fi\x07?" +
-		"\x02\x02gi\x07@\x02\x02he\x03\x02\x02\x02hf\x03\x02\x02\x02hg\x03\x02" +
-		"\x02\x02i\t\x03\x02\x02\x02jp\x05\x1C\x0F\x02kp\x05\f\x07\x02lp\x07%\x02" +
-		"\x02mp\x07&\x02\x02np\x07\'\x02\x02oj\x03\x02\x02\x02ok\x03\x02\x02\x02" +
-		"ol\x03\x02\x02\x02om\x03\x02\x02\x02on\x03\x02\x02\x02p\v\x03\x02\x02" +
-		"\x02qr\x05\x1C\x0F\x02rt\x07\x1E\x02\x02su\x05\x0E\b\x02ts\x03\x02\x02" +
-		"\x02tu\x03\x02\x02\x02uv\x03\x02\x02\x02vw\x07\x1F\x02\x02w\r\x03\x02" +
-		"\x02\x02x}\x05\x02\x02\x02yz\x07(\x02\x02z|\x05\x02\x02\x02{y\x03\x02" +
-		"\x02\x02|\x7F\x03\x02\x02\x02}{\x03\x02\x02\x02}~\x03\x02\x02\x02~\x0F" +
-		"\x03\x02\x02\x02\x7F}\x03\x02\x02\x02\x80\x82\x07A\x02\x02\x81\x83\x05" +
-		"\x12\n\x02\x82\x81\x03\x02\x02\x02\x82\x83\x03\x02\x02\x02\x83\x11\x03" +
-		"\x02\x02\x02\x84\x88\x05\x14\v\x02\x85\x88\x05\x16\f\x02\x86\x88\x07?" +
-		"\x02\x02\x87\x84\x03\x02\x02\x02\x87\x85\x03\x02\x02\x02\x87\x86\x03\x02" +
-		"\x02\x02\x88\x13\x03\x02\x02\x02\x89\x8A\t\v\x02\x02\x8A\x15\x03\x02\x02" +
-		"\x02\x8B\x8C\t\f\x02\x02\x8C\x17\x03\x02\x02\x02\x8D\x8E\x05\x1A\x0E\x02" +
-		"\x8E\x19\x03\x02\x02\x02\x8F\x94\x05\x1C\x0F\x02\x90\x91\x07\x03\x02\x02" +
-		"\x91\x93\x05\x1C\x0F\x02\x92\x90\x03\x02\x02\x02\x93\x96\x03\x02\x02\x02" +
-		"\x94\x92\x03\x02\x02\x02\x94\x95\x03\x02\x02\x02\x95\x1B\x03\x02\x02\x02" +
-		"\x96\x94\x03\x02\x02\x02\x97\x98\t\r\x02\x02\x98\x1D\x03\x02\x02\x02\x0E" +
-		"\"JLVbhot}\x82\x87\x94";
+		"\x0E\t\x0E\x04\x0F\t\x0F\x04\x10\t\x10\x04\x11\t\x11\x04\x12\t\x12\x04" +
+		"\x13\t\x13\x03\x02\x03\x02\x03\x02\x03\x02\x05\x02+\n\x02\x03\x02\x03" +
+		"\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03" +
+		"\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03" +
+		"\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03" +
+		"\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03\x02\x03" +
+		"\x02\x07\x02S\n\x02\f\x02\x0E\x02V\v\x02\x03\x03\x03\x03\x03\x03\x03\x03" +
+		"\x03\x03\x03\x03\x03\x03\x05\x03_\n\x03\x03\x04\x03\x04\x03\x04\x03\x04" +
+		"\x03\x04\x03\x04\x03\x04\x03\x04\x03\x04\x03\x04\x05\x04k\n\x04\x03\x05" +
+		"\x03\x05\x03\x05\x03\x05\x05\x05q\n\x05\x03\x06\x03\x06\x03\x06\x03\x06" +
+		"\x03\x06\x03\x06\x05\x06y\n\x06\x03\x07\x03\x07\x03\b\x03\b\x03\t\x03" +
+		"\t\x03\n\x03\n\x03\v\x03\v\x03\v\x05\v\x86\n\v\x03\v\x03\v\x03\f\x03\f" +
+		"\x03\f\x07\f\x8D\n\f\f\f\x0E\f\x90\v\f\x03\r\x03\r\x05\r\x94\n\r\x03\x0E" +
+		"\x03\x0E\x03\x0E\x05\x0E\x99\n\x0E\x03\x0F\x03\x0F\x03\x10\x03\x10\x03" +
+		"\x11\x03\x11\x03\x12\x03\x12\x03\x12\x07\x12\xA4\n\x12\f\x12\x0E\x12\xA7" +
+		"\v\x12\x03\x13\x03\x13\x03\x13\x02\x02\x03\x02\x14\x02\x02\x04\x02\x06" +
+		"\x02\b\x02\n\x02\f\x02\x0E\x02\x10\x02\x12\x02\x14\x02\x16\x02\x18\x02" +
+		"\x1A\x02\x1C\x02\x1E\x02 \x02\"\x02$\x02\x02\x11\x03\x02\x06\x07\x03\x02" +
+		"\b\v\x04\x02\x06\x07\f\f\x03\x02\x10\x13\x03\x02\x14\x17\x03\x02\x18\x19" +
+		"\x03\x02\x1B\x1C\x03\x02\r\x0E\x03\x02\"#\x03\x02&)\x03\x02*.\x04\x02" +
+		"&&/2\x03\x024;\x03\x02<C\x05\x02\r\x0E\x18\x19GI\x02\xBD\x02*\x03\x02" +
+		"\x02\x02\x04^\x03\x02\x02\x02\x06j\x03\x02\x02\x02\bl\x03\x02\x02\x02" +
+		"\nx\x03\x02\x02\x02\fz\x03\x02\x02\x02\x0E|\x03\x02\x02\x02\x10~\x03\x02" +
+		"\x02\x02\x12\x80\x03\x02\x02\x02\x14\x82\x03\x02\x02\x02\x16\x89\x03\x02" +
+		"\x02\x02\x18\x91\x03\x02\x02\x02\x1A\x98\x03\x02\x02\x02\x1C\x9A\x03\x02" +
+		"\x02\x02\x1E\x9C\x03\x02\x02\x02 \x9E\x03\x02\x02\x02\"\xA0\x03\x02\x02" +
+		"\x02$\xA8\x03\x02\x02\x02&\'\b\x02\x01\x02\'+\x05\x04\x03\x02()\t\x02" +
+		"\x02\x02)+\x05\x02\x02\r*&\x03\x02\x02\x02*(\x03\x02\x02\x02+T\x03\x02" +
+		"\x02\x02,-\f\f\x02\x02-.\t\x03\x02\x02.S\x05\x02\x02\r/0\f\v\x02\x020" +
+		"1\t\x04\x02\x021S\x05\x02\x02\f23\f\t\x02\x0234\x07\x0F\x02\x024S\x05" +
+		"\x02\x02\n56\f\b\x02\x0267\t\x05\x02\x027S\x05\x02\x02\t89\f\x07\x02\x02" +
+		"9:\t\x06\x02\x02:S\x05\x02\x02\b;<\f\x06\x02\x02<=\t\x07\x02\x02=S\x05" +
+		"\x02\x02\x07>?\f\x05\x02\x02?@\x07\x1A\x02\x02@S\x05\x02\x02\x06AB\f\x04" +
+		"\x02\x02BC\t\b\x02\x02CS\x05\x02\x02\x05DE\f\x03\x02\x02EF\x07\x1D\x02" +
+		"\x02FS\x05\x02\x02\x04GH\f\x0F\x02\x02HI\x07\x03\x02\x02IS\x05\n\x06\x02" +
+		"JK\f\x0E\x02\x02KL\x07\x04\x02\x02LM\x05\x02\x02\x02MN\x07\x05\x02\x02" +
+		"NS\x03\x02\x02\x02OP\f\n\x02\x02PQ\t\t\x02\x02QS\x05 \x11\x02R,\x03\x02" +
+		"\x02\x02R/\x03\x02\x02\x02R2\x03\x02\x02\x02R5\x03\x02\x02\x02R8\x03\x02" +
+		"\x02\x02R;\x03\x02\x02\x02R>\x03\x02\x02\x02RA\x03\x02\x02\x02RD\x03\x02" +
+		"\x02\x02RG\x03\x02\x02\x02RJ\x03\x02\x02\x02RO\x03\x02\x02\x02SV\x03\x02" +
+		"\x02\x02TR\x03\x02\x02\x02TU\x03\x02\x02\x02U\x03\x03\x02\x02\x02VT\x03" +
+		"\x02\x02\x02W_\x05\n\x06\x02X_\x05\x06\x04\x02Y_\x05\b\x05\x02Z[\x07\x1E" +
+		"\x02\x02[\\\x05\x02\x02\x02\\]\x07\x1F\x02\x02]_\x03\x02\x02\x02^W\x03" +
+		"\x02\x02\x02^X\x03\x02\x02\x02^Y\x03\x02\x02\x02^Z\x03\x02\x02\x02_\x05" +
+		"\x03\x02\x02\x02`a\x07 \x02\x02ak\x07!\x02\x02bk\t\n\x02\x02ck\x07J\x02" +
+		"\x02dk\x07K\x02\x02ek\x07L\x02\x02fk\x07D\x02\x02gk\x07E\x02\x02hk\x07" +
+		"F\x02\x02ik\x05\x18\r\x02j`\x03\x02\x02\x02jb\x03\x02\x02\x02jc\x03\x02" +
+		"\x02\x02jd\x03\x02\x02\x02je\x03\x02\x02\x02jf\x03\x02\x02\x02jg\x03\x02" +
+		"\x02\x02jh\x03\x02\x02\x02ji\x03\x02\x02\x02k\x07\x03\x02\x02\x02lp\x07" +
+		"$\x02\x02mq\x05$\x13\x02nq\x07J\x02\x02oq\x07K\x02\x02pm\x03\x02\x02\x02" +
+		"pn\x03\x02\x02\x02po\x03\x02\x02\x02q\t\x03\x02\x02\x02ry\x05$\x13\x02" +
+		"sy\x05\x14\v\x02ty\x05\x0E\b\x02uy\x05\x10\t\x02vy\x05\x12\n\x02wy\x05" +
+		"\f\x07\x02xr\x03\x02\x02\x02xs\x03\x02\x02\x02xt\x03\x02\x02\x02xu\x03" +
+		"\x02\x02\x02xv\x03\x02\x02\x02xw\x03\x02\x02\x02y\v\x03\x02\x02\x02z{" +
+		"\x07%\x02\x02{\r\x03\x02\x02\x02|}\t\v\x02\x02}\x0F\x03\x02\x02\x02~\x7F" +
+		"\t\f\x02\x02\x7F\x11\x03\x02\x02\x02\x80\x81\t\r\x02\x02\x81\x13\x03\x02" +
+		"\x02\x02\x82\x83\x05$\x13\x02\x83\x85\x07\x1E\x02\x02\x84\x86\x05\x16" +
+		"\f\x02\x85\x84\x03\x02\x02\x02\x85\x86\x03\x02\x02\x02\x86\x87\x03\x02" +
+		"\x02\x02\x87\x88\x07\x1F\x02\x02\x88\x15\x03\x02\x02\x02\x89\x8E\x05\x02" +
+		"\x02\x02\x8A\x8B\x073\x02\x02\x8B\x8D\x05\x02\x02\x02\x8C\x8A\x03\x02" +
+		"\x02\x02\x8D\x90\x03\x02\x02\x02\x8E\x8C\x03\x02\x02\x02\x8E\x8F\x03\x02" +
+		"\x02\x02\x8F\x17\x03\x02\x02\x02\x90\x8E\x03\x02\x02\x02\x91\x93\x07L" +
+		"\x02\x02\x92\x94\x05\x1A\x0E\x02\x93\x92\x03\x02\x02\x02\x93\x94\x03\x02" +
+		"\x02\x02\x94\x19\x03\x02\x02\x02\x95\x99\x05\x1C\x0F\x02\x96\x99\x05\x1E" +
+		"\x10\x02\x97\x99\x07J\x02\x02\x98\x95\x03\x02\x02\x02\x98\x96\x03\x02" +
+		"\x02\x02\x98\x97\x03\x02\x02\x02\x99\x1B\x03\x02\x02\x02\x9A\x9B\t\x0E" +
+		"\x02\x02\x9B\x1D\x03\x02\x02\x02\x9C\x9D\t\x0F\x02\x02\x9D\x1F\x03\x02" +
+		"\x02\x02\x9E\x9F\x05\"\x12\x02\x9F!\x03\x02\x02\x02\xA0\xA5\x05$\x13\x02" +
+		"\xA1\xA2\x07\x03\x02\x02\xA2\xA4\x05$\x13\x02\xA3\xA1\x03\x02\x02\x02" +
+		"\xA4\xA7\x03\x02\x02\x02\xA5\xA3\x03\x02\x02\x02\xA5\xA6\x03\x02\x02\x02" +
+		"\xA6#\x03\x02\x02\x02\xA7\xA5\x03\x02\x02\x02\xA8\xA9\t\x10\x02\x02\xA9" +
+		"%\x03\x02\x02\x02\x0E*RT^jpx\x85\x8E\x93\x98\xA5";
 	public static __ATN: ATN;
 	public static get _ATN(): ATN {
 		if (!FHIRPathParser.__ATN) {
@@ -2302,6 +2492,9 @@ export class FunctionInvocationContext extends InvocationContext {
 	}
 }
 export class ThisInvocationContext extends InvocationContext {
+	public thisKeyword(): ThisKeywordContext {
+		return this.getRuleContext(0, ThisKeywordContext);
+	}
 	constructor(ctx: InvocationContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
@@ -2328,6 +2521,9 @@ export class ThisInvocationContext extends InvocationContext {
 	}
 }
 export class IndexInvocationContext extends InvocationContext {
+	public indexKeyword(): IndexKeywordContext {
+		return this.getRuleContext(0, IndexKeywordContext);
+	}
 	constructor(ctx: InvocationContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
@@ -2354,6 +2550,9 @@ export class IndexInvocationContext extends InvocationContext {
 	}
 }
 export class TotalInvocationContext extends InvocationContext {
+	public totalKeyword(): TotalKeywordContext {
+		return this.getRuleContext(0, TotalKeywordContext);
+	}
 	constructor(ctx: InvocationContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
@@ -2374,6 +2573,151 @@ export class TotalInvocationContext extends InvocationContext {
 	public accept<Result>(visitor: FHIRPathVisitor<Result>): Result {
 		if (visitor.visitTotalInvocation) {
 			return visitor.visitTotalInvocation(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+export class KeywordInvocationContext extends InvocationContext {
+	public keyword(): KeywordContext {
+		return this.getRuleContext(0, KeywordContext);
+	}
+	constructor(ctx: InvocationContext) {
+		super(ctx.parent, ctx.invokingState);
+		this.copyFrom(ctx);
+	}
+	// @Override
+	public enterRule(listener: FHIRPathListener): void {
+		if (listener.enterKeywordInvocation) {
+			listener.enterKeywordInvocation(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: FHIRPathListener): void {
+		if (listener.exitKeywordInvocation) {
+			listener.exitKeywordInvocation(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: FHIRPathVisitor<Result>): Result {
+		if (visitor.visitKeywordInvocation) {
+			return visitor.visitKeywordInvocation(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class KeywordContext extends ParserRuleContext {
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return FHIRPathParser.RULE_keyword; }
+	// @Override
+	public enterRule(listener: FHIRPathListener): void {
+		if (listener.enterKeyword) {
+			listener.enterKeyword(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: FHIRPathListener): void {
+		if (listener.exitKeyword) {
+			listener.exitKeyword(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: FHIRPathVisitor<Result>): Result {
+		if (visitor.visitKeyword) {
+			return visitor.visitKeyword(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class ThisKeywordContext extends ParserRuleContext {
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return FHIRPathParser.RULE_thisKeyword; }
+	// @Override
+	public enterRule(listener: FHIRPathListener): void {
+		if (listener.enterThisKeyword) {
+			listener.enterThisKeyword(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: FHIRPathListener): void {
+		if (listener.exitThisKeyword) {
+			listener.exitThisKeyword(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: FHIRPathVisitor<Result>): Result {
+		if (visitor.visitThisKeyword) {
+			return visitor.visitThisKeyword(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class IndexKeywordContext extends ParserRuleContext {
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return FHIRPathParser.RULE_indexKeyword; }
+	// @Override
+	public enterRule(listener: FHIRPathListener): void {
+		if (listener.enterIndexKeyword) {
+			listener.enterIndexKeyword(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: FHIRPathListener): void {
+		if (listener.exitIndexKeyword) {
+			listener.exitIndexKeyword(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: FHIRPathVisitor<Result>): Result {
+		if (visitor.visitIndexKeyword) {
+			return visitor.visitIndexKeyword(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class TotalKeywordContext extends ParserRuleContext {
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return FHIRPathParser.RULE_totalKeyword; }
+	// @Override
+	public enterRule(listener: FHIRPathListener): void {
+		if (listener.enterTotalKeyword) {
+			listener.enterTotalKeyword(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: FHIRPathListener): void {
+		if (listener.exitTotalKeyword) {
+			listener.exitTotalKeyword(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: FHIRPathVisitor<Result>): Result {
+		if (visitor.visitTotalKeyword) {
+			return visitor.visitTotalKeyword(this);
 		} else {
 			return visitor.visitChildren(this);
 		}

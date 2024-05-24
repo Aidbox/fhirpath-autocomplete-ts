@@ -368,6 +368,14 @@ describe('expression', () => {
                 })
             })
             describe('SPECIAL', () => {
+                test('"$"', () => {
+                    expect(JSON.stringify(reduceAt("$|")))
+                        .toEqual(JAC({ ttext: "$", ttype: FHIRTokenType.Keyword, s: 0, e: 1 }));
+                })
+                test('"$t"', () => {
+                    expect(JSON.stringify(reduceAt("$t|")))
+                        .toEqual(JAC({ ttext: "$t", ttype: FHIRTokenType.Keyword, s: 0, e: 2 }));
+                })
                 test('"$this"', () => {
                     expect(JSON.stringify(reduceAt("$this|")))
                         .toEqual(JAC({ ttext: "$this", ttype: FHIRTokenType.Keyword, s: 0, e: 5 }));
@@ -375,6 +383,10 @@ describe('expression', () => {
                 test('"$index"', () => {
                     expect(JSON.stringify(reduceAt("$index|")))
                         .toEqual(JAC({ ttext: "$index", ttype: FHIRTokenType.Keyword, s: 0, e: 6 }));
+                })
+                test('"$i|"', () => {
+                    expect(JSON.stringify(reduceAt("$i|")))
+                        .toEqual(JAC({ ttext: "$i", ttype: FHIRTokenType.Keyword, s: 0, e: 2 }));
                 })
                 test('"$total"', () => {
                     expect(JSON.stringify(reduceAt("$total|")))
