@@ -62,7 +62,7 @@ function resolveElements(fhirschemas: Object, node: Object): Array<[string, Obje
             elements = elements.concat(Object.entries(node["elements"]))            
         } 
         let typeDefinition: Object = null
-        if (node.hasOwnProperty("type")) {
+        if (node.hasOwnProperty("type") && !node.hasOwnProperty("kind")) {
             typeDefinition = fhirschemas[node["type"]]
         } else {
             return elements
