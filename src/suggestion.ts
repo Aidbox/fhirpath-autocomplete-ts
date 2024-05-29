@@ -1,7 +1,7 @@
 import { AutocompleteContext, ScopeType, FHIRToken, FHIRTokenType, Range, reduce } from './treeReducer'
 import { FHIRPATH_FUNCTIONS, FHIRPATH_FUNCTIONS_MAP, FhirpathFunction } from './fhirpath_functions';
 
-namespace CompletionItemKind {
+export namespace CompletionItemKind {
 	export const Text = 1;
 	export const Method = 2;
 	export const Function = 3;
@@ -62,14 +62,12 @@ function resolveElements(fhirschemas: Object, node: Object): Array<[string, Obje
             elements = elements.concat(Object.entries(node["elements"]))            
         } 
         let typeDefinition: Object = null
-        if (node.hasOwnProperty("type") && !node.hasOwnProperty("kind")) {
+        if (node.hasOwnProperty("type") && !node.hasOwnProperty("id")) {
             typeDefinition = fhirschemas[node["type"]]
-        } else {
-            return elements
+            if (typeDefinition && typeDefinition.hasOwnProperty("elements")) {
+                elements = elements.concat(Object.entries(typeDefinition["elements"]))
+            } 
         }
-        if (typeDefinition.hasOwnProperty("elements")) {
-            elements = elements.concat(Object.entries(typeDefinition["elements"]))
-        } 
         let baseNode = typeDefinition
         while(baseNode && baseNode.hasOwnProperty("base")) {
             baseNode = fhirschemas[baseNode["base"]]
@@ -167,7 +165,7 @@ function makePathFromParentContext(type: string, context: AutocompleteContext) {
     return fullPath
 }
 
-function makePathFromContext(type: string, context: AutocompleteContext) {
+function makePathFromContext(type: string, context: AutocompleteContext, parentContext: AutocompleteContext = null) {
     let fullPath = []
     if (context.schemaPath.length > 0) {
         if (context.schemaPath[0].type !== FHIRTokenType.Type) {
@@ -313,45 +311,59 @@ function replaceKeywords(path: Array<FHIRToken>, outerType: string | null = null
     return path
 }
 
-function _suggest(specmap: Object, type: string, parentExpressions: Array<string>, constants: Array<Object>, fhirpath: string, cursor: number) {
+function _suggest(
+    fhirschemas: Object, 
+    type: string, 
+    forEachExpressions: Array<string>, 
+    externalConstants: Array<Object>, 
+    fhirpath: string, 
+    cursor: number
+) {
     let schemaNode = null
     let parentContext = null
     let parentNode = null
-    console.debug("fhirpathautocomplete.args", `type: ${type}; forEachExpressions: ${parentExpressions}; fhirpath: ${fhirpath}; cursor: ${cursor}`)
+    console.debug("fhirpathautocomplete.args", `type: ${type}; forEachExpressions: ${forEachExpressions}; fhirpath: ${fhirpath}; cursor: ${cursor}`)
     let autocompleteContext = reduce(fhirpath, cursor)
     console.debug("fhirpathautocomplete.autocompleteContext", autocompleteContext)
-    if (parentExpressions.length > 0) {
-        let parentExpression = parentExpressions.join(".")
+    if (forEachExpressions.length > 0) {
+        let parentExpression = forEachExpressions.join(".")
         parentContext = reduce(parentExpression, parentExpression.length + 1)
         let parentPath = makePathFromParentContext(type, parentContext)
         let parentPathWithourKeywords = replaceKeywords(parentPath, type)
-        parentNode = resolvePath(specmap, parentPathWithourKeywords.map(e => e.value))
+        parentNode = resolvePath(fhirschemas, parentPathWithourKeywords.map(e => e.value))
         if (parentNode === null || parentNode === undefined) { 
             return {
                 isComplete: true,
                 items: []
             };
         }
-        let schemaPath = replaceKeywords(autocompleteContext.schemaPath, parentNode["type"])
-        schemaNode = resolvePath(specmap, schemaPath.map(e => e.value)) ?? parentNode
+        if (autocompleteContext.schemaPath.length === 0 
+            && autocompleteContext.token.type === FHIRTokenType.Empty) {
+                schemaNode = parentNode;
+        } else {
+            let schemaPath = makePathFromContext(parentNode["type"], autocompleteContext)
+            let fullSchemaPath = replaceKeywords(schemaPath, parentNode["type"])
+            schemaNode = resolvePath(fhirschemas, fullSchemaPath.map(e => e.value)) ?? parentNode
+        }
     } else {
         let fullSchemaPath = makePathFromContext(type, autocompleteContext)
         let schemaPathWithoutKeywords = replaceKeywords(fullSchemaPath, type)
-        schemaNode = resolvePath(specmap, schemaPathWithoutKeywords.map(e => e.value))
+        schemaNode = resolvePath(fhirschemas, schemaPathWithoutKeywords.map(e => e.value))
     }
-    let nodeElements = resolveElements(specmap, schemaNode)
+    let nodeElements = resolveElements(fhirschemas, schemaNode)
     let scopeValue = autocompleteContext.scope.token
     let options = []
     switch (autocompleteContext.scope.type) {
         case ScopeType.None:
             console.debug("fhirautocomplete.scope.none", autocompleteContext)
             options = options.concat(nodeToOptions(nodeElements, CompletionItemKind.Field, autocompleteContext.token.range))
-            if (parentExpressions.length > 0) {
+            if (forEachExpressions.length > 0) {
                 let thisKeyword = ThisKeyword
-                thisKeyword.detail = parentNode["type"]
+                thisKeyword.detail = schemaNode["type"]
+                enrichWithRange(thisKeyword, thisKeyword.label, autocompleteContext.token.range)
                 options = options.concat([thisKeyword])
             }
-            options = options.concat(constantsToOptions(autocompleteContext.token, constants, autocompleteContext.token.range))
+            options = options.concat(constantsToOptions(autocompleteContext.token, externalConstants, autocompleteContext.token.range))
             break
         case ScopeType.Function:
             console.debug("fhirautocomplete.scope.function", autocompleteContext)
@@ -370,17 +382,23 @@ function _suggest(specmap: Object, type: string, parentExpressions: Array<string
                         options.push(totalKeyword)
                     }
                     options = options.concat(nodeToOptions(nodeElements, CompletionItemKind.Field, autocompleteContext.token.range))
-                    options = options.concat(constantsToOptions(autocompleteContext.token, constants, autocompleteContext.token.range))
+                    options = options.concat(constantsToOptions(autocompleteContext.token, externalConstants, autocompleteContext.token.range))
                 } else if (fhirpathFunction.parameterTypes.some(type => type === "Type")) {
-                    options = getSpecMapTypes(specmap, autocompleteContext.token.range)
+                    options = getSpecMapTypes(fhirschemas, autocompleteContext.token.range)
                 }
             }
             break
         case ScopeType.Invocation:
-            console.debug("fhirautocomplete.scope.invocation", autocompleteContext)
-            options = options.concat(nodeToOptions(nodeElements, CompletionItemKind.Field, autocompleteContext.token.range))
-            let functions = filterFunctionsOnType(schemaNode?.type, FHIRPATH_FUNCTIONS)
-            options = options.concat(functionsToOptions(functions, autocompleteContext.token.range))
+            console.debug("fhirautocomplete.scope.invocation.context: ", autocompleteContext)
+            let type = autocompleteContext.scope.token.type
+            if (type === FHIRTokenType.Identifier 
+                || type === FHIRTokenType.Type
+                || type === FHIRTokenType.FunctionIdentifier
+                || type === FHIRTokenType.Keyword) { 
+                options = options.concat(nodeToOptions(nodeElements, CompletionItemKind.Field, autocompleteContext.token.range))
+                let functions = filterFunctionsOnType(schemaNode?.type, FHIRPATH_FUNCTIONS)
+                options = options.concat(functionsToOptions(functions, autocompleteContext.token.range))
+            }
             break
         case ScopeType.Literal:
             console.debug('fhirautocomplete.scope.literal')
@@ -392,10 +410,10 @@ function _suggest(specmap: Object, type: string, parentExpressions: Array<string
             options = []
             break
         case FHIRTokenType.Type:
-            options = getSpecMapTypes(specmap, autocompleteContext.token.range)
+            options = getSpecMapTypes(fhirschemas, autocompleteContext.token.range)
             break
         case FHIRTokenType.ExternalConstant:
-            options = constantsToOptions(autocompleteContext.token, constants, autocompleteContext.token.range)
+            options = constantsToOptions(autocompleteContext.token, externalConstants, autocompleteContext.token.range)
             break
     }
     return {

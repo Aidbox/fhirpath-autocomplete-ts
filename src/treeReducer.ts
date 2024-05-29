@@ -592,8 +592,10 @@ class Lexer extends FHIRPathLexer {
 export function reduce(fhirpath: string, cursor: number): AutocompleteContext {
     let inputStream = CharStreams.fromString(fhirpath);
     let lexer = new Lexer(inputStream);
+    lexer.removeErrorListeners()
     let tokenStream = new CommonTokenStream(lexer);
     let parser = new FHIRPathParser(tokenStream);
+    parser.removeErrorListeners()
     let visitor = new FHIRPathAutocompleteVisitor(cursor);
     let tree = parser.expression();
     let visitResult = visitor.visit(tree)
