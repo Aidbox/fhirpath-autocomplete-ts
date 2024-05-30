@@ -2,7 +2,7 @@ export class FhirpathFunction {
     name: string
     insertText: string
     parametersCount: number
-    optionalParamer: boolean
+    optionalParameter: boolean
     parameterTypes: Array<string>
     returnType: string
     onType: Set<string> | null
@@ -11,7 +11,7 @@ export class FhirpathFunction {
         this.name = params.name
         this.insertText = params.insertText
         this.parametersCount = params.parametersCount
-        this.optionalParamer = params.optionalParamer
+        this.optionalParameter = params.optionalParameter
         this.parameterTypes = params.parameterTypes
         this.returnType = params.returnType
         this.onType = params.onType
@@ -22,90 +22,106 @@ export const WHERE = new FhirpathFunction({
     name: "where",
     insertText: "where($0)",
     parametersCount: 1,
-    optionalParamer: false,
+    optionalParameter: false,
     parameterTypes: ["expression"],
-    returnType: "collection"
+    returnType: "collection",
 })
 
 export const EXISTS = new FhirpathFunction({
     name: "exists",
     insertText: "exists($0)",
     parametersCount: 1,
-    optionalParamer: true,
+    optionalParameter: true,
     parameterTypes: ["expression"],
-    returnType: "Boolean"
+    returnType: "Boolean",
 })
 
 export const EMPTY = new FhirpathFunction({
     name: "empty",
     insertText: "empty()",
     parametersCount: 0,
-    optionalParamer: true,
+    optionalParameter: true,
     parameterTypes: [],
-    returnType: "Boolean"
+    returnType: "Boolean",
 })
 
 export const EXTENSION = new FhirpathFunction({
     name: "extension",
     insertText: "extension($0)",
     parametersCount: 1,
-    optionalParamer: false,
+    optionalParameter: false,
     parameterTypes: ["String"],
-    returnType: "collection"
+    returnType: "collection",
 })
 
 export const JOIN = new FhirpathFunction({
     name: "join",
     insertText: "join($0)",
     parametersCount: 1,
-    optionalParamer: true,
+    optionalParameter: true,
     parameterTypes: ["String"],
-    returnType: "String"
+    returnType: "String",
 })
 
 export const OFTYPE = new FhirpathFunction({
     name: "ofType",
     insertText: "ofType($0)",
     parametersCount: 1,
-    optionalParamer: false,
+    optionalParameter: false,
     parameterTypes: ["Type"],
-    returnType: "collection"
+    returnType: "collection",
 })
 
 export const FIRST = new FhirpathFunction({
     name: "first",
     insertText: "first()",
     parametersCount: 0,
-    optionalParamer: true,
+    optionalParameter: true,
     parameterTypes: [],
-    returnType: "collection"
+    returnType: "collection",
 })
 
 export const LOWBOUNDARY = new FhirpathFunction({
     name: "lowboundary",
     insertText: "lowboundary",
     parametersCount: 0,
-    optionalParamer: true,
+    optionalParameter: true,
     parameterTypes: [],
     returnType: "T",
-    onType: new Set(["decimal", "integer", "dateTime", "instant", "date", "time", "Quantity"])
+    onType: new Set([
+        "decimal",
+        "integer",
+        "dateTime",
+        "instant",
+        "date",
+        "time",
+        "Quantity",
+    ]),
 })
 
 export const HIGHBOUNDARY = new FhirpathFunction({
     name: "highboundary",
     insertText: "highboundary",
     parametersCount: 0,
-    optionalParamer: true,
+    optionalParameter: true,
     parameterTypes: [],
     returnType: "T",
-    onType: new Set(["decimal", "integer", "dateTime", "instant", "date", "time", "Quantity"])
+    onType: new Set([
+        "decimal",
+        "integer",
+        "dateTime",
+        "instant",
+        "date",
+        "time",
+        "Quantity",
+    ]),
 })
 
 export const GETRESOURCEKEY = new FhirpathFunction({
     name: "getResourceKey",
     insertText: "getResourceKey()",
     parametersCount: 0,
-    optionalParamer: true,
+    optionalParameter: true,
     parameterTypes: [],
     returnType: "KeyType",
 })
@@ -114,12 +130,12 @@ export const GETREFERENCEKEY = new FhirpathFunction({
     name: "getReferenceKey",
     insertText: "getReferenceKey($0)",
     parametersCount: 1,
-    optionalParamer: true,
+    optionalParameter: true,
     parameterTypes: [],
     returnType: "KeyType",
 })
 
-export const FHIRPATH_FUNCTIONS : Array<FhirpathFunction> = [
+export const FHIRPATH_FUNCTIONS: Array<FhirpathFunction> = [
     WHERE,
     EXISTS,
     EMPTY,
@@ -130,10 +146,10 @@ export const FHIRPATH_FUNCTIONS : Array<FhirpathFunction> = [
     LOWBOUNDARY,
     HIGHBOUNDARY,
     GETRESOURCEKEY,
-    GETREFERENCEKEY
+    GETREFERENCEKEY,
 ]
 
-export const FHIRPATH_FUNCTIONS_MAP : Map<string, FhirpathFunction> = new Map([
+export const FHIRPATH_FUNCTIONS_MAP: Map<string, FhirpathFunction> = new Map([
     ["where", WHERE],
     ["exists", EXISTS],
     ["empty", EMPTY],
@@ -144,5 +160,5 @@ export const FHIRPATH_FUNCTIONS_MAP : Map<string, FhirpathFunction> = new Map([
     ["lowboundary", LOWBOUNDARY],
     ["highboundary", HIGHBOUNDARY],
     ["getResourceKey", GETRESOURCEKEY],
-    ["getReferenceKey", GETREFERENCEKEY]
+    ["getReferenceKey", GETREFERENCEKEY],
 ])
