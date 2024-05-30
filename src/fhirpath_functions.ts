@@ -1,5 +1,3 @@
-
-
 export class FhirpathFunction {
     name: string
     insertText: string

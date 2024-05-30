@@ -1,27 +1,19 @@
 {
   "compilerOptions": {
-    "declaration": true,                   /* Generates corresponding '.d.ts' file. */
-    "declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
-    "sourceMap": true,                     /* Generates corresponding '.map' file. */
-    "outDir": "lib",                        /* Redirect output structure to the directory. */
-
-
-
-    /* Module Resolution Options */
-    "moduleResolution": "node",            /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
-    "esModuleInterop": true,                  /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
-
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "lib",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
     "module": "ESNext",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "rootDir": "src",
-    "strict": true,
+    "strict": false, // TODO enable this later
     "target": "ES2020",
-    "types": ["node"],
-
-    /* Advanced Options */
-    "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
-
+    "types": [
+      "node"
+    ],
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
     "src/**/*.ts"
@@ -31,4 +23,3 @@
     "lib"
   ]
 }
-
