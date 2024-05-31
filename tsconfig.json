@@ -4,9 +4,9 @@
     "declarationMap": true,
     "sourceMap": true,
     "outDir": "lib",
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "esModuleInterop": true,
-    "module": "ESNext",
+    "module": "NodeNext",
     "rootDir": "src",
     "strict": false, // TODO enable this later
     "target": "ES2020",

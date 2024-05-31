@@ -2,7 +2,7 @@ export declare class FhirpathFunction {
     name: string;
     insertText: string;
     parametersCount: number;
-    optionalParamer: boolean;
+    optionalParameter: boolean;
     parameterTypes: Array<string>;
     returnType: string;
     onType: Set<string> | null;
