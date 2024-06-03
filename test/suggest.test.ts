@@ -19,7 +19,7 @@ function suggestAt(
   let cursor = fhirpath.indexOf("|")
   let path = fhirpath.replace("|", "")
   return suggest({
-    fhirschemas: specmap,
+    fhirSchemas: specmap,
     type: "Patient",
     forEachExpressions: forEachExpressions,
     externalConstants: externalConstants,
@@ -45,10 +45,12 @@ describe('suggestion', () => {
               newText: "name"
             }
           },
-          expect.not.objectContaining(
-            {
-              label: "where",
-            })
+          expect.objectContaining({
+            label: "id"
+          }),
+          expect.not.objectContaining({
+            label: "where",
+          })
         ])
       }))
     })
@@ -82,6 +84,9 @@ describe('suggestion', () => {
                 newText: "%const"
               }
             },
+            expect.objectContaining({
+              label: "id"
+            }),
             expect.not.objectContaining(
               {
                 label: "where",

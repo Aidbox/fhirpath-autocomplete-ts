@@ -113,7 +113,7 @@ function resolveElements(
                 )
             }
         }
-        let baseNode = typeDefinition
+        let baseNode = typeDefinition ?? node
         while (baseNode && baseNode.hasOwnProperty("base")) {
             baseNode = fhirSchemas[baseNode["base"]]
             if (baseNode && baseNode.hasOwnProperty("elements")) {
