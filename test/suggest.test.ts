@@ -344,6 +344,39 @@ describe('suggestion', () => {
           }))
       })
     })
+    describe('after functions', () => {
+      test('"name.where().|"', () => {
+        expect(suggestAt('name.where().|', [], [{ name: "const", value: "1234", type: "string" }]))
+          .toEqual(expect.objectContaining({
+            items: expect.arrayContaining([
+              {
+                label: "family",
+                detail: "string",
+                kind: CompletionItemKind.Field,
+                textEdit: {
+                  range: new Range(
+                    new Position(0, 13),
+                    new Position(0, 13)
+                  ),
+                  newText: "family"
+                }
+              },
+              expect.not.objectContaining({
+                label: "$this",
+              }),
+              expect.objectContaining({
+                label: "id",
+              }),
+              expect.not.objectContaining({
+                label: "const",
+              }),
+              expect.objectContaining({
+                label: "where",
+              })
+            ])
+          }))
+      })
+    })
   })
   describe('base fields', () => {
     test('"name.|"', () => {

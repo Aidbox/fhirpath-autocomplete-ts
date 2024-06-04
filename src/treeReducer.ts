@@ -706,12 +706,15 @@ class FHIRPathAutocompleteVisitor
                         "",
                         this.endRangeFromCtx(openParen),
                     )
+                } else if (this.inRange(thirdChild)) {
+                    return new FHIRToken(
+                        FHIRTokenType.NonTriggeringCharacter,
+                        ")",
+                        this.endRangeFromCtx(thirdChild),
+                    )
+                } else {
+                    return functionName   
                 }
-                return new FHIRToken(
-                    FHIRTokenType.NonTriggeringCharacter,
-                    ")",
-                    this.endRangeFromCtx(thirdChild),
-                )
             } else {
                 this.scope.type = ScopeType.Function
                 this.scope.token = functionName

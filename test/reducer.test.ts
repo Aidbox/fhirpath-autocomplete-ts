@@ -185,6 +185,24 @@ describe('expression', () => {
                                 schemaPath: [T("a", FHIRTokenType.Identifier, 0, 1)] 
                             }));
                     })
+                    test('"a.where().|"', () => {
+                        expect(JSON.stringify(reduceAt("a.where().|")))
+                            .toEqual(JAC({ 
+                                stype: ScopeType.Invocation, 
+                                svalue: T("where", FHIRTokenType.FunctionIdentifier, 2, 7), 
+                                token: T("", FHIRTokenType.Empty, 10, 10),
+                                schemaPath: [T("a", FHIRTokenType.Identifier, 0, 1)] 
+                            }));
+                    })
+                    test('"a.where(b).|"', () => {
+                        expect(JSON.stringify(reduceAt("a.where(b).|")))
+                            .toEqual(JAC({ 
+                                stype: ScopeType.Invocation, 
+                                svalue: T("where", FHIRTokenType.FunctionIdentifier, 2, 7), 
+                                token: T("", FHIRTokenType.Empty, 11, 11),
+                                schemaPath: [T("a", FHIRTokenType.Identifier, 0, 1)] 
+                            }));
+                    })
                 describe('nested function invocation', () => {
                     test('"a.where(b|.where(c))"', () => {
                         expect(JSON.stringify(reduceAt("a.where(b|.where(c))")))
