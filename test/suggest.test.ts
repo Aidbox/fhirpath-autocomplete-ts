@@ -253,6 +253,34 @@ describe('suggestion', () => {
               ])
             }))
         })
+        test('["contact"] "a|"', () => {
+          expect(suggestAt('a|', ["contact"], [{ name: "const", value: "1234", type: "string" }]))
+            .toEqual(expect.objectContaining({
+              items: expect.arrayContaining([
+                {
+                  label: "address",
+                  detail: "Address",
+                  kind: CompletionItemKind.Field,
+                  textEdit: {
+                    range: new Range(
+                      new Position(0, 0),
+                      new Position(0, 1)
+                    ),
+                    newText: "address"
+                  }
+                },
+                expect.not.objectContaining({
+                  label: "$index",
+                }),
+                expect.not.objectContaining({
+                  label: "const",
+                }),
+                expect.not.objectContaining({
+                  label: "where",
+                })
+              ])
+            }))
+        })
       })
       describe('in fhirpath', () => {
         test('"contact.|"', () => {

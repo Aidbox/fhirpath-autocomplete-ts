@@ -414,10 +414,7 @@ function _suggest(
                 items: [],
             }
         }
-        if (
-            autocompleteContext.schemaPath.length === 0 &&
-            autocompleteContext.token.type === FHIRTokenType.Empty
-        ) {
+        if (autocompleteContext.schemaPath.length === 0) {
             schemaNode = parentNode
         } else {
             let schemaPath = makePathFromContext(
