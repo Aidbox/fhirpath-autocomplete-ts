@@ -314,6 +314,76 @@ describe('suggestion', () => {
       })
     })
   })
+  describe('reference', () => {
+    describe('suggest', () => {
+      test('"|"', () => {
+        expect(suggestAt('|', [], [{ name: "const", value: "1234", type: "string" }]))
+          .toEqual(expect.objectContaining({
+            items: expect.arrayContaining([
+              {
+                label: "generalPractitioner",
+                detail: "Reference",
+                kind: CompletionItemKind.Field,
+                textEdit: {
+                  range: new Range(
+                    new Position(0, 0),
+                    new Position(0, 0)
+                  ),
+                  newText: "generalPractitioner"
+                }
+              },
+            ])
+          }))
+      })
+    })
+    describe('suggest reference fields', () => {
+      describe('in fhirpath', () => {
+        test('"generalPractitioner.|"', () => {
+          expect(suggestAt('generalPractitioner.|', [], [{ name: "const", value: "1234", type: "string" }]))
+            .toEqual(expect.objectContaining({
+              items: expect.arrayContaining([
+                {
+                  label: "reference",
+                  detail: "string",
+                  kind: CompletionItemKind.Field,
+                  textEdit: {
+                    range: new Range(
+                      new Position(0, 20),
+                      new Position(0, 20)
+                    ),
+                    newText: "reference"
+                  }
+                },
+              ])
+            }))
+        })
+      })
+      describe('in fhirpath with forEach epxrs', () => {
+        test('["contact"] "organization.|"', () => {
+          expect(suggestAt('organization.|', ["contact"], [{ name: "const", value: "1234", type: "string" }]))
+            .toEqual(expect.objectContaining({
+              items: expect.arrayContaining([
+                {
+                  label: "reference",
+                  detail: "string",
+                  kind: CompletionItemKind.Field,
+                  textEdit: {
+                    range: new Range(
+                      new Position(0, 13),
+                      new Position(0, 13)
+                    ),
+                    newText: "reference"
+                  }
+                },
+                expect.not.objectContaining({
+                  label: "organization"
+                })
+              ])
+            }))
+        })
+      })
+    })
+  })
   describe('$this', () => {
     describe('in forEach', () => {
       test('"|"', () => {
@@ -368,6 +438,30 @@ describe('suggestion', () => {
               expect.not.objectContaining({
                 label: "where",
               })
+            ])
+          }))
+      })
+    })
+    describe('after backbone element', () => {
+      test('["contact"] "$this.|"', () => {
+        expect(suggestAt('$this.|', ["contact"], [{ name: "const", value: "1234", type: "string" }]))
+          .toEqual(expect.objectContaining({
+            items: expect.arrayContaining([
+              {
+                label: "organization",
+                detail: "Reference",
+                kind: CompletionItemKind.Field,
+                textEdit: {
+                  range: new Range(
+                    new Position(0, 6),
+                    new Position(0, 6)
+                  ),
+                  newText: "organization"
+                }
+              },
+              expect.not.objectContaining({
+                label: "$index",
+              }),
             ])
           }))
       })

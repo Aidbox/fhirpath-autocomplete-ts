@@ -178,6 +178,20 @@ function resolvePath(specMap: Object, path: Array<string>): object | null {
     return null
 }
 
+function resolvePathFromNode(specMap: Object, path: Array<string>, from : Object): object | null {
+    if (path.length > 0) {
+        let currentNode = from
+        for (let p of path) {
+            currentNode = findField(specMap, currentNode, p)
+            if (currentNode === null) {
+                return null
+            }
+        }
+        return currentNode
+    }
+    return from
+}
+
 const ThisKeyword = {
     label: "$this",
     kind: CompletionItemKind.Keyword,
@@ -218,8 +232,7 @@ function makePathFromParentContext(type: string, context: AutocompleteContext) {
 
 function makePathFromContext(
     type: string,
-    context: AutocompleteContext,
-    parentContext: AutocompleteContext = null,
+    context: AutocompleteContext
 ) {
     let fullPath = []
     if (context.schemaPath.length > 0) {
@@ -356,8 +369,9 @@ function replaceKeywords(
             if (path[0].value === "$this") {
                 if (outerType === null || outerType === undefined) {
                     return []
+                } else if (outerType !== "BackboneElement") {
+                    path[0] = new FHIRToken(FHIRTokenType.Type, outerType)
                 }
-                path[0] = new FHIRToken(FHIRTokenType.Type, outerType)
             } else if (path[0].value === "$index") {
                 path[0] = new FHIRToken(FHIRTokenType.Type, "integer")
             }
@@ -366,9 +380,9 @@ function replaceKeywords(
         path.forEach((p) => {
             if (p.type === FHIRTokenType.Keyword) {
                 if (p.value === "$index") {
-                    schemaPath.push(
-                        new FHIRToken(FHIRTokenType.Type, "integer"),
-                    )
+                    schemaPath = [
+                        new FHIRToken(FHIRTokenType.Type, "integer")
+                    ]
                 }
             } else {
                 schemaPath.push(p)
@@ -417,16 +431,14 @@ function _suggest(
         if (autocompleteContext.schemaPath.length === 0) {
             schemaNode = parentNode
         } else {
-            let schemaPath = makePathFromContext(
-                parentNode["type"],
-                autocompleteContext,
-            )
+            let schemaPath = autocompleteContext.schemaPath
             let fullSchemaPath = replaceKeywords(schemaPath, parentNode["type"])
             schemaNode =
-                resolvePath(
+                resolvePathFromNode(
                     fhirSchemas,
                     fullSchemaPath.map((e) => e.value),
-                ) ?? parentNode
+                    parentNode
+                )
         }
     } else {
         let fullSchemaPath = makePathFromContext(type, autocompleteContext)
